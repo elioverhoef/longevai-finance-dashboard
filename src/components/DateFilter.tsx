@@ -28,30 +28,31 @@ export const DateFilter: React.FC<DateFilterProps> = ({
   };
 
   return (
-    <div className="flex items-center gap-3">
-      <div className="flex items-center gap-2">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full">
+      <div className="flex items-center gap-2 flex-shrink-0">
         <Calendar className="w-4 h-4 text-muted-foreground" />
-        <span className="text-sm font-medium text-muted-foreground">Filter by month:</span>
+        <span className="text-xs sm:text-sm font-medium text-muted-foreground">Filter by month:</span>
       </div>
       
-      <Select value={selectedMonth || "all"} onValueChange={(value) => onMonthChange(value === "all" ? null : value)}>
-        <SelectTrigger className="w-48 dark:bg-zinc-800 dark:text-zinc-100">
-          <SelectValue placeholder="All months" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All months</SelectItem>
-          {availableMonths.map((month) => (
-            <SelectItem key={month} value={month}>
-              {formatMonthDisplay(month)}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      <div className="flex items-center gap-2 w-full sm:w-auto">
+        <Select value={selectedMonth || "all"} onValueChange={(value) => onMonthChange(value === "all" ? null : value)}>
+          <SelectTrigger className="w-full sm:w-48 dark:bg-zinc-800 dark:text-zinc-100">
+            <SelectValue placeholder="All months" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All months</SelectItem>
+            {availableMonths.map((month) => (
+              <SelectItem key={month} value={month}>
+                {formatMonthDisplay(month)}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
-      {selectedMonth && (
-        <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="flex items-center gap-1 dark:bg-zinc-800 dark:text-zinc-100">
-            {formatMonthDisplay(selectedMonth)}
+        {selectedMonth && (
+          <Badge variant="secondary" className="flex items-center gap-1 dark:bg-zinc-800 dark:text-zinc-100 flex-shrink-0">
+            <span className="hidden sm:inline">{formatMonthDisplay(selectedMonth)}</span>
+            <span className="sm:hidden">Active</span>
             <Button
               variant="ghost"
               size="sm"
@@ -61,8 +62,8 @@ export const DateFilter: React.FC<DateFilterProps> = ({
               <X className="w-3 h-3" />
             </Button>
           </Badge>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

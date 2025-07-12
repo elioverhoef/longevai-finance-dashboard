@@ -76,7 +76,7 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
   return (
     <div className="space-y-8">
       {/* Enhanced KPI Cards with 3D Effects */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
         {kpis.map((kpi, index) => {
           const Icon = kpi.icon;
           const isHovered = hoveredCard === index;
@@ -111,7 +111,7 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
                 </div>
               )}
 
-              <CardContent className="relative z-10 p-6 space-y-4">
+              <CardContent className="relative z-10 p-4 sm:p-6 space-y-3 sm:space-y-4">
                 {/* Header with Icon */}
                 <div className="flex items-start justify-between">
                   <div className="space-y-1">
@@ -125,16 +125,16 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
                     </div>
                   </div>
                   
-                  <div className={`relative w-14 h-14 rounded-2xl bg-gradient-to-r ${kpi.gradient} flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg`}>
-                    <Icon className="w-7 h-7 text-white" />
+                  <div className={`relative w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-r ${kpi.gradient} flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg`}>
+                    <Icon className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
                     {/* Glow effect */}
-                    <div className={`absolute inset-0 bg-gradient-to-r ${kpi.gradient} rounded-2xl blur-md opacity-0 group-hover:opacity-70 transition-all duration-300`} />
+                    <div className={`absolute inset-0 bg-gradient-to-r ${kpi.gradient} rounded-xl sm:rounded-2xl blur-md opacity-0 group-hover:opacity-70 transition-all duration-300`} />
                   </div>
                 </div>
 
                 {/* Main Value */}
                 <div className="space-y-2">
-                  <p className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent group-hover:from-gray-800 group-hover:to-gray-500 dark:group-hover:from-gray-200 dark:group-hover:to-gray-500 transition-all duration-300">
+                  <p className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent group-hover:from-gray-800 group-hover:to-gray-500 dark:group-hover:from-gray-200 dark:group-hover:to-gray-500 transition-all duration-300">
                     {kpi.value}
                   </p>
                   <p className="text-xs text-muted-foreground group-hover:text-foreground/80 transition-colors">
@@ -163,26 +163,26 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
       </div>
 
       {/* Enhanced Charts with 3D Effects */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
         {/* Monthly Trend Chart */}
         <Card className="relative overflow-hidden card-3d glass-ultra border border-gray-200 dark:border-gray-700 group">
           {/* Background Animation */}
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 to-blue-50 opacity-0 group-hover:opacity-30 transition-all duration-700" />
           
-          <div className="relative z-10 p-8">
-            <CardHeader className="px-0 pt-0 pb-6">
-              <CardTitle className="flex items-center gap-4 text-2xl">
-                <div className="relative">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-emerald-500 to-blue-500 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
-                    <TrendingUp className="w-6 h-6 text-white" />
+          <div className="relative z-10 p-4 sm:p-6 lg:p-8">
+            <CardHeader className="px-0 pt-0 pb-4 sm:pb-6">
+              <CardTitle className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 text-lg sm:text-xl lg:text-2xl">
+                <div className="relative flex-shrink-0">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-r from-emerald-500 to-blue-500 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
+                    <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-50 transition-all duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-xl sm:rounded-2xl blur-lg opacity-0 group-hover:opacity-50 transition-all duration-300" />
                 </div>
-                <div>
+                <div className="min-w-0 flex-1">
                   <span className="bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent font-bold">
                     Monthly Financial Overview
                   </span>
-                  <p className="text-sm text-muted-foreground mt-1">Revenue, Expenses (bars) & Net Profit (line) by Month</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground mt-1">Revenue, Expenses (bars) & Net Profit (line) by Month</p>
                 </div>
               </CardTitle>
             </CardHeader>
@@ -206,20 +206,20 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
           {/* Background Animation */}
           <div className="absolute inset-0 bg-gradient-to-br from-amber-50 to-orange-50 opacity-0 group-hover:opacity-30 transition-all duration-700" />
           
-          <div className="relative z-10 p-8">
-            <CardHeader className="px-0 pt-0 pb-6">
-              <CardTitle className="flex items-center gap-4 text-2xl">
-                <div className="relative">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
-                    <Target className="w-6 h-6 text-white" />
+          <div className="relative z-10 p-4 sm:p-6 lg:p-8">
+            <CardHeader className="px-0 pt-0 pb-4 sm:pb-6">
+              <CardTitle className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 text-lg sm:text-xl lg:text-2xl">
+                <div className="relative flex-shrink-0">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
+                    <Target className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-50 transition-all duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl sm:rounded-2xl blur-lg opacity-0 group-hover:opacity-50 transition-all duration-300" />
                 </div>
-                <div>
+                <div className="min-w-0 flex-1">
                   <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent font-bold">
                     Smart Expense Analysis
                   </span>
-                  <p className="text-sm text-muted-foreground mt-1">Optimized spending categories</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground mt-1">Optimized spending categories</p>
                 </div>
               </CardTitle>
             </CardHeader>

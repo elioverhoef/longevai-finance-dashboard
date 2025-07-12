@@ -450,7 +450,7 @@ URL.revokeObjectURL(url);
         </div>
       </div>
       
-      <div className="container mx-auto px-4 py-8 max-w-7xl fade-in relative z-10">
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-7xl fade-in relative z-10">
         <Header
           onUpload={handleUpload}
           onLoadSample={loadSampleData}
@@ -459,17 +459,21 @@ URL.revokeObjectURL(url);
           onToggleDarkMode={toggleDarkMode}
         />
 
-        <Tabs defaultValue="overview" className="space-y-8">
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:w-auto lg:grid-cols-5 glass-ultra rounded-3xl shadow-2xl backdrop-blur-xl border-0 p-2 reveal-stagger">
-              <TabsTrigger value="overview" className="rounded-2xl btn-morph transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg">Overview</TabsTrigger>
-              <TabsTrigger value="revenue" className="rounded-2xl btn-morph transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-500 data-[state=active]:text-white data-[state=active]:shadow-lg">Revenue</TabsTrigger>
-              <TabsTrigger value="expenses" className="rounded-2xl btn-morph transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-500 data-[state=active]:text-white data-[state=active]:shadow-lg">Expenses</TabsTrigger>
-              <TabsTrigger value="projects" className="rounded-2xl btn-morph transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-rose-500 data-[state=active]:text-white data-[state=active]:shadow-lg">Projects</TabsTrigger>
-              <TabsTrigger value="insights" className="rounded-2xl btn-morph transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-500 data-[state=active]:text-white data-[state=active]:shadow-lg">Insights</TabsTrigger>
-            </TabsList>
+        <Tabs defaultValue="overview" className="space-y-6 sm:space-y-8">
+          <div className="flex flex-col gap-4">
+            <div className="w-full">
+              <TabsList className="flex w-full overflow-x-auto glass-ultra rounded-2xl sm:rounded-3xl shadow-2xl backdrop-blur-xl border-0 p-1.5 sm:p-2 reveal-stagger scrollbar-hide">
+                <div className="flex gap-1 min-w-max">
+                  <TabsTrigger value="overview" className="rounded-xl sm:rounded-2xl btn-morph transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-blue-500 data-[state=active]:text-white data-[state=active]:shadow-lg text-xs sm:text-sm px-3 sm:px-4 py-2 whitespace-nowrap">Overview</TabsTrigger>
+                  <TabsTrigger value="revenue" className="rounded-xl sm:rounded-2xl btn-morph transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-500 data-[state=active]:text-white data-[state=active]:shadow-lg text-xs sm:text-sm px-3 sm:px-4 py-2 whitespace-nowrap">Revenue</TabsTrigger>
+                  <TabsTrigger value="expenses" className="rounded-xl sm:rounded-2xl btn-morph transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-500 data-[state=active]:text-white data-[state=active]:shadow-lg text-xs sm:text-sm px-3 sm:px-4 py-2 whitespace-nowrap">Expenses</TabsTrigger>
+                  <TabsTrigger value="projects" className="rounded-xl sm:rounded-2xl btn-morph transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-rose-500 data-[state=active]:text-white data-[state=active]:shadow-lg text-xs sm:text-sm px-3 sm:px-4 py-2 whitespace-nowrap">Projects</TabsTrigger>
+                  <TabsTrigger value="insights" className="rounded-xl sm:rounded-2xl btn-morph transition-all duration-300 hover:scale-105 data-[state=active]:bg-gradient-to-r data-[state=active]:from-indigo-500 data-[state=active]:to-purple-500 data-[state=active]:text-white data-[state=active]:shadow-lg text-xs sm:text-sm px-3 sm:px-4 py-2 whitespace-nowrap">Insights</TabsTrigger>
+                </div>
+              </TabsList>
+            </div>
             
-            <div className="glass-ultra rounded-3xl p-4 backdrop-blur-xl border-0 shadow-2xl reveal-stagger hover:scale-105 transition-all duration-300" style={{ animationDelay: '0.1s' }}>
+            <div className="glass-ultra rounded-2xl sm:rounded-3xl p-3 sm:p-4 backdrop-blur-xl border-0 shadow-2xl reveal-stagger hover:scale-105 transition-all duration-300 w-full" style={{ animationDelay: '0.1s' }}>
               <DateFilter
                 selectedMonth={selectedMonth}
                 availableMonths={availableMonths}

@@ -35,46 +35,46 @@ export const Expenses: React.FC<ExpensesProps> = ({ categoryData, monthlyData, t
   ];
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">Expense Analysis</h2>
-          <p className="text-muted-foreground">
+    <div className="space-y-6 sm:space-y-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="min-w-0 flex-1">
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground">Expense Analysis</h2>
+          <p className="text-sm sm:text-base text-muted-foreground">
             Total Expenses: <span className="font-semibold text-warning">€{totalExpenses.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
           </p>
         </div>
         
-        <div className="relative">
+        <div className="relative w-full sm:w-auto">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
             placeholder="Search categories..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 w-64"
+            className="pl-10 w-full sm:w-64"
           />
         </div>
       </div>
 
       {uncategorizedExpenses && uncategorizedExpenses.transactions.length > 0 && (
         <Card 
-            className="p-6 bg-warning/10 border-warning/30 cursor-pointer hover:shadow-lg transition-shadow"
+            className="p-4 sm:p-6 bg-warning/10 border-warning/30 cursor-pointer hover:shadow-lg transition-shadow"
             onClick={() => onShowDetails('Uncategorized Transactions', uncategorizedExpenses.transactions)}
         >
-            <div className="flex items-center justify-between">
-                <div>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+                <div className="flex-1">
                     <h3 className="font-semibold text-warning">Action Required</h3>
-                    <p className="text-muted-foreground">{uncategorizedExpenses.transactions.length} transactions are uncategorized.</p>
+                    <p className="text-sm sm:text-base text-muted-foreground">{uncategorizedExpenses.transactions.length} transactions are uncategorized.</p>
                 </div>
-                <Button variant="ghost">Review & Categorize</Button>
+                <Button variant="ghost" className="w-full sm:w-auto">Review & Categorize</Button>
             </div>
         </Card>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <Card className="p-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+        <Card className="p-4 sm:p-6">
           <CardHeader className="px-0 pt-0">
-            <CardTitle className="flex items-center gap-2">
-              <PieChart className="w-5 h-5 text-primary" />
+            <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+              <PieChart className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
               Expense Distribution
             </CardTitle>
           </CardHeader>
@@ -88,10 +88,10 @@ export const Expenses: React.FC<ExpensesProps> = ({ categoryData, monthlyData, t
           </CardContent>
         </Card>
 
-        <Card className="p-6">
+        <Card className="p-4 sm:p-6">
           <CardHeader className="px-0 pt-0">
-            <CardTitle className="flex items-center gap-2">
-              <BarChart3 className="w-5 h-5 text-primary" />
+            <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+              <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
               Monthly Expense Trend
             </CardTitle>
           </CardHeader>

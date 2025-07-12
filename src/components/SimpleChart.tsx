@@ -21,20 +21,29 @@ export const SimpleBarChart = <T extends object = { [key: string]: string | numb
   dataKey,
   xAxisKey,
   title,
-  color = "#6366f1"
+  color = "#6366f1",
+  showAllLabels = false
 }: {
   data: T[];
   dataKey: keyof T;
   xAxisKey: keyof T;
   title?: string;
   color?: string;
+  showAllLabels?: boolean;
 }) => (
   <div className="w-full h-80">
     {title && <h3 className="text-lg font-semibold mb-4 text-center">{title}</h3>}
     <ResponsiveContainer width="100%" height="100%">
       <BarChart data={data}>
         <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-        <XAxis dataKey={xAxisKey as string} />
+        <XAxis 
+          dataKey={xAxisKey as string} 
+          interval={showAllLabels ? 0 : 'preserveStartEnd'}
+          angle={showAllLabels ? -45 : 0}
+          textAnchor={showAllLabels ? 'end' : 'middle'}
+          height={showAllLabels ? 80 : 60}
+          fontSize={12}
+        />
         <YAxis />
         <Tooltip />
         <Bar dataKey={dataKey as string} fill={color} radius={[4, 4, 0, 0]} />

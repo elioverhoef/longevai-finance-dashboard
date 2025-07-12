@@ -16,7 +16,7 @@ const categoryKeywords = {
   'Taxes & Accounting': ['belastingdienst', 'taxpas', 'tax', 'accounting', 'kvk', 'digidentity'],
   'Travel & Transport': ['nlov', 'ns groep', 'q park', 'ovpay', 'transavia', 'booking.com', 'bck*ns'],
   'Office & Meetings': ['zettle', 'seats2meet', 'anyhouse', 'office', 'meeting', 'coworking', 'plnt'],
-  'Bank & Payment Fees': ['bunq', 'pay.nl', 'sumup', 'stripe', 'bank fee', 'transaction fee', 'mollie'],
+  'Bank & Payment Fees': ['bunq', 'pay.nl', 'sumup', 'stripe', 'bank fee', 'transaction fee', 'mollie', '],
   'Hardware & Assets': ['back market', 'laptop', 'hardware', 'equipment', 'computer'],
   'Client Revenue': ['medio zorg', 'rebelsai', 'burgermeister', 'qualevita'],
   'Food & Groceries': ['albert heijn', 'ozan market', 'soupenzo', 'restaurant', 'griekse taverne', 'lisa', 'vialis', 'weena b.v.'],

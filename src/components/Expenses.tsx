@@ -3,22 +3,26 @@ import { PieChart, Search, BarChart3 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
 import { Badge } from './ui/badge';
+import { Button } from './ui/button';
 import { SimplePieChart, SimpleBarChart } from './SimpleChart';
-import { CategoryData, MonthlyData } from '../types/financial';
+import { CategoryData, MonthlyData, Transaction } from '../types/financial';
 
 interface ExpensesProps {
   categoryData: CategoryData[];
   monthlyData: MonthlyData[];
   totalExpenses: number;
+  onShowDetails: (title: string, transactions: Transaction[]) => void;
 }
 
-export const Expenses: React.FC<ExpensesProps> = ({ categoryData, monthlyData, totalExpenses }) => {
+export const Expenses: React.FC<ExpensesProps> = ({ categoryData, monthlyData, totalExpenses, onShowDetails }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const expenseCategories = categoryData.filter(c => c.expenses > 0);
   const filteredCategories = expenseCategories.filter(cat =>
     cat.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const uncategorizedExpenses = expenseCategories.find(c => c.name === 'Uncategorized');
 
   const pieData = filteredCategories.map(cat => ({
     name: cat.name,
@@ -50,6 +54,21 @@ export const Expenses: React.FC<ExpensesProps> = ({ categoryData, monthlyData, t
           />
         </div>
       </div>
+
+      {uncategorizedExpenses && uncategorizedExpenses.transactions.length > 0 && (
+        <Card 
+            className="p-6 bg-warning/10 border-warning/30 cursor-pointer hover:shadow-lg transition-shadow"
+            onClick={() => onShowDetails('Uncategorized Transactions', uncategorizedExpenses.transactions)}
+        >
+            <div className="flex items-center justify-between">
+                <div>
+                    <h3 className="font-semibold text-warning">Action Required</h3>
+                    <p className="text-muted-foreground">{uncategorizedExpenses.transactions.length} transactions are uncategorized.</p>
+                </div>
+                <Button variant="ghost">Review & Categorize</Button>
+            </div>
+        </Card>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <Card className="p-6">
@@ -96,7 +115,8 @@ export const Expenses: React.FC<ExpensesProps> = ({ categoryData, monthlyData, t
             {filteredCategories.map((category, index) => (
               <div
                 key={category.name}
-                className="flex items-center justify-between p-4 rounded-lg border hover:bg-muted/50 transition-colors"
+                className="flex items-center justify-between p-4 rounded-lg border hover:bg-muted/50 transition-colors cursor-pointer"
+                onClick={() => onShowDetails(`Category: ${category.name}`, category.transactions)}
               >
                 <div className="flex items-center gap-4">
                   <div 

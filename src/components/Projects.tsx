@@ -6,13 +6,14 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Badge } from './ui/badge';
 import { SimpleBarChart } from './SimpleChart';
-import { ProjectData } from '../types/financial';
+import { ProjectData, Transaction } from '../types/financial';
 
 interface ProjectsProps {
   projectData: ProjectData[];
+  onShowDetails: (title: string, transactions: Transaction[]) => void;
 }
 
-export const Projects: React.FC<ProjectsProps> = ({ projectData }) => {
+export const Projects: React.FC<ProjectsProps> = ({ projectData, onShowDetails }) => {
   const [showCalculator, setShowCalculator] = useState(false);
   const [calculatorData, setCalculatorData] = useState({
     projectName: 'New Longevity Project',
@@ -72,7 +73,57 @@ export const Projects: React.FC<ProjectsProps> = ({ projectData }) => {
             </CardTitle>
           </CardHeader>
           <CardContent className="px-0 pb-0">
-            {/* ... calculator implementation remains the same ... */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="space-y-4 col-span-1 md:col-span-2 lg:col-span-1">
+                    <div className="space-y-2">
+                        <Label htmlFor="projectName">Project Name</Label>
+                        <Input id="projectName" value={calculatorData.projectName} onChange={(e) => setCalculatorData({ ...calculatorData, projectName: e.target.value })} />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="weeks">Project Duration (Weeks)</Label>
+                        <Input id="weeks" type="number" value={calculatorData.weeks} onChange={(e) => setCalculatorData({ ...calculatorData, weeks: Number(e.target.value) })} />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="devs">FTE Developers</Label>
+                        <Input id="devs" type="number" step="0.1" value={calculatorData.devs} onChange={(e) => setCalculatorData({ ...calculatorData, devs: Number(e.target.value) })} />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="devCost">Dev Cost per Month (€)</Label>
+                        <Input id="devCost" type="number" value={calculatorData.devCostPerMonth} onChange={(e) => setCalculatorData({ ...calculatorData, devCostPerMonth: Number(e.target.value) })} />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="overhead">Overhead (%)</Label>
+                        <Input id="overhead" type="number" value={calculatorData.overheadPercent} onChange={(e) => setCalculatorData({ ...calculatorData, overheadPercent: Number(e.target.value) })} />
+                    </div>
+                </div>
+                <div className="col-span-1 md:col-span-2 lg:col-span-3 p-6 rounded-lg bg-background flex flex-col justify-center">
+                    <h4 className="text-lg font-semibold mb-4">Calculated Profit for "{calculatorData.projectName}"</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                        <div className="p-4 rounded-lg bg-muted">
+                            <p className="text-sm text-muted-foreground">Revenue</p>
+                            <p className="text-2xl font-bold text-success">€{calc.revenue.toLocaleString()}</p>
+                        </div>
+                        <div className="p-4 rounded-lg bg-muted">
+                            <p className="text-sm text-muted-foreground">Dev Costs</p>
+                            <p className="text-2xl font-bold text-warning">€{calc.devCosts.toLocaleString()}</p>
+                        </div>
+                        <div className="p-4 rounded-lg bg-muted">
+                            <p className="text-sm text-muted-foreground">Overhead</p>
+                            <p className="text-2xl font-bold text-warning">€{calc.overhead.toLocaleString()}</p>
+                        </div>
+                        <div className="p-4 rounded-lg bg-muted">
+                            <p className="text-sm text-muted-foreground">Net Gain</p>
+                            <p className="text-2xl font-bold text-primary">€{calc.netGain.toLocaleString()}</p>
+                        </div>
+                    </div>
+                    <div className="mt-6 text-center">
+                        <p className="text-lg text-muted-foreground">Projected Return on Investment (ROI)</p>
+                        <p className={`text-4xl font-bold ${calc.roi >= 0 ? 'text-success' : 'text-destructive'}`}>
+                            {isFinite(calc.roi) ? calc.roi.toFixed(1) : '∞'}%
+                        </p>
+                    </div>
+                </div>
+            </div>
           </CardContent>
         </Card>
       )}
@@ -122,7 +173,8 @@ export const Projects: React.FC<ProjectsProps> = ({ projectData }) => {
             {projectData.map((project) => (
               <div
                 key={project.name}
-                className="flex items-center justify-between p-6 rounded-lg border hover:bg-muted/50 transition-colors"
+                className="flex items-center justify-between p-6 rounded-lg border hover:bg-muted/50 transition-colors cursor-pointer"
+                onClick={() => onShowDetails(`Project: ${project.name}`, project.transactions)}
               >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center">

@@ -3,18 +3,20 @@ import { TrendingUp, Users, DollarSign, Calendar } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { SimpleLineChart, SimpleBarChart } from './SimpleChart';
-import { MonthlyData, ProjectData } from '../types/financial';
+import { MonthlyData, ProjectData, Transaction } from '../types/financial';
 
 interface RevenueProps {
   monthlyData: MonthlyData[];
   projectData: ProjectData[];
   totalRevenue: number;
+  onShowDetails: (title: string, transactions: Transaction[]) => void;
 }
 
 export const Revenue: React.FC<RevenueProps> = ({ 
   monthlyData, 
   projectData, 
-  totalRevenue 
+  totalRevenue,
+  onShowDetails 
 }) => {
 
   const activeClients = projectData.filter(p => p.status === 'Active');
@@ -95,7 +97,8 @@ export const Revenue: React.FC<RevenueProps> = ({
             {projectData.map((project) => (
               <div
                 key={project.name}
-                className="flex items-center justify-between p-4 rounded-lg border hover:bg-muted/50 transition-colors"
+                className="flex items-center justify-between p-4 rounded-lg border hover:bg-muted/50 transition-colors cursor-pointer"
+                onClick={() => onShowDetails(`Project (Revenue): ${project.name}`, project.transactions)}
               >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center">

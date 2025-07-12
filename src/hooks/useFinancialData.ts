@@ -1,6 +1,7 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Papa from 'papaparse';
 import { Transaction, FinancialData, CategoryData, ProjectData, MonthlyData } from '../types/financial';
+import { useSQLiteDB } from './useSQLiteDB';
 
 const sampleCSVData = `Accounts receivable,,,,
 Date,Reference,Description,VAT,Amount
@@ -487,26 +488,39 @@ const projectKeywords = [
 ];
 
 const categoryKeywords = {
-  'Software & AI Tools': ['hubspot', 'slack', 'google', 'cursor', 'apollo', 'render', 'koyeb', 'claude', 'canva', 'moneybird', 'openai', 'anthropic', 'openrouter', 'twilio', 'coollabs', 'hetzner', 'godaddy'],
-  'Salaries & Freelancers': ['catalin-stefan', 'diogo guedes', 'robijs dubas', 'salary', 'freelance', 'contractor'],
-  'Taxes & Accounting': ['belastingdienst', 'taxpas', 'tax', 'accounting', 'kvk', 'digidentity'],
-  'Travel & Transport': ['nlov', 'ns groep', 'q park', 'ovpay', 'transavia', 'booking.com', 'bck*ns'],
-  'Office & Meetings': ['zettle', 'seats2meet', 'anyhouse', 'office', 'meeting', 'coworking', 'plnt'],
+  'Software & AI Tools': ['hubspot', 'slack', 'google', 'cursor', 'apollo', 'render', 'koyeb', 'claude', 'canva', 'moneybird', 'openai', 'anthropic', 'openrouter', 'twilio', 'coollabs', 'hetzner', 'godaddy', '50plus', 'EQ Verhoef', 'facebk'],
+  'Salaries & Freelancers': ['catalin-stefan', 'diogo guedes', 'robijs dubas', 'salary', 'freelance', 'contractor', 'dubas', 'anyhouse'],
+  'Taxes & Accounting': ['belastingdienst', 'taxpas', 'tax', 'accounting', 'kvk', 'digidentity', 'peter', 'kamer v koophandel'],
+  'Travel & Transport': ['nlov', 'ns groep', 'q park', 'ovpay', 'transavia', 'booking.com', 'bck*ns', 'ns'],
+  'Office & Meetings': ['zettle', 'seats2meet', 'office', 'meeting', 'coworking', 'plnt'],
   'Bank & Payment Fees': ['bunq', 'pay.nl', 'sumup', 'stripe', 'bank fee', 'transaction fee', 'mollie'],
   'Hardware & Assets': ['back market', 'laptop', 'hardware', 'equipment', 'computer'],
   'Client Revenue': ['medio zorg', 'rebelsai', 'burgermeister', 'qualevita'],
   'Food & Groceries': ['albert heijn', 'ozan market', 'soupenzo', 'restaurant', 'griekse taverne', 'lisa', 'vialis', 'weena b.v.'],
-  'Miscellaneous': ['helios b.v.', 'geniusinvest', 'eq verhoef', '50plus mobiel'],
+  'Miscellaneous': ['helios b.v.', 'geniusinvest', 'eq verhoef', '50plus mobiel', 'genius invest'],
 };
 
 export const useFinancialData = () => {
   const [data, setData] = useState<FinancialData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { isReady, saveFinancialData, loadFinancialData, updateTransactionCategory: updateTransactionCategoryInDB } = useSQLiteDB();
+
+  // Auto-load data from SQLite on startup
+  useEffect(() => {
+    if (isReady && !data) {
+      const savedData = loadFinancialData();
+      if (savedData) {
+        setData(savedData);
+        console.log('Loaded financial data from SQLite');
+        console.log('Outstanding receivables from SQLite:', savedData.outstandingReceivables);
+      }
+    }
+  }, [isReady, data, loadFinancialData]);
 
   const categorizeTransaction = (description: string, ledgerCategory?: string): string => {
     if (ledgerCategory && !ledgerCategory.startsWith('Revenue')) {
-        return ledgerCategory;
+      return ledgerCategory;
     }
 
     const desc = description.toLowerCase();
@@ -522,9 +536,19 @@ export const useFinancialData = () => {
     const desc = description.toLowerCase();
     for (const project of projectKeywords) {
       if (desc.includes(project.toLowerCase())) {
+        // Normalize project names
+        if (project === 'Patrick Burgermeister') {
+          return 'RegenEra';
+        }
         return project;
       }
     }
+
+    // Check for "Burgermeister Patrick" format too
+    if (desc.includes('burgermeister patrick')) {
+      return 'RegenEra';
+    }
+
     return undefined;
   };
 
@@ -533,102 +557,127 @@ export const useFinancialData = () => {
     setError(null);
 
     try {
-        const sections = csvContent.split(/\n(?=[A-Za-z\s()0-9].*,,,,)/);
-        
-        interface ParsedTransaction {
-            Date: string;
-            Reference: string;
-            Description: string;
-            VAT: string;
-            Amount: string;
-        }
+      const sections = csvContent.split(/\n(?=[A-Za-z\s()0-9].*,,,,)/);
+      console.log('CSV sections found:', sections.length);
+      console.log('First few characters of each section:', sections.map(s => s.substring(0, 50)));
 
-        let rawBankTransactions: ParsedTransaction[] = [];
-        let outstandingReceivables = 0;
-        const ledgerCategoryMap = new Map<string, string>();
+      interface ParsedTransaction {
+        Date: string;
+        Reference: string;
+        Description: string;
+        VAT: string;
+        Amount: string;
+      }
 
-        for (const section of sections) {
-            const lines = section.trim().split('\n');
-            if (lines.length < 2) continue;
+      let rawBankTransactions: ParsedTransaction[] = [];
+      let outstandingReceivables = 0;
+      const ledgerCategoryMap = new Map<string, string>();
 
-            const headerLine = lines[0];
-            const sectionName = headerLine.split(',')[0].trim();
-            const csvData = lines.slice(1).join('\n');
+      for (let i = 0; i < sections.length; i++) {
+        const section = sections[i];
+        const lines = section.trim().split('\n');
+        if (lines.length < 2) continue;
 
-            const parsed = Papa.parse(csvData, {
-                header: true,
-                skipEmptyLines: true,
-                transformHeader: header => header.trim()
-            });
-            
-            if (parsed.errors.length > 0 && !(parsed.errors.length === 1 && parsed.errors[0].code === 'TooFewFields')) {
-                 console.warn(`Parsing errors in section "${sectionName}":`, parsed.errors);
-            }
+        const headerLine = lines[0];
+        const sectionName = headerLine.split(',')[0].trim();
+        console.log('Processing section:', sectionName);
+        const csvData = lines.slice(1).join('\n');
 
-            const transactions = parsed.data.filter((row: unknown) => {
-                const typedRow = row as Record<string, string>;
-                return typedRow.Date && typedRow.Date.match(/^\d{4}-\d{2}-\d{2}/);
-            }) as ParsedTransaction[];
-
-            if (sectionName.startsWith('Bunq NL75BUNQ')) {
-                rawBankTransactions = transactions;
-            } else if (sectionName === 'Accounts receivable') {
-                const totalRow = parsed.data.find((row: unknown) => {
-                    const typedRow = row as Record<string, string>;
-                    return (typedRow.Date || "").startsWith('Total');
-                }) as ParsedTransaction | undefined;
-                if (totalRow) {
-                    outstandingReceivables = parseFloat(totalRow.Amount) || 0;
-                }
-            } else if (sectionName && !['Transactions to be classified', 'Settlements', 'Cash control', 'Unbilled revenue', 'Payable VAT', 'Sales tax paid or received'].includes(sectionName)) {
-                transactions.forEach(t => {
-                    const cleanDescription = (t.Description || "").split('\n')[0].trim();
-                    if(cleanDescription && !ledgerCategoryMap.has(cleanDescription)) {
-                        ledgerCategoryMap.set(cleanDescription, sectionName);
-                    }
-                });
-            }
-        }
-        
-        const allTransactions: Transaction[] = rawBankTransactions.map((t: ParsedTransaction) => {
-            const amount = parseFloat(t.Amount) || 0;
-            const description = t.Description || '';
-            const ledgerCategory = ledgerCategoryMap.get(description.split('\n')[0].trim());
-
-            return {
-                date: t.Date,
-                reference: t.Reference || '',
-                description: description,
-                vat: t.VAT || '',
-                amount: amount,
-                category: categorizeTransaction(description, ledgerCategory),
-                project: extractProject(description)
-            };
+        const parsed = Papa.parse(csvData, {
+          header: true,
+          skipEmptyLines: true,
+          transformHeader: header => header.trim()
         });
 
-        const totalRevenue = allTransactions.filter(t => t.amount > 0).reduce((sum, t) => sum + t.amount, 0);
-        const totalExpenses = Math.abs(allTransactions.filter(t => t.amount < 0).reduce((sum, t) => sum + t.amount, 0));
-        const currentBalance = totalRevenue - totalExpenses;
+        if (parsed.errors.length > 0 && !(parsed.errors.length === 1 && parsed.errors[0].code === 'TooFewFields')) {
+          console.warn(`Parsing errors in section "${sectionName}":`, parsed.errors);
+        }
 
-        const financialData: FinancialData = {
-            allTransactions,
-            totalRevenue,
-            totalExpenses,
-            netProfit: currentBalance,
-            currentBalance,
-            outstandingReceivables,
+        if (sectionName === 'Accounts receivable') {
+          console.log('Processing Accounts receivable section:', sectionName);
+          // Look for the Total section that follows this section
+          if (i + 1 < sections.length) {
+            const nextSection = sections[i + 1];
+            console.log('Next section:', nextSection);
+            if (nextSection.trim().startsWith('Total,')) {
+              const totalLine = nextSection.trim();
+              const totalParts = totalLine.split(',');
+              if (totalParts.length >= 5) {
+                outstandingReceivables = parseFloat(totalParts[4]) || 0;
+                console.log('Outstanding receivables set to:', outstandingReceivables);
+              }
+            }
+          }
+        }
+
+        const transactions = parsed.data.filter((row: unknown) => {
+          const typedRow = row as Record<string, string>;
+          return typedRow.Date && typedRow.Date.match(/^\d{4}-\d{2}-\d{2}/);
+        }) as ParsedTransaction[];
+
+        if (sectionName.startsWith('Bunq NL75BUNQ')) {
+          rawBankTransactions = transactions;
+        } else if (sectionName && !['Transactions to be classified', 'Settlements', 'Cash control', 'Unbilled revenue', 'Payable VAT', 'Sales tax paid or received'].includes(sectionName)) {
+          transactions.forEach(t => {
+            const cleanDescription = (t.Description || "").split('\n')[0].trim();
+            if (cleanDescription && !ledgerCategoryMap.has(cleanDescription)) {
+              ledgerCategoryMap.set(cleanDescription, sectionName);
+            }
+          });
+        }
+      }
+
+      const allTransactions: Transaction[] = rawBankTransactions.map((t: ParsedTransaction, index: number) => {
+        const amount = parseFloat(t.Amount) || 0;
+        const description = t.Description || '';
+        const ledgerCategory = ledgerCategoryMap.get(description.split('\n')[0].trim());
+
+        return {
+          id: index,
+          date: t.Date,
+          reference: t.Reference || '',
+          description: description,
+          vat: t.VAT || '',
+          amount: amount,
+          category: categorizeTransaction(description, ledgerCategory),
+          project: extractProject(description)
         };
+      });
 
-        setData(financialData);
+      const totalRevenue = allTransactions.filter(t => t.amount > 0).reduce((sum, t) => sum + t.amount, 0);
+      const totalExpenses = Math.abs(allTransactions.filter(t => t.amount < 0).reduce((sum, t) => sum + t.amount, 0));
+      const currentBalance = totalRevenue - totalExpenses;
+
+      console.log('Final outstanding receivables value:', outstandingReceivables);
+
+      const financialData: FinancialData = {
+        allTransactions,
+        totalRevenue,
+        totalExpenses,
+        netProfit: currentBalance,
+        currentBalance,
+        outstandingReceivables,
+      };
+
+      setData(financialData);
+
+      // Save to SQLite if ready
+      if (isReady) {
+        saveFinancialData(financialData);
+      }
 
     } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to parse CSV');
+      setError(err instanceof Error ? err.message : 'Failed to parse CSV');
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-  }, []);
+  }, [isReady, saveFinancialData]);
 
   const loadSampleData = useCallback(() => {
+    // Clear any existing data to force fresh parse
+    setData(null);
+    localStorage.removeItem('longevai_financial_data');
+    console.log('Cleared localStorage and forcing fresh CSV parse');
     parseCSV(sampleCSVData);
   }, [parseCSV]);
 
@@ -657,14 +706,14 @@ export const useFinancialData = () => {
       existing.transactions.push(t);
       categoryMap.set(categoryName, existing);
     });
-    
+
     return Array.from(categoryMap.entries()).map(([name, { revenue, expenses, transactions }]) => ({
-        name,
-        revenue,
-        expenses,
-        transactions,
-        isExpense: expenses > revenue
-    })).sort((a,b) => b.expenses - a.expenses);
+      name,
+      revenue,
+      expenses,
+      transactions,
+      isExpense: expenses > revenue
+    })).sort((a, b) => b.expenses - a.expenses);
   }, [data]);
 
   const getProjectData = useCallback((): ProjectData[] => {
@@ -685,7 +734,13 @@ export const useFinancialData = () => {
       const netProfit = revenue - expenses;
       const roi = expenses > 0 ? (netProfit / expenses) * 100 : revenue > 0 ? Infinity : 0;
 
-      const sortedTransactions = transactions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      const sortedTransactions = [...transactions].sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        // Handle invalid dates
+        if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) return 0;
+        return dateB.getTime() - dateA.getTime();
+      });
       const lastTransactionDate = sortedTransactions.length > 0 ? new Date(sortedTransactions[0].date) : new Date(0);
       const daysSinceLastTransaction = (new Date().getTime() - lastTransactionDate.getTime()) / (1000 * 3600 * 24);
 
@@ -732,6 +787,61 @@ export const useFinancialData = () => {
       .sort((a, b) => a.month.localeCompare(b.month));
   }, [data]);
 
+  const updateTransactionCategory = useCallback((transactionId: number, newCategory: string) => {
+    setData(currentData => {
+      if (!currentData) return null;
+
+      const updatedTransactions = currentData.allTransactions.map(t =>
+        t.id === transactionId ? { ...t, category: newCategory } : t
+      );
+
+      const updatedData = {
+        ...currentData,
+        allTransactions: updatedTransactions,
+      };
+
+      // Update SQLite database
+      if (isReady) {
+        updateTransactionCategoryInDB(transactionId, newCategory);
+      }
+
+      return updatedData;
+    });
+  }, [isReady, updateTransactionCategoryInDB]);
+
+  const getFilteredData = useCallback((selectedMonth: string | null) => {
+    if (!data || !selectedMonth) return data;
+
+    const filteredTransactions = data.allTransactions.filter(t => 
+      t.date.startsWith(selectedMonth)
+    );
+
+    const totalRevenue = filteredTransactions.filter(t => t.amount > 0).reduce((sum, t) => sum + t.amount, 0);
+    const totalExpenses = Math.abs(filteredTransactions.filter(t => t.amount < 0).reduce((sum, t) => sum + t.amount, 0));
+    const currentBalance = totalRevenue - totalExpenses;
+
+    return {
+      ...data,
+      allTransactions: filteredTransactions,
+      totalRevenue,
+      totalExpenses,
+      netProfit: currentBalance,
+      currentBalance,
+    };
+  }, [data]);
+
+  const getAvailableMonths = useCallback((): string[] => {
+    if (!data?.allTransactions) return [];
+
+    const months = new Set<string>();
+    data.allTransactions.forEach(t => {
+      const month = t.date.substring(0, 7); // YYYY-MM
+      months.add(month);
+    });
+
+    return Array.from(months).sort().reverse(); // Most recent first
+  }, [data]);
+
   return {
     data,
     loading,
@@ -741,5 +851,9 @@ export const useFinancialData = () => {
     getCategoryData,
     getProjectData,
     getMonthlyData,
+    updateTransactionCategory,
+    categoryKeywords,
+    getFilteredData,
+    getAvailableMonths,
   };
 };

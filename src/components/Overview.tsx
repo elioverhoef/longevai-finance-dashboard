@@ -50,20 +50,32 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
     <div className="space-y-8">
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-        {kpis.map((kpi) => {
+        {kpis.map((kpi, index) => {
           const Icon = kpi.icon;
           return (
-            <Card key={kpi.title} className="hover:shadow-glow transition-all duration-300 hover:scale-105">
+            <Card 
+              key={kpi.title} 
+              className="glass card-hover border-gradient shadow-modern-lg backdrop-blur-md stagger-child"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div className="space-y-2">
                     <p className="text-sm font-medium text-muted-foreground">
                       {kpi.title}
                     </p>
-                    <p className="text-2xl font-bold">{kpi.value}</p>
+                    <p className="text-2xl font-bold text-gradient">{kpi.value}</p>
                   </div>
-                  <div className={`w-12 h-12 rounded-xl bg-${kpi.color}/20 flex items-center justify-center`}>
-                    <Icon className={`w-6 h-6 text-${kpi.color}`} />
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center pulse-glow ${
+                    kpi.color === 'success' ? 'bg-success/20' : 
+                    kpi.color === 'warning' ? 'bg-warning/20' : 
+                    kpi.color === 'accent' ? 'bg-accent/20' : 'bg-primary/20'
+                  }`}>
+                    <Icon className={`w-6 h-6 ${
+                      kpi.color === 'success' ? 'text-success' : 
+                      kpi.color === 'warning' ? 'text-warning' : 
+                      kpi.color === 'accent' ? 'text-accent' : 'text-primary'
+                    }`} />
                   </div>
                 </div>
               </CardContent>
@@ -74,14 +86,16 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
 
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <Card className="p-6">
+        <Card className="p-6 glass card-hover border-gradient shadow-modern-lg backdrop-blur-md">
           <CardHeader className="px-0 pt-0">
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-primary" />
-              Monthly Financial Trend
+            <CardTitle className="flex items-center gap-3 text-xl">
+              <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center">
+                <TrendingUp className="w-5 h-5 text-white" />
+              </div>
+              <span className="text-gradient">Monthly Financial Trend</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="px-0 pb-0">
+          <CardContent className="px-0 pb-0 chart-enter">
             <SimpleLineChart<MonthlyData>
               data={monthlyData}
               dataKeys={['revenue', 'expenses', 'netProfit']}
@@ -91,19 +105,22 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
           </CardContent>
         </Card>
 
-        <Card className="p-6">
+        <Card className="p-6 glass card-hover border-gradient shadow-modern-lg backdrop-blur-md">
           <CardHeader className="px-0 pt-0">
-            <CardTitle className="flex items-center gap-2">
-              <Target className="w-5 h-5 text-primary" />
-              Top Expense Categories
+            <CardTitle className="flex items-center gap-3 text-xl">
+              <div className="w-10 h-10 rounded-xl bg-gradient-warning flex items-center justify-center">
+                <Target className="w-5 h-5 text-white" />
+              </div>
+              <span className="text-gradient">Top Expense Categories</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="px-0 pb-0">
+          <CardContent className="px-0 pb-0 chart-enter">
             <SimpleBarChart<CategoryData>
               data={expenseCategories}
               dataKey="expenses"
               xAxisKey="name"
               color="#f59e0b"
+              showAllLabels={true}
             />
           </CardContent>
         </Card>

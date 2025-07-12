@@ -1,4 +1,5 @@
 export interface Transaction {
+  id: number;
   date: string;
   reference: string;
   description: string;

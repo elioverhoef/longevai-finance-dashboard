@@ -10,17 +10,18 @@ export interface Transaction {
 }
 
 export interface FinancialData {
-  accountsReceivable: Transaction[];
-  bankTransactions: Transaction[];
+  allTransactions: Transaction[];
   totalRevenue: number;
   totalExpenses: number;
   netProfit: number;
+  currentBalance: number;
+  outstandingReceivables: number;
 }
 
 export interface CategoryData {
   name: string;
-  amount: number;
-  percentage: number;
+  revenue: number;
+  expenses: number;
   transactions: Transaction[];
   isExpense: boolean;
 }
@@ -30,6 +31,8 @@ export interface ProjectData {
   revenue: number;
   expenses: number;
   netProfit: number;
+  roi: number;
+  status: string;
   weeks: number;
   transactions: Transaction[];
 }

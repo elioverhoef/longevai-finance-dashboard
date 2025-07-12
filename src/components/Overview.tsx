@@ -1,69 +1,59 @@
 import React from 'react';
-import { TrendingUp, TrendingDown, DollarSign, Target, Zap, Users } from 'lucide-react';
+import { TrendingUp, TrendingDown, DollarSign, Target, Scale, Banknote } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Badge } from './ui/badge';
-import { FinancialData } from '../types/financial';
+import { FinancialData, MonthlyData, CategoryData } from '../types/financial';
 import { SimpleLineChart, SimpleBarChart } from './SimpleChart';
 
 interface OverviewProps {
   data: FinancialData;
-  monthlyData: any[];
-  categoryData: any[];
+  monthlyData: MonthlyData[];
+  categoryData: CategoryData[];
 }
 
 export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryData }) => {
   const kpis = [
     {
       title: "Total Revenue",
-      value: `€${data.totalRevenue.toLocaleString()}`,
-      change: "+12.5%",
-      trending: "up",
-      icon: DollarSign,
-      gradient: "from-success to-success/80"
+      value: `€${data.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      icon: TrendingUp,
+      color: "success"
     },
     {
       title: "Total Expenses", 
-      value: `€${data.totalExpenses.toLocaleString()}`,
-      change: "+8.2%",
-      trending: "up",
+      value: `€${data.totalExpenses.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       icon: TrendingDown,
-      gradient: "from-warning to-warning/80"
+      color: "warning"
     },
     {
       title: "Net Profit",
-      value: `€${data.netProfit.toLocaleString()}`,
-      change: "+18.7%",
-      trending: "up",
+      value: `€${data.netProfit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       icon: Target,
-      gradient: "from-primary to-secondary"
+      color: "primary"
     },
     {
-      title: "Burn Rate",
-      value: `€${Math.round(data.totalExpenses / 12).toLocaleString()}/mo`,
-      change: "Optimized for Phase 1",
-      trending: "stable",
-      icon: Zap,
-      gradient: "from-accent to-accent/80"
+      title: "Current Balance",
+      value: `€${data.currentBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      icon: Banknote,
+      color: "primary"
+    },
+    {
+        title: "Outstanding",
+        value: `€${data.outstandingReceivables.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        icon: Scale,
+        color: "accent"
     }
   ];
-
-  const trendIcon = (trend: string) => {
-    if (trend === "up") return <TrendingUp className="w-4 h-4 text-success" />;
-    if (trend === "down") return <TrendingDown className="w-4 h-4 text-destructive" />;
-    return <Users className="w-4 h-4 text-muted-foreground" />;
-  };
+  
+  const expenseCategories = categoryData.filter(c => c.expenses > 0).sort((a,b) => b.expenses - a.expenses).slice(0, 6);
 
   return (
     <div className="space-y-8">
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {kpis.map((kpi, index) => {
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        {kpis.map((kpi) => {
           const Icon = kpi.icon;
           return (
-            <Card 
-              key={index} 
-              className="overflow-hidden hover:shadow-glow transition-all duration-300 hover:scale-105"
-            >
+            <Card key={kpi.title} className="hover:shadow-glow transition-all duration-300 hover:scale-105">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div className="space-y-2">
@@ -71,15 +61,9 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
                       {kpi.title}
                     </p>
                     <p className="text-2xl font-bold">{kpi.value}</p>
-                    <div className="flex items-center gap-2">
-                      {trendIcon(kpi.trending)}
-                      <span className="text-sm text-muted-foreground">
-                        {kpi.change}
-                      </span>
-                    </div>
                   </div>
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${kpi.gradient} flex items-center justify-center`}>
-                    <Icon className="w-6 h-6 text-white" />
+                  <div className={`w-12 h-12 rounded-xl bg-${kpi.color}/20 flex items-center justify-center`}>
+                    <Icon className={`w-6 h-6 text-${kpi.color}`} />
                   </div>
                 </div>
               </CardContent>
@@ -90,7 +74,6 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
 
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Monthly Trend */}
         <Card className="p-6">
           <CardHeader className="px-0 pt-0">
             <CardTitle className="flex items-center gap-2">
@@ -99,7 +82,7 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
             </CardTitle>
           </CardHeader>
           <CardContent className="px-0 pb-0">
-            <SimpleLineChart
+            <SimpleLineChart<MonthlyData>
               data={monthlyData}
               dataKeys={['revenue', 'expenses', 'netProfit']}
               xAxisKey="month"
@@ -108,7 +91,6 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
           </CardContent>
         </Card>
 
-        {/* Top Categories */}
         <Card className="p-6">
           <CardHeader className="px-0 pt-0">
             <CardTitle className="flex items-center gap-2">
@@ -117,53 +99,15 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
             </CardTitle>
           </CardHeader>
           <CardContent className="px-0 pb-0">
-            <SimpleBarChart
-              data={categoryData.filter(c => c.isExpense).slice(0, 6)}
-              dataKey="amount"
+            <SimpleBarChart<CategoryData>
+              data={expenseCategories}
+              dataKey="expenses"
               xAxisKey="name"
               color="#f59e0b"
             />
           </CardContent>
         </Card>
       </div>
-
-      {/* Insights */}
-      <Card className="p-6 bg-gradient-to-r from-primary/5 to-accent/5 border-primary/20">
-        <CardHeader className="px-0 pt-0">
-          <CardTitle className="flex items-center gap-2">
-            <Zap className="w-5 h-5 text-primary" />
-            AI Financial Insights
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="px-0 pb-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <Badge variant="secondary" className="bg-success/20 text-success border-success/30">
-                Revenue Growth
-              </Badge>
-              <p className="text-sm text-muted-foreground">
-                Strong revenue from Medio Zorg project. Consider scaling similar AI healthcare implementations.
-              </p>
-            </div>
-            <div className="space-y-2">
-              <Badge variant="secondary" className="bg-warning/20 text-warning border-warning/30">
-                Cost Optimization
-              </Badge>
-              <p className="text-sm text-muted-foreground">
-                Subscription costs optimal for Phase 1. Monitor as team grows toward €1M ARR target.
-              </p>
-            </div>
-            <div className="space-y-2">
-              <Badge variant="secondary" className="bg-primary/20 text-primary border-primary/30">
-                Longevity Hub
-              </Badge>
-              <p className="text-sm text-muted-foreground">
-                Current burn rate aligns with Longevity Hub expansion plans. ROI positive for Netherlands/Portugal setup.
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 };

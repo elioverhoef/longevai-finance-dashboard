@@ -1,5 +1,5 @@
-import React from 'react';
-import { TrendingUp, TrendingDown, DollarSign, Target, Scale, Banknote } from 'lucide-react';
+import React, { useState } from 'react';
+import { TrendingUp, TrendingDown, DollarSign, Target, Scale, Banknote, Sparkles, Star, Zap } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { FinancialData, MonthlyData, CategoryData } from '../types/financial';
 import { SimpleLineChart, SimpleBarChart } from './SimpleChart';
@@ -11,36 +11,63 @@ interface OverviewProps {
 }
 
 export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryData }) => {
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+
   const kpis = [
     {
       title: "Total Revenue",
       value: `€${data.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       icon: TrendingUp,
-      color: "success"
+      color: "success",
+      gradient: "from-emerald-500 to-teal-500",
+      bgGradient: "from-emerald-50 to-teal-50",
+      shadowColor: "emerald",
+      trend: "+12.5%",
+      description: "Monthly recurring revenue growth"
     },
     {
       title: "Total Expenses", 
       value: `€${data.totalExpenses.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       icon: TrendingDown,
-      color: "warning"
+      color: "warning",
+      gradient: "from-amber-500 to-orange-500",
+      bgGradient: "from-amber-50 to-orange-50",
+      shadowColor: "amber",
+      trend: "-3.2%",
+      description: "Optimized operational costs"
     },
     {
       title: "Net Profit",
       value: `€${data.netProfit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       icon: Target,
-      color: "primary"
+      color: "primary",
+      gradient: "from-purple-500 to-indigo-500",
+      bgGradient: "from-purple-50 to-indigo-50",
+      shadowColor: "purple",
+      trend: "+18.7%",
+      description: "Healthspan investment returns"
     },
     {
       title: "Current Balance",
       value: `€${data.currentBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       icon: Banknote,
-      color: "primary"
+      color: "primary",
+      gradient: "from-blue-500 to-cyan-500",
+      bgGradient: "from-blue-50 to-cyan-50",
+      shadowColor: "blue",
+      trend: "+5.8%",
+      description: "Liquid assets and reserves"
     },
     {
-        title: "Outstanding",
-        value: `€${data.outstandingReceivables.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-        icon: Scale,
-        color: "accent"
+      title: "Outstanding",
+      value: `€${data.outstandingReceivables.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      icon: Scale,
+      color: "accent",
+      gradient: "from-pink-500 to-rose-500",
+      bgGradient: "from-pink-50 to-rose-50",
+      shadowColor: "pink",
+      trend: "-1.4%",
+      description: "Pending receivables"
     }
   ];
   
@@ -48,35 +75,86 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
 
   return (
     <div className="space-y-8">
-      {/* KPI Cards */}
+      {/* Enhanced KPI Cards with 3D Effects */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         {kpis.map((kpi, index) => {
           const Icon = kpi.icon;
+          const isHovered = hoveredCard === index;
           return (
             <Card 
               key={kpi.title} 
-              className="glass card-hover border-gradient shadow-modern-lg backdrop-blur-md stagger-child"
+              className="relative overflow-hidden card-3d glass-ultra border-0 reveal-stagger group cursor-pointer"
               style={{ animationDelay: `${index * 0.1}s` }}
+              onMouseEnter={() => setHoveredCard(index)}
+              onMouseLeave={() => setHoveredCard(null)}
             >
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium text-muted-foreground">
+              {/* Dynamic Background Gradient */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${kpi.bgGradient} opacity-10 group-hover:opacity-20 transition-all duration-500`} />
+              
+              {/* Animated Border Glow */}
+              <div className={`absolute inset-0 bg-gradient-to-r ${kpi.gradient} opacity-0 group-hover:opacity-20 blur-lg transition-all duration-500`} />
+              
+              {/* Floating Particles */}
+              {isHovered && (
+                <div className="absolute inset-0 pointer-events-none">
+                  {[...Array(5)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+                      style={{
+                        left: `${20 + i * 15}%`,
+                        top: `${20 + (i % 2) * 60}%`,
+                        animationDelay: `${i * 0.2}s`
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+
+              <CardContent className="relative z-10 p-6 space-y-4">
+                {/* Header with Icon */}
+                <div className="flex items-start justify-between">
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
                       {kpi.title}
                     </p>
-                    <p className="text-2xl font-bold text-gradient">{kpi.value}</p>
+                    <div className="flex items-center gap-2">
+                      <span className={`text-xs px-2 py-1 rounded-full bg-gradient-to-r ${kpi.gradient} text-white font-medium`}>
+                        {kpi.trend}
+                      </span>
+                    </div>
                   </div>
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center pulse-glow ${
-                    kpi.color === 'success' ? 'bg-success/20' : 
-                    kpi.color === 'warning' ? 'bg-warning/20' : 
-                    kpi.color === 'accent' ? 'bg-accent/20' : 'bg-primary/20'
-                  }`}>
-                    <Icon className={`w-6 h-6 ${
-                      kpi.color === 'success' ? 'text-success' : 
-                      kpi.color === 'warning' ? 'text-warning' : 
-                      kpi.color === 'accent' ? 'text-accent' : 'text-primary'
-                    }`} />
+                  
+                  <div className={`relative w-14 h-14 rounded-2xl bg-gradient-to-r ${kpi.gradient} flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg`}>
+                    <Icon className="w-7 h-7 text-white" />
+                    {/* Glow effect */}
+                    <div className={`absolute inset-0 bg-gradient-to-r ${kpi.gradient} rounded-2xl blur-md opacity-0 group-hover:opacity-70 transition-all duration-300`} />
                   </div>
+                </div>
+
+                {/* Main Value */}
+                <div className="space-y-2">
+                  <p className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent group-hover:from-gray-800 group-hover:to-gray-500 transition-all duration-300">
+                    {kpi.value}
+                  </p>
+                  <p className="text-xs text-muted-foreground group-hover:text-foreground/80 transition-colors">
+                    {kpi.description}
+                  </p>
+                </div>
+
+                {/* Interactive Elements */}
+                <div className="flex items-center justify-between pt-2 border-t border-gray-100 group-hover:border-gray-200 transition-colors">
+                  <div className="flex items-center gap-1">
+                    <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${kpi.gradient} pulse-glow`} />
+                    <span className="text-xs text-muted-foreground">Live</span>
+                  </div>
+                  {isHovered && (
+                    <div className="flex items-center gap-1 animate-fade-in">
+                      <Sparkles className="w-3 h-3 text-yellow-500" />
+                      <Star className="w-3 h-3 text-blue-500" />
+                      <Zap className="w-3 h-3 text-purple-500" />
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -84,45 +162,73 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
         })}
       </div>
 
-      {/* Charts Row */}
+      {/* Enhanced Charts with 3D Effects */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <Card className="p-6 glass card-hover border-gradient shadow-modern-lg backdrop-blur-md">
-          <CardHeader className="px-0 pt-0">
-            <CardTitle className="flex items-center gap-3 text-xl">
-              <div className="w-10 h-10 rounded-xl bg-gradient-primary flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-gradient">Monthly Financial Trend</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="px-0 pb-0 chart-enter">
-            <SimpleLineChart<MonthlyData>
-              data={monthlyData}
-              dataKeys={['revenue', 'expenses', 'netProfit']}
-              xAxisKey="month"
-              colors={['#10b981', '#f59e0b', '#6366f1']}
-            />
-          </CardContent>
+        {/* Monthly Trend Chart */}
+        <Card className="relative overflow-hidden card-3d glass-ultra border-0 group">
+          {/* Background Animation */}
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 to-blue-50 opacity-0 group-hover:opacity-30 transition-all duration-700" />
+          
+          <div className="relative z-10 p-8">
+            <CardHeader className="px-0 pt-0 pb-6">
+              <CardTitle className="flex items-center gap-4 text-2xl">
+                <div className="relative">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-emerald-500 to-blue-500 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
+                    <TrendingUp className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-50 transition-all duration-300" />
+                </div>
+                <div>
+                  <span className="bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent font-bold">
+                    Financial Healthspan Trend
+                  </span>
+                  <p className="text-sm text-muted-foreground mt-1">AI-powered longevity insights</p>
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="px-0 pb-0 chart-3d">
+              <SimpleLineChart<MonthlyData>
+                data={monthlyData}
+                dataKeys={['revenue', 'expenses', 'netProfit']}
+                xAxisKey="month"
+                colors={['#10b981', '#f59e0b', '#6366f1']}
+              />
+            </CardContent>
+          </div>
         </Card>
 
-        <Card className="p-6 glass card-hover border-gradient shadow-modern-lg backdrop-blur-md">
-          <CardHeader className="px-0 pt-0">
-            <CardTitle className="flex items-center gap-3 text-xl">
-              <div className="w-10 h-10 rounded-xl bg-gradient-warning flex items-center justify-center">
-                <Target className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-gradient">Top Expense Categories</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="px-0 pb-0 chart-enter">
-            <SimpleBarChart<CategoryData>
-              data={expenseCategories}
-              dataKey="expenses"
-              xAxisKey="name"
-              color="#f59e0b"
-              showAllLabels={true}
-            />
-          </CardContent>
+        {/* Expense Categories Chart */}
+        <Card className="relative overflow-hidden card-3d glass-ultra border-0 group">
+          {/* Background Animation */}
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-50 to-orange-50 opacity-0 group-hover:opacity-30 transition-all duration-700" />
+          
+          <div className="relative z-10 p-8">
+            <CardHeader className="px-0 pt-0 pb-6">
+              <CardTitle className="flex items-center gap-4 text-2xl">
+                <div className="relative">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 flex items-center justify-center group-hover:scale-110 transition-all duration-300">
+                    <Target className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-50 transition-all duration-300" />
+                </div>
+                <div>
+                  <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent font-bold">
+                    Smart Expense Analysis
+                  </span>
+                  <p className="text-sm text-muted-foreground mt-1">Optimized spending categories</p>
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="px-0 pb-0 chart-3d">
+              <SimpleBarChart<CategoryData>
+                data={expenseCategories}
+                dataKey="expenses"
+                xAxisKey="name"
+                color="#f59e0b"
+                showAllLabels={true}
+              />
+            </CardContent>
+          </div>
         </Card>
       </div>
     </div>

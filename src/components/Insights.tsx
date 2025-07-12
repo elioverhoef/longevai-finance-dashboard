@@ -17,9 +17,9 @@ export const Insights: React.FC<InsightsProps> = ({ data, categoryData, projectD
   const monthlyBurnRate = lastThreeMonthsExpenses > 0 ? Math.round(lastThreeMonthsExpenses / Math.min(3, monthlyData.length)) : 0;
   const runway = monthlyBurnRate > 0 ? Math.round(data.currentBalance / monthlyBurnRate) : Infinity;
 
-  const topExpenseCategory = categoryData.filter(c => c.expenses > 0).sort((a, b) => b.expenses - a.expenses)[0];
+  const topExpenseCategory = [...categoryData].filter(c => c.expenses > 0).sort((a, b) => b.expenses - a.expenses)[0];
   
-  const mostProfitableProject = projectData.sort((a, b) => b.netProfit - a.netProfit)[0];
+  const mostProfitableProject = [...projectData].sort((a, b) => b.netProfit - a.netProfit)[0];
 
   let growthRate = 0;
   if (monthlyData.length > 1) {

@@ -500,6 +500,10 @@ const categoryKeywords = {
   'Miscellaneous': ['helios b.v.', 'geniusinvest', 'eq verhoef', '50plus mobiel', 'genius invest'],
 };
 
+// Utility to normalize descriptions for mapping/lookup
+const normalizeDescription = (desc: string) =>
+  desc.replace(/\s+/g, ' ').replace(/\n/g, ' ').trim().toLowerCase();
+
 export const useFinancialData = () => {
   const [data, setData] = useState<FinancialData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -519,23 +523,35 @@ export const useFinancialData = () => {
   }, [isReady, data, loadFinancialData]);
 
   const categorizeTransaction = (description: string, ledgerCategory?: string): string => {
-    if (ledgerCategory && !ledgerCategory.startsWith('Revenue')) {
-      return ledgerCategory;
+    const normalizedDesc = normalizeDescription(description);
+    let normalizedLedgerCategory = ledgerCategory;
+    if (ledgerCategory) {
+      normalizedLedgerCategory = ledgerCategory.trim();
     }
 
-    const desc = description.toLowerCase();
+    // Try keyword matching first
     for (const [category, keywords] of Object.entries(categoryKeywords)) {
-      if (keywords.some(keyword => desc.includes(keyword))) {
+      if (keywords.some(keyword => normalizedDesc.includes(keyword))) {
         return category;
       }
+    }
+
+    // If ledgerCategory exists, use it as fallback (even if it starts with 'Revenue')
+    if (normalizedLedgerCategory) {
+      return normalizedLedgerCategory;
+    }
+
+    // Log for debugging
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('Uncategorized transaction:', description, ledgerCategory);
     }
     return 'Uncategorized';
   };
 
   const extractProject = (description: string): string | undefined => {
-    const desc = description.toLowerCase();
+    const normalizedDesc = normalizeDescription(description);
     for (const project of projectKeywords) {
-      if (desc.includes(project.toLowerCase())) {
+      if (normalizedDesc.includes(project.toLowerCase())) {
         // Normalize project names
         if (project === 'Patrick Burgermeister') {
           return 'RegenEra';
@@ -543,12 +559,10 @@ export const useFinancialData = () => {
         return project;
       }
     }
-
     // Check for "Burgermeister Patrick" format too
-    if (desc.includes('burgermeister patrick')) {
+    if (normalizedDesc.includes('burgermeister patrick')) {
       return 'RegenEra';
     }
-
     return undefined;
   };
 
@@ -619,7 +633,7 @@ export const useFinancialData = () => {
           rawBankTransactions = transactions;
         } else if (sectionName && !['Transactions to be classified', 'Settlements', 'Cash control', 'Unbilled revenue', 'Payable VAT', 'Sales tax paid or received'].includes(sectionName)) {
           transactions.forEach(t => {
-            const cleanDescription = (t.Description || "").split('\n')[0].trim();
+            const cleanDescription = normalizeDescription((t.Description || '').split('\n')[0]);
             if (cleanDescription && !ledgerCategoryMap.has(cleanDescription)) {
               ledgerCategoryMap.set(cleanDescription, sectionName);
             }
@@ -630,7 +644,8 @@ export const useFinancialData = () => {
       const allTransactions: Transaction[] = rawBankTransactions.map((t: ParsedTransaction, index: number) => {
         const amount = parseFloat(t.Amount) || 0;
         const description = t.Description || '';
-        const ledgerCategory = ledgerCategoryMap.get(description.split('\n')[0].trim());
+        const normalizedDesc = normalizeDescription(description.split('\n')[0]);
+        const ledgerCategory = ledgerCategoryMap.get(normalizedDesc);
 
         return {
           id: index,
@@ -812,7 +827,7 @@ export const useFinancialData = () => {
   const getFilteredData = useCallback((selectedMonth: string | null) => {
     if (!data || !selectedMonth) return data;
 
-    const filteredTransactions = data.allTransactions.filter(t => 
+    const filteredTransactions = data.allTransactions.filter(t =>
       t.date.startsWith(selectedMonth)
     );
 

@@ -395,7 +395,7 @@ URL.revokeObjectURL(url);
   }
 
   return (
-    <div className={`min-h-screen relative overflow-hidden bg-gradient-background transition-colors duration-300 ${darkMode ? 'dark' : ''}`}>
+    <div className="bg-white dark:bg-zinc-900 min-h-screen">
       {/* Advanced Background System */}
       <div className="absolute inset-0 dynamic-grid" />
       

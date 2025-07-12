@@ -35,7 +35,7 @@ export const DateFilter: React.FC<DateFilterProps> = ({
       </div>
       
       <Select value={selectedMonth || "all"} onValueChange={(value) => onMonthChange(value === "all" ? null : value)}>
-        <SelectTrigger className="w-48">
+        <SelectTrigger className="w-48 dark:bg-zinc-800 dark:text-zinc-100">
           <SelectValue placeholder="All months" />
         </SelectTrigger>
         <SelectContent>
@@ -50,7 +50,7 @@ export const DateFilter: React.FC<DateFilterProps> = ({
 
       {selectedMonth && (
         <div className="flex items-center gap-2">
-          <Badge variant="secondary" className="flex items-center gap-1">
+          <Badge variant="secondary" className="flex items-center gap-1 dark:bg-zinc-800 dark:text-zinc-100">
             {formatMonthDisplay(selectedMonth)}
             <Button
               variant="ghost"

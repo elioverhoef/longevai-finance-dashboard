@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TrendingUp, TrendingDown, DollarSign, Target, Scale, Banknote, Sparkles, Star, Zap } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { FinancialData, MonthlyData, CategoryData } from '../types/financial';
-import { SimpleLineChart, SimpleBarChart } from './SimpleChart';
+import { SimpleLineChart, SimpleBarChart, SimpleStackedBarChart, SimpleGroupedBarLineChart } from './SimpleChart';
 
 interface OverviewProps {
   data: FinancialData;
@@ -83,7 +83,7 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
           return (
             <Card 
               key={kpi.title} 
-              className="relative overflow-hidden card-3d glass-ultra border-0 reveal-stagger group cursor-pointer"
+              className="relative overflow-hidden card-3d glass-ultra border border-gray-200 dark:border-gray-700 reveal-stagger group cursor-pointer"
               style={{ animationDelay: `${index * 0.1}s` }}
               onMouseEnter={() => setHoveredCard(index)}
               onMouseLeave={() => setHoveredCard(null)}
@@ -119,7 +119,7 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
                       {kpi.title}
                     </p>
                     <div className="flex items-center gap-2">
-                      <span className={`text-xs px-2 py-1 rounded-full bg-gradient-to-r ${kpi.gradient} text-white font-medium`}>
+                      <span className={`text-xs px-2 py-1 rounded-full bg-gradient-to-r ${kpi.gradient} text-white dark:text-gray-900 font-medium`}>
                         {kpi.trend}
                       </span>
                     </div>
@@ -134,7 +134,7 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
 
                 {/* Main Value */}
                 <div className="space-y-2">
-                  <p className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent group-hover:from-gray-800 group-hover:to-gray-500 transition-all duration-300">
+                  <p className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent group-hover:from-gray-800 group-hover:to-gray-500 dark:group-hover:from-gray-200 dark:group-hover:to-gray-500 transition-all duration-300">
                     {kpi.value}
                   </p>
                   <p className="text-xs text-muted-foreground group-hover:text-foreground/80 transition-colors">
@@ -165,7 +165,7 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
       {/* Enhanced Charts with 3D Effects */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Monthly Trend Chart */}
-        <Card className="relative overflow-hidden card-3d glass-ultra border-0 group">
+        <Card className="relative overflow-hidden card-3d glass-ultra border border-gray-200 dark:border-gray-700 group">
           {/* Background Animation */}
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 to-blue-50 opacity-0 group-hover:opacity-30 transition-all duration-700" />
           
@@ -180,25 +180,29 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
                 </div>
                 <div>
                   <span className="bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent font-bold">
-                    Financial Healthspan Trend
+                    Monthly Financial Overview
                   </span>
-                  <p className="text-sm text-muted-foreground mt-1">AI-powered longevity insights</p>
+                  <p className="text-sm text-muted-foreground mt-1">Revenue, Expenses (bars) & Net Profit (line) by Month</p>
                 </div>
               </CardTitle>
             </CardHeader>
             <CardContent className="px-0 pb-0 chart-3d">
-              <SimpleLineChart<MonthlyData>
+              <SimpleGroupedBarLineChart<MonthlyData>
                 data={monthlyData}
-                dataKeys={['revenue', 'expenses', 'netProfit']}
+                barKeys={['revenue', 'expenses']}
+                lineKey="netProfit"
                 xAxisKey="month"
-                colors={['#10b981', '#f59e0b', '#6366f1']}
+                colors={["#10b981", "#f59e0b"]}
+                lineColor="#6366f1"
+                showAllLabels={true}
+                title="Revenue & Expenses (bars), Net Profit (line)"
               />
             </CardContent>
           </div>
         </Card>
 
         {/* Expense Categories Chart */}
-        <Card className="relative overflow-hidden card-3d glass-ultra border-0 group">
+        <Card className="relative overflow-hidden card-3d glass-ultra border border-gray-200 dark:border-gray-700 group">
           {/* Background Animation */}
           <div className="absolute inset-0 bg-gradient-to-br from-amber-50 to-orange-50 opacity-0 group-hover:opacity-30 transition-all duration-700" />
           

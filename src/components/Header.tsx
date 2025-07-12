@@ -18,15 +18,16 @@ export const Header: React.FC<HeaderProps> = ({
   darkMode,
   onToggleDarkMode
 }) => {
+  // Minimal, elegant particles
   const [particles, setParticles] = useState<Array<{id: number, x: number, y: number, size: number, delay: number}>>([]);
 
   useEffect(() => {
-    const newParticles = Array.from({ length: 8 }, (_, i) => ({
+    const newParticles = Array.from({ length: 4 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
-      size: Math.random() * 3 + 1,
-      delay: Math.random() * 5
+      size: Math.random() * 2 + 1.5,
+      delay: Math.random() * 3
     }));
     setParticles(newParticles);
   }, []);
@@ -39,61 +40,55 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <div className="relative mb-8 overflow-hidden">
-      {/* Floating Navigation Container */}
-      <Card className="relative liquid-gradient text-white glass-ultra border-0 shadow-none p-0">
-        {/* Particle System */}
-        <div className="particles absolute inset-0">
+    <div className="relative mb-8 overflow-visible">
+      {/* Glassmorphism Card */}
+      <Card className="relative bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 shadow-lg p-0">
+        {/* Subtle Particle System */}
+        <div className="pointer-events-none absolute inset-0 z-0">
           {particles.map((particle) => (
             <div
               key={particle.id}
-              className="particle absolute opacity-30"
+              className="absolute rounded-full opacity-20"
               style={{
                 left: `${particle.x}%`,
                 top: `${particle.y}%`,
-                width: `${particle.size}px`,
-                height: `${particle.size}px`,
-                animationDelay: `${particle.delay}s`,
-                background: 'radial-gradient(circle, rgba(255,255,255,0.8), rgba(99,102,241,0.6))'
+                width: `${particle.size * 8}px`,
+                height: `${particle.size * 8}px`,
+                background: 'radial-gradient(circle, rgba(99,102,241,0.25), transparent 70%)',
+                filter: 'blur(2px)',
+                animation: `floatY 6s ease-in-out infinite`,
+                animationDelay: `${particle.delay}s`
               }}
             />
           ))}
         </div>
 
-        {/* Interactive Background Effect */}
-        <div className="absolute inset-0 opacity-20 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-
-        {/* Compact Header Content */}
-        <div className="relative z-10 p-4">
+        {/* Header Content */}
+        <div className="relative z-10 p-5">
           <div className="flex items-center justify-between gap-4">
-            {/* Compact Brand Section */}
+            {/* Brand Section */}
             <div className="flex items-center gap-3">
-              {/* Simple Logo */}
-              <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
-                <Activity className="w-4 h-4 text-white" />
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center shadow-md">
+                <Activity className="w-5 h-5 text-white" />
               </div>
-
-              {/* Compact Title */}
-              <div>
-                <h1 className="text-xl font-bold text-gray-800">
+              <div className="flex flex-col justify-center">
+                <h1 className="text-2xl font-extrabold text-gray-900 dark:text-white leading-tight tracking-tight">
                   LongevAI
                 </h1>
-                <p className="text-gray-600 text-xs">
+                <span className="text-gray-500 dark:text-gray-300 text-xs font-medium mt-0.5">
                   Financial Healthspan Dashboard
-                </p>
+                </span>
               </div>
             </div>
-            
-            {/* Compact Action Buttons */}
+            {/* Action Buttons */}
             <div className="flex items-center gap-2">
               <Button 
                 onClick={onLoadSample}
-                className="bg-purple-100 hover:bg-purple-200 border border-purple-200 text-purple-700 text-xs px-3 py-1 h-8"
+                className="bg-purple-100 hover:bg-purple-200 border border-purple-200 text-purple-700 text-xs px-3 py-1 h-8 font-semibold shadow-sm"
               >
                 <Sparkles className="w-3 h-3 mr-1" />
                 Sample
               </Button>
-              
               <label className="cursor-pointer">
                 <input
                   type="file"
@@ -102,7 +97,7 @@ export const Header: React.FC<HeaderProps> = ({
                   className="hidden"
                 />
                 <Button 
-                  className="bg-blue-100 hover:bg-blue-200 border border-blue-200 text-blue-700 text-xs px-3 py-1 h-8"
+                  className="bg-blue-100 hover:bg-blue-200 border border-blue-200 text-blue-700 text-xs px-3 py-1 h-8 font-semibold shadow-sm"
                   asChild
                 >
                   <span>
@@ -111,28 +106,23 @@ export const Header: React.FC<HeaderProps> = ({
                   </span>
                 </Button>
               </label>
-              
               <Button 
                 onClick={onExport}
-                className="bg-emerald-100 hover:bg-emerald-200 border border-emerald-200 text-emerald-700 text-xs px-3 py-1 h-8"
+                className="bg-emerald-100 hover:bg-emerald-200 border border-emerald-200 text-emerald-700 text-xs px-3 py-1 h-8 font-semibold shadow-sm"
               >
                 <Download className="w-3 h-3 mr-1" />
                 Export
               </Button>
-              
               <Button 
                 onClick={onToggleDarkMode}
-                className="bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-700 w-8 h-8 p-0"
+                className="bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-700 dark:text-gray-200 w-8 h-8 p-0 shadow-sm dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:border-zinc-700"
                 title="Toggle Theme"
               >
-                {darkMode ? <Sun className="w-3 h-3" /> : <Moon className="w-3 h-3" />}
+                {darkMode ? <Sun className="w-4 h-4 text-yellow-500 dark:text-yellow-400" /> : <Moon className="w-4 h-4" />}
               </Button>
             </div>
           </div>
         </div>
-
-        {/* Bottom Gradient Fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-black/20 to-transparent" />
       </Card>
     </div>
   );

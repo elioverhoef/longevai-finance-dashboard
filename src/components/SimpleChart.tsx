@@ -285,3 +285,196 @@ export const SimpleLineChart = <T extends object = { [key: string]: string | num
     </div>
   );
 };
+
+export const SimpleStackedBarChart = <T extends object = { [key: string]: string | number }>({
+  data,
+  dataKeys,
+  xAxisKey,
+  title,
+  colors = ["#10b981", "#f59e0b", "#6366f1"],
+  showAllLabels = false
+}: {
+  data: T[];
+  dataKeys: (keyof T)[];
+  xAxisKey: keyof T;
+  title?: string;
+  colors?: string[];
+  showAllLabels?: boolean;
+}) => {
+  const [animationClass, setAnimationClass] = useState('');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAnimationClass('chart-3d');
+    }, 150);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div className={`w-full h-80 relative ${animationClass}`}>
+      {title && (
+        <h3 className="text-lg font-semibold mb-4 text-center bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+          {title}
+        </h3>
+      )}
+      <div className="relative rounded-2xl h-64">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+            <defs>
+              {dataKeys.map((key, index) => (
+                <linearGradient key={key as string} id={`stackedBarGradient-${key as string}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={colors[index % colors.length]} stopOpacity={0.8} />
+                  <stop offset="100%" stopColor={colors[index % colors.length]} stopOpacity={0.3} />
+                </linearGradient>
+              ))}
+            </defs>
+            <CartesianGrid 
+              strokeDasharray="3 3" 
+              stroke="rgba(99, 102, 241, 0.1)" 
+            />
+            <XAxis 
+              dataKey={xAxisKey as string} 
+              interval={showAllLabels ? 0 : 'preserveStartEnd'}
+              angle={showAllLabels ? -45 : 0}
+              textAnchor={showAllLabels ? 'end' : 'middle'}
+              height={showAllLabels ? 80 : 60}
+              fontSize={12}
+              stroke="rgba(99, 102, 241, 0.7)"
+              tick={{ fill: 'rgba(99, 102, 241, 0.8)' }}
+            />
+            <YAxis 
+              stroke="rgba(99, 102, 241, 0.7)"
+              tick={{ fill: 'rgba(99, 102, 241, 0.8)' }}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Legend 
+              wrapperStyle={{ 
+                paddingTop: '20px',
+                fontSize: '14px',
+                fontWeight: '500'
+              }}
+            />
+            {dataKeys.map((key, index) => (
+              <Bar
+                key={key as string}
+                dataKey={key as string}
+                stackId="a"
+                fill={`url(#stackedBarGradient-${key as string})`}
+                radius={index === dataKeys.length - 1 ? [8, 8, 0, 0] : 0}
+                className="drop-shadow-lg"
+                animationDuration={1500}
+                animationBegin={index * 200}
+              />
+            ))}
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+};
+
+export const SimpleGroupedBarLineChart = <T extends object = { [key: string]: string | number }>({
+  data,
+  barKeys,
+  lineKey,
+  xAxisKey,
+  title,
+  colors = ["#10b981", "#f59e0b"],
+  lineColor = "#6366f1",
+  showAllLabels = false
+}: {
+  data: T[];
+  barKeys: (keyof T)[];
+  lineKey: keyof T;
+  xAxisKey: keyof T;
+  title?: string;
+  colors?: string[];
+  lineColor?: string;
+  showAllLabels?: boolean;
+}) => {
+  const [animationClass, setAnimationClass] = useState('');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAnimationClass('chart-3d');
+    }, 150);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div className={`w-full h-80 relative ${animationClass}`}>
+      {title && (
+        <h3 className="text-lg font-semibold mb-4 text-center bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+          {title}
+        </h3>
+      )}
+      <div className="relative rounded-2xl h-64">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+            <defs>
+              {barKeys.map((key, index) => (
+                <linearGradient key={key as string} id={`groupedBarGradient-${key as string}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={colors[index % colors.length]} stopOpacity={0.8} />
+                  <stop offset="100%" stopColor={colors[index % colors.length]} stopOpacity={0.3} />
+                </linearGradient>
+              ))}
+              <linearGradient id="lineGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={lineColor} stopOpacity={0.8} />
+                <stop offset="100%" stopColor={lineColor} stopOpacity={0.1} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid 
+              strokeDasharray="3 3" 
+              stroke="rgba(99, 102, 241, 0.1)" 
+            />
+            <XAxis 
+              dataKey={xAxisKey as string} 
+              interval={showAllLabels ? 0 : 'preserveStartEnd'}
+              angle={showAllLabels ? -45 : 0}
+              textAnchor={showAllLabels ? 'end' : 'middle'}
+              height={showAllLabels ? 80 : 60}
+              fontSize={12}
+              stroke="rgba(99, 102, 241, 0.7)"
+              tick={{ fill: 'rgba(99, 102, 241, 0.8)' }}
+            />
+            <YAxis 
+              stroke="rgba(99, 102, 241, 0.7)"
+              tick={{ fill: 'rgba(99, 102, 241, 0.8)' }}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Legend 
+              wrapperStyle={{ 
+                paddingTop: '20px',
+                fontSize: '14px',
+                fontWeight: '500'
+              }}
+            />
+            {barKeys.map((key, index) => (
+              <Bar
+                key={key as string}
+                dataKey={key as string}
+                fill={`url(#groupedBarGradient-${key as string})`}
+                radius={[8, 8, 0, 0]}
+                className="drop-shadow-lg"
+                barSize={32}
+                animationDuration={1500}
+                animationBegin={index * 200}
+              />
+            ))}
+            <Line
+              type="monotone"
+              dataKey={lineKey as string}
+              stroke={lineColor}
+              strokeWidth={3}
+              dot={{ r: 4, fill: lineColor, strokeWidth: 2, stroke: '#fff' }}
+              activeDot={{ r: 6, fill: lineColor, stroke: '#fff', strokeWidth: 2, className: 'drop-shadow-lg' }}
+              className="drop-shadow-sm"
+              animationDuration={1500}
+              animationBegin={barKeys.length * 200}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+};

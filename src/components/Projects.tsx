@@ -17,16 +17,15 @@ export const Projects: React.FC<ProjectsProps> = ({ projectData, onShowDetails }
   const [showCalculator, setShowCalculator] = useState(false);
   const [calculatorData, setCalculatorData] = useState({
     projectName: 'New Longevity Project',
-    weeks: 10,
     devs: 1.5,
     devCostPerMonth: 3000,
     overheadPercent: 20
   });
 
   const calculateProject = () => {
-    const revenue = calculatorData.weeks * 2000; // €2K/week net
-    const devCosts = calculatorData.devs * calculatorData.devCostPerMonth * (calculatorData.weeks / 4);
-    const overhead = revenue * (calculatorData.overheadPercent / 100);
+    const revenue = 0; // weeks removed
+    const devCosts = calculatorData.devs * calculatorData.devCostPerMonth; // weeks removed
+    const overhead = 0; // weeks removed
     const netGain = revenue - (devCosts + overhead);
     const roi = ((netGain / (devCosts + overhead)) * 100);
 
@@ -42,8 +41,6 @@ export const Projects: React.FC<ProjectsProps> = ({ projectData, onShowDetails }
   const calc = calculateProject();
   const totalProjectRevenue = projectData.reduce((sum, p) => sum + p.revenue, 0);
   const totalNetProfit = projectData.reduce((sum, p) => sum + p.netProfit, 0);
-  const avgDuration = projectData.length > 0 ? Math.round(projectData.reduce((sum, p) => sum + p.weeks, 0) / projectData.length) : 0;
-
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -78,10 +75,6 @@ export const Projects: React.FC<ProjectsProps> = ({ projectData, onShowDetails }
                     <div className="space-y-2">
                         <Label htmlFor="projectName">Project Name</Label>
                         <Input id="projectName" value={calculatorData.projectName} onChange={(e) => setCalculatorData({ ...calculatorData, projectName: e.target.value })} />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="weeks">Project Duration (Weeks)</Label>
-                        <Input id="weeks" type="number" value={calculatorData.weeks} onChange={(e) => setCalculatorData({ ...calculatorData, weeks: Number(e.target.value) })} />
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="devs">FTE Developers</Label>
@@ -151,17 +144,6 @@ export const Projects: React.FC<ProjectsProps> = ({ projectData, onShowDetails }
                 </div>
             </div>
         </Card>
-        <Card className="p-4 sm:p-6 sm:col-span-2 lg:col-span-1">
-            <div className="flex items-center gap-3">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-accent/20 flex items-center justify-center">
-                    <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
-                </div>
-                <div className="min-w-0 flex-1">
-                    <p className="text-xs sm:text-sm font-medium text-muted-foreground">Avg Duration</p>
-                    <p className="text-lg sm:text-xl font-bold">{avgDuration} weeks</p>
-                </div>
-            </div>
-        </Card>
       </div>
 
       <Card className="p-4 sm:p-6">
@@ -191,7 +173,6 @@ export const Projects: React.FC<ProjectsProps> = ({ projectData, onShowDetails }
                       >
                         {project.status}
                       </Badge>
-                      <span className="text-xs sm:text-sm text-muted-foreground">{project.weeks} weeks</span>
                       <span className="text-xs sm:text-sm text-muted-foreground">{project.transactions.length} transactions</span>
                     </div>
                   </div>

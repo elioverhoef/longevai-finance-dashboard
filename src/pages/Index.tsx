@@ -100,7 +100,6 @@ const Index = () => {
         roi,
         status,
         transactions,
-        weeks: Math.ceil(transactions.length / 2),
       };
     }).sort((a, b) => b.revenue - a.revenue);
   }, [filteredData]);

@@ -34,7 +34,6 @@ export interface ProjectData {
   netProfit: number;
   roi: number;
   status: string;
-  weeks: number;
   transactions: Transaction[];
 }
 

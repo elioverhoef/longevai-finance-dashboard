@@ -769,7 +769,6 @@ export const useFinancialData = () => {
         roi,
         status,
         transactions,
-        weeks: Math.ceil(transactions.length / 2), // Heuristic
       };
     }).sort((a, b) => b.revenue - a.revenue);
   }, [data]);

@@ -1,4 +1,4 @@
-# CLAUDE.md
+b# CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -22,22 +22,22 @@ LongevAI Financial Healthspan is a React-based financial dashboard application t
 
 ```bash
 # Install dependencies
-npm i
+bun install
 
 # Start development server (runs on port 8080)
-npm run dev
+bun run dev
 
 # Build for production
-npm run build
+bun run build
 
 # Build for development mode
-npm run build:dev
+bun run build:dev
 
 # Run linting
-npm run lint
+bun run lint
 
 # Preview production build
-npm run preview
+bun run preview
 ```
 
 ## Project Structure
@@ -86,3 +86,16 @@ The application expects CSV data with columns: Date, Reference, Description, VAT
 - ESLint configured with React hooks and TypeScript rules
 - Unused variables warning disabled in ESLint config
 - Uses Bun for package management (lockfile: `bun.lockb`)
+
+## Authentication & Data Storage
+
+- **Authentication**: Simple password-based login with localStorage persistence (`useAuth.ts`)
+- **Local Storage**: SQLite database via `useSQLiteDB.ts` for persistent data storage
+- **Password**: Hardcoded in `useAuth.ts` for demo purposes (should be changed for production)
+
+## Data Processing Architecture
+
+- **CSV Parsing**: Multi-section CSV parser handles complex accounting exports with different data types
+- **Transaction Categorization**: Keyword-based automatic categorization with manual override capability
+- **Project Extraction**: Automatic project assignment based on client names in transaction descriptions
+- **SQLite Integration**: All financial data persisted locally for offline functionality

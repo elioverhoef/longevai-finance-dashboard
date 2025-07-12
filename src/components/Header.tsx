@@ -75,10 +75,10 @@ export const Header: React.FC<HeaderProps> = ({
 
               {/* Compact Title */}
               <div>
-                <h1 className="text-xl font-bold text-white">
+                <h1 className="text-xl font-bold text-gray-800">
                   LongevAI
                 </h1>
-                <p className="text-white/80 text-xs">
+                <p className="text-gray-600 text-xs">
                   Financial Healthspan Dashboard
                 </p>
               </div>

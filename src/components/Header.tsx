@@ -88,7 +88,7 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="flex items-center gap-2">
               <Button 
                 onClick={onLoadSample}
-                className="bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs px-3 py-1 h-8"
+                className="bg-purple-100 hover:bg-purple-200 border border-purple-200 text-purple-700 text-xs px-3 py-1 h-8"
               >
                 <Sparkles className="w-3 h-3 mr-1" />
                 Sample
@@ -102,7 +102,7 @@ export const Header: React.FC<HeaderProps> = ({
                   className="hidden"
                 />
                 <Button 
-                  className="bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs px-3 py-1 h-8"
+                  className="bg-blue-100 hover:bg-blue-200 border border-blue-200 text-blue-700 text-xs px-3 py-1 h-8"
                   asChild
                 >
                   <span>
@@ -114,7 +114,7 @@ export const Header: React.FC<HeaderProps> = ({
               
               <Button 
                 onClick={onExport}
-                className="bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs px-3 py-1 h-8"
+                className="bg-emerald-100 hover:bg-emerald-200 border border-emerald-200 text-emerald-700 text-xs px-3 py-1 h-8"
               >
                 <Download className="w-3 h-3 mr-1" />
                 Export
@@ -122,7 +122,7 @@ export const Header: React.FC<HeaderProps> = ({
               
               <Button 
                 onClick={onToggleDarkMode}
-                className="bg-white/10 hover:bg-white/20 border border-white/20 text-white w-8 h-8 p-0"
+                className="bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-700 w-8 h-8 p-0"
                 title="Toggle Theme"
               >
                 {darkMode ? <Sun className="w-3 h-3" /> : <Moon className="w-3 h-3" />}

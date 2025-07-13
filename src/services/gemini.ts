@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { FinancialData, CategoryData, ProjectData, MonthlyData } from '../types/financial';
+import { FinancialData, CategoryData, ProjectData, MonthlyData, Transaction } from '../types/financial';
 
 export interface GeminiInsight {
   title: string;
@@ -9,9 +9,13 @@ export interface GeminiInsight {
 }
 
 const PROMPT_TEMPLATE = `
-You are a financial advisor analyzing business data for LongevAI, a longevity-focused AI company. 
+You are a financial advisor analyzing business data for LongevAI, a longevity-focused AI company operating in the B2B AI consulting and healthcare technology space.
 
-Based on the following financial data, provide strategic insights and actionable recommendations:
+COMPANY PROFILE:
+- Industry: Longevity AI & Healthcare Technology
+- Business Model: B2B AI consulting, healthcare solutions, custom AI development
+- Target Market: Healthcare organizations, biotech companies, wellness providers
+- Stage: Early-stage with active client projects
 
 FINANCIAL OVERVIEW:
 - Current Balance: €{currentBalance}
@@ -20,22 +24,35 @@ FINANCIAL OVERVIEW:
 - Net Profit: €{netProfit}
 - Monthly Burn Rate: €{monthlyBurnRate}
 - Runway: {runway} months
+- Outstanding Receivables: €{outstandingReceivables}
 
-TOP EXPENSE CATEGORIES:
-{expenseCategories}
+REVENUE ANALYSIS:
+{revenueAnalysis}
 
-PROJECT PERFORMANCE:
-{projectPerformance}
+EXPENSE BREAKDOWN & EFFICIENCY:
+{expenseAnalysis}
+
+OPERATIONAL METRICS:
+{operationalMetrics}
+
+CLIENT & PROJECT INSIGHTS:
+{clientProjectInsights}
+
+CASH FLOW PATTERNS:
+{cashFlowPatterns}
+
+TECHNOLOGY STACK COSTS:
+{techStackAnalysis}
 
 MONTHLY TRENDS (last 6 months):
 {monthlyTrends}
 
-Please provide 4-6 actionable insights in JSON format with this structure:
+Please provide 5-8 actionable insights in JSON format with this structure:
 {
   "insights": [
     {
       "title": "Brief insight title",
-      "description": "Detailed actionable recommendation (2-3 sentences)",
+      "description": "Detailed actionable recommendation (2-3 sentences with specific numbers/percentages when relevant)",
       "priority": "high|medium|low",
       "category": "runway|growth|optimization|risk|opportunity"
     }
@@ -43,13 +60,16 @@ Please provide 4-6 actionable insights in JSON format with this structure:
 }
 
 Focus on:
-1. Runway management and cash flow optimization
-2. Growth opportunities and revenue diversification
-3. Cost optimization without compromising growth
-4. Risk mitigation strategies
-5. Strategic recommendations for a longevity AI company
+1. Runway management and cash flow optimization for AI consulting business
+2. Client diversification and revenue stream expansion in longevity sector
+3. Technology stack cost optimization for AI development
+4. Scaling operational efficiency for project-based work
+5. Risk mitigation for consulting business (client concentration, payment delays)
+6. Strategic positioning in longevity AI market
+7. Talent acquisition and retention cost optimization
+8. Seasonal patterns and business development timing
 
-Be specific, actionable, and data-driven. Avoid generic advice.
+Be specific, data-driven, and tailored to the longevity AI consulting industry. Reference actual spending patterns, client names, and specific metrics from the data.
 `;
 
 export class GeminiService {
@@ -76,18 +96,107 @@ export class GeminiService {
     const monthlyBurnRate = lastThreeMonthsExpenses > 0 ? Math.round(lastThreeMonthsExpenses / Math.min(3, monthlyData.length)) : 0;
     const runway = monthlyBurnRate > 0 ? Math.round(data.currentBalance / monthlyBurnRate) : Infinity;
 
-    const expenseCategories = categoryData
-      .filter(c => c.expenses > 0)
-      .sort((a, b) => b.expenses - a.expenses)
-      .slice(0, 5)
-      .map(c => `- ${c.name}: €${c.expenses.toLocaleString()} (${((c.expenses / data.totalExpenses) * 100).toFixed(1)}%)`)
-      .join('\n');
+    // Revenue Analysis
+    const revenueTransactions = data.allTransactions.filter(t => t.amount > 0);
+    const avgRevenuePerTransaction = revenueTransactions.length > 0 ? data.totalRevenue / revenueTransactions.length : 0;
+    const revenueByProject = [...projectData.filter(p => p.revenue > 0)].sort((a, b) => b.revenue - a.revenue);
+    const revenueConcentration = revenueByProject.length > 0 ? (revenueByProject[0].revenue / data.totalRevenue * 100) : 0;
 
-    const projectPerformance = projectData
-      .sort((a, b) => b.netProfit - a.netProfit)
+    const revenueAnalysis = [
+      `- Average Revenue per Transaction: €${avgRevenuePerTransaction.toFixed(2)}`,
+      `- Revenue Concentration: ${revenueConcentration.toFixed(1)}% from top client (${revenueByProject[0]?.name || 'N/A'})`,
+      `- Active Revenue Streams: ${revenueByProject.length} projects`,
+      `- Revenue Diversity: ${revenueByProject.length >= 3 ? 'Well diversified' : 'Concentrated - risk of client dependency'}`,
+    ].join('\n');
+
+    // Enhanced Expense Analysis with vendor insights
+    const vendorSpending = new Map<string, { amount: number; count: number; category: string }>();
+    data.allTransactions.filter(t => t.amount < 0).forEach(t => {
+      const vendor = this.extractVendorName(t.description);
+      const existing = vendorSpending.get(vendor) || { amount: 0, count: 0, category: t.category || 'Unknown' };
+      existing.amount += Math.abs(t.amount);
+      existing.count += 1;
+      vendorSpending.set(vendor, existing);
+    });
+
+    const topVendors = [...Array.from(vendorSpending.entries())]
+      .sort((a, b) => b[1].amount - a[1].amount)
       .slice(0, 5)
-      .map(p => `- ${p.name}: €${p.revenue.toLocaleString()} revenue, €${p.netProfit.toLocaleString()} net profit`)
-      .join('\n');
+      .map(([vendor, data]) => `- ${vendor}: €${data.amount.toLocaleString()} (${data.count} transactions, ${data.category})`);
+
+    const expenseAnalysis = [
+      'Top Expense Categories:',
+      ...[...categoryData.filter(c => c.expenses > 0)].sort((a, b) => b.expenses - a.expenses)
+        .slice(0, 5)
+        .map(c => `  • ${c.name}: €${c.expenses.toLocaleString()} (${((c.expenses / data.totalExpenses) * 100).toFixed(1)}%)`),
+      '',
+      'Top Vendors by Spending:',
+      ...topVendors.map(v => `  • ${v}`)
+    ].join('\n');
+
+    // Operational Metrics
+    const softwareExpenses = categoryData.find(c => c.name === 'Software & AI Tools')?.expenses || 0;
+    const salaryExpenses = categoryData.find(c => c.name === 'Salaries & Freelancers')?.expenses || 0;
+    const travelExpenses = categoryData.find(c => c.name === 'Travel & Transport')?.expenses || 0;
+    const taxExpenses = categoryData.find(c => c.name === 'Taxes & Accounting')?.expenses || 0;
+
+    const operationalMetrics = [
+      `- Software & AI Tools: €${softwareExpenses.toLocaleString()} (${((softwareExpenses / data.totalExpenses) * 100).toFixed(1)}% of expenses)`,
+      `- Personnel Costs: €${salaryExpenses.toLocaleString()} (${((salaryExpenses / data.totalExpenses) * 100).toFixed(1)}% of expenses)`,
+      `- Travel & Transport: €${travelExpenses.toLocaleString()} (${((travelExpenses / data.totalExpenses) * 100).toFixed(1)}% of expenses)`,
+      `- Tax & Compliance: €${taxExpenses.toLocaleString()} (${((taxExpenses / data.totalExpenses) * 100).toFixed(1)}% of expenses)`,
+      `- Software Cost per €1 Revenue: €${data.totalRevenue > 0 ? (softwareExpenses / data.totalRevenue).toFixed(2) : '0.00'}`,
+    ].join('\n');
+
+    // Client & Project Insights
+    const activeProjects = projectData.filter(p => p.status === 'Active');
+    const completedProjects = projectData.filter(p => p.status === 'Completed');
+    const avgProjectValue = projectData.length > 0 ? projectData.reduce((sum, p) => sum + p.revenue, 0) / projectData.length : 0;
+
+    const clientProjectInsights = [
+      `- Total Projects: ${projectData.length} (${activeProjects.length} active, ${completedProjects.length} completed)`,
+      `- Average Project Value: €${avgProjectValue.toLocaleString()}`,
+      `- Most Profitable: ${[...projectData].sort((a, b) => b.netProfit - a.netProfit)[0]?.name || 'N/A'} (€${[...projectData].sort((a, b) => b.netProfit - a.netProfit)[0]?.netProfit.toLocaleString() || '0'} profit)`,
+      `- Project ROI Range: ${projectData.length > 0 ? `${Math.min(...projectData.map(p => p.roi)).toFixed(1)}% to ${Math.max(...projectData.map(p => p.roi)).toFixed(1)}%` : 'N/A'}`,
+      `- Client Concentration Risk: ${revenueConcentration > 50 ? 'HIGH - Over 50% from one client' : revenueConcentration > 30 ? 'MEDIUM - 30-50% from top client' : 'LOW - Well distributed'}`,
+    ].join('\n');
+
+    // Cash Flow Patterns
+    const paymentGaps = this.analyzePaymentGaps(data.allTransactions);
+    const seasonalPatterns = this.analyzeSeasonalPatterns(monthlyData);
+
+    const cashFlowPatterns = [
+      `- Outstanding Receivables: €${data.outstandingReceivables.toLocaleString()} (${((data.outstandingReceivables / data.totalRevenue) * 100).toFixed(1)}% of total revenue)`,
+      `- Average Payment Gap: ${paymentGaps.avgDays} days`,
+      `- Revenue Seasonality: ${seasonalPatterns}`,
+      `- Cash Conversion Efficiency: ${data.outstandingReceivables < data.totalRevenue * 0.2 ? 'GOOD' : 'NEEDS IMPROVEMENT'}`,
+    ].join('\n');
+
+    // Technology Stack Analysis
+    const techTransactions = data.allTransactions.filter(t =>
+      t.category === 'Software & AI Tools' && t.amount < 0
+    );
+    const monthlyTechCost = techTransactions.length > 0 ?
+      Math.abs(techTransactions.reduce((sum, t) => sum + t.amount, 0)) / Math.max(monthlyData.length, 1) : 0;
+
+    const techTools = new Map<string, number>();
+    techTransactions.forEach(t => {
+      const tool = this.extractTechTool(t.description);
+      techTools.set(tool, (techTools.get(tool) || 0) + Math.abs(t.amount));
+    });
+
+    const topTechCosts = [...Array.from(techTools.entries())]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([tool, cost]) => `  • ${tool}: €${cost.toFixed(2)}`);
+
+    const techStackAnalysis = [
+      `- Monthly Tech Stack Cost: €${monthlyTechCost.toFixed(2)}`,
+      `- Tech Cost as % of Revenue: ${data.totalRevenue > 0 ? ((softwareExpenses / data.totalRevenue) * 100).toFixed(1) : '0'}%`,
+      'Top Technology Investments:',
+      ...topTechCosts,
+      `- Tech ROI Indicator: ${data.totalRevenue > softwareExpenses * 5 ? 'POSITIVE' : 'MONITOR CLOSELY'}`,
+    ].join('\n');
 
     const monthlyTrends = monthlyData
       .slice(-6)
@@ -101,9 +210,83 @@ export class GeminiService {
       .replace('{netProfit}', data.netProfit.toLocaleString())
       .replace('{monthlyBurnRate}', monthlyBurnRate.toLocaleString())
       .replace('{runway}', isFinite(runway) ? runway.toString() : 'Infinite')
-      .replace('{expenseCategories}', expenseCategories)
-      .replace('{projectPerformance}', projectPerformance)
+      .replace('{outstandingReceivables}', data.outstandingReceivables.toLocaleString())
+      .replace('{revenueAnalysis}', revenueAnalysis)
+      .replace('{expenseAnalysis}', expenseAnalysis)
+      .replace('{operationalMetrics}', operationalMetrics)
+      .replace('{clientProjectInsights}', clientProjectInsights)
+      .replace('{cashFlowPatterns}', cashFlowPatterns)
+      .replace('{techStackAnalysis}', techStackAnalysis)
       .replace('{monthlyTrends}', monthlyTrends);
+  }
+
+  private extractVendorName(description: string): string {
+    const normalized = description.toLowerCase();
+
+    // Extract vendor names from common patterns
+    if (normalized.includes('google')) return 'Google';
+    if (normalized.includes('slack')) return 'Slack';
+    if (normalized.includes('cursor')) return 'Cursor AI';
+    if (normalized.includes('render.com')) return 'Render';
+    if (normalized.includes('apollo')) return 'Apollo.io';
+    if (normalized.includes('hubspot')) return 'HubSpot';
+    if (normalized.includes('bunq')) return 'Bunq Bank';
+    if (normalized.includes('belastingdienst')) return 'Tax Authority';
+    if (normalized.includes('moneybird')) return 'MoneyBird';
+    if (normalized.includes('medio zorg')) return 'Medio Zorg';
+    if (normalized.includes('hetzner')) return 'Hetzner';
+    if (normalized.includes('openai')) return 'OpenAI';
+    if (normalized.includes('claude')) return 'Anthropic';
+
+    // Extract first meaningful word from description
+    const words = description.split(' ').filter(w => w.length > 2);
+    return words[0] || 'Unknown';
+  }
+
+  private extractTechTool(description: string): string {
+    const normalized = description.toLowerCase();
+
+    if (normalized.includes('google cloud')) return 'Google Cloud';
+    if (normalized.includes('google gsuite')) return 'Google Workspace';
+    if (normalized.includes('slack')) return 'Slack';
+    if (normalized.includes('cursor')) return 'Cursor AI';
+    if (normalized.includes('render')) return 'Render';
+    if (normalized.includes('apollo')) return 'Apollo.io';
+    if (normalized.includes('hubspot')) return 'HubSpot';
+    if (normalized.includes('moneybird')) return 'MoneyBird';
+    if (normalized.includes('hetzner')) return 'Hetzner';
+    if (normalized.includes('openai')) return 'OpenAI';
+    if (normalized.includes('claude')) return 'Anthropic Claude';
+    if (normalized.includes('koyeb')) return 'Koyeb';
+    if (normalized.includes('twilio')) return 'Twilio';
+    if (normalized.includes('canva')) return 'Canva';
+    if (normalized.includes('coollabs')) return 'Coolify';
+    if (normalized.includes('openrouter')) return 'OpenRouter';
+
+    return normalized;
+  }
+
+  private analyzePaymentGaps(transactions: Transaction[]): { avgDays: number } {
+    // Simplified analysis - in real implementation, you'd match invoices to payments
+    const revenueTransactions = transactions.filter(t => t.amount > 0);
+    if (revenueTransactions.length === 0) return { avgDays: 0 };
+
+    // Rough estimate based on typical B2B payment terms
+    return { avgDays: 30 }; // Placeholder for more sophisticated analysis
+  }
+
+  private analyzeSeasonalPatterns(monthlyData: MonthlyData[]): string {
+    if (monthlyData.length < 6) return 'Insufficient data for seasonal analysis';
+
+    const revenues = monthlyData.slice(-6).map(m => m.revenue);
+    const avgRevenue = revenues.reduce((sum, r) => sum + r, 0) / revenues.length;
+    const variance = revenues.reduce((sum, r) => sum + Math.pow(r - avgRevenue, 2), 0) / revenues.length;
+    const stdDev = Math.sqrt(variance);
+    const coefficientOfVariation = avgRevenue > 0 ? (stdDev / avgRevenue) : 0;
+
+    if (coefficientOfVariation < 0.2) return 'Stable month-to-month';
+    if (coefficientOfVariation < 0.4) return 'Moderate variation';
+    return 'High volatility - project-based pattern';
   }
 
   async generateInsights(
@@ -114,8 +297,9 @@ export class GeminiService {
   ): Promise<GeminiInsight[]> {
     try {
       const prompt = this.formatFinancialData(data, categoryData, projectData, monthlyData);
+      console.log(prompt);
       const result = await this.model.generateContent(prompt);
-      const response = await result.response;
+      const response = result.response;
       const text = response.text();
 
       // Parse JSON response
@@ -125,7 +309,11 @@ export class GeminiService {
       }
 
       const parsed = JSON.parse(jsonMatch[0]);
-      return parsed.insights || [];
+      const priorityOrder = { high: 0, medium: 1, low: 2 };
+      const sortedInsights = (parsed.insights || []).sort(
+        (a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]
+      );
+      return sortedInsights;
     } catch (error) {
       console.error('Error generating insights:', error);
 

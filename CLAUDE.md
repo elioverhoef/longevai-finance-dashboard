@@ -40,6 +40,12 @@ bun run lint
 bun run preview
 ```
 
+## Environment Variables
+
+The application requires the following environment variables:
+
+- `GEMINI_API_KEY`: Google Gemini API key for AI-powered insights generation. Required for the Insights tab functionality.
+
 ## Project Structure
 
 ### Core Application Architecture

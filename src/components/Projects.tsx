@@ -27,14 +27,12 @@ export const Projects: React.FC<ProjectsProps> = ({ projectData, onShowDetails }
     const devCosts = calculatorData.devs * calculatorData.devCostPerMonth; // weeks removed
     const overhead = 0; // weeks removed
     const netGain = revenue - (devCosts + overhead);
-    const roi = ((netGain / (devCosts + overhead)) * 100);
 
     return {
       revenue,
       devCosts,
       overhead,
-      netGain,
-      roi
+      netGain
     };
   };
 
@@ -109,12 +107,6 @@ export const Projects: React.FC<ProjectsProps> = ({ projectData, onShowDetails }
                             <p className="text-lg sm:text-2xl font-bold text-primary">€{calc.netGain.toLocaleString()}</p>
                         </div>
                     </div>
-                    <div className="mt-4 sm:mt-6 text-center">
-                        <p className="text-base sm:text-lg text-muted-foreground">Projected Return on Investment (ROI)</p>
-                        <p className={`text-2xl sm:text-4xl font-bold ${calc.roi >= 0 ? 'text-success' : 'text-destructive'}`}>
-                            {isFinite(calc.roi) ? calc.roi.toFixed(1) : '∞'}%
-                        </p>
-                    </div>
                 </div>
             </div>
           </CardContent>
@@ -181,8 +173,6 @@ export const Projects: React.FC<ProjectsProps> = ({ projectData, onShowDetails }
                   <p className="text-lg sm:text-xl font-bold text-success">€{project.revenue.toLocaleString()}</p>
                   <div className="flex flex-col sm:block text-xs sm:text-sm text-muted-foreground">
                     <span>Net: €{project.netProfit.toLocaleString()}</span>
-                    <span className="hidden sm:inline"> • </span>
-                    <span>ROI: {isFinite(project.roi) ? `${project.roi.toFixed(1)}%` : 'N/A'}</span>
                   </div>
                 </div>
               </div>

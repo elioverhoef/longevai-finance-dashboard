@@ -106,7 +106,7 @@ const Index = () => {
   return (
     <div className={`min-h-screen ${darkMode ? 'dark' : ''} bg-background`}>
       <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <Header onUpload={handleUpload} onLoadSample={() => {}} onExport={handleExport} darkMode={darkMode} onToggleDarkMode={toggleDarkMode} />
+        <Header onUpload={handleUpload} onExport={handleExport} darkMode={darkMode} onToggleDarkMode={toggleDarkMode} />
 
         <Tabs defaultValue="overview" className="space-y-6">
           <div className="flex flex-col sm:flex-row gap-4 items-center">

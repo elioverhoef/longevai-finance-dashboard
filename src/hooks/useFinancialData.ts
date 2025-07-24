@@ -45,37 +45,14 @@ export const useFinancialData = () => {
     }
   }, [isReady, saveFinancialData, clearDatabase]);
 
-  const loadSampleData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await fetch('/export_202501..202512.csv');
-      if (!response.ok) {
-        throw new Error('Failed to fetch sample data file. Make sure `export_202501..202512.csv` is in the `public` directory.');
-      }
-      const csvContent = await response.text();
-      await processAndSaveData(csvContent);
-      localStorage.setItem('longevai_sample_loaded', 'true');
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to load sample data.';
-      setError(errorMessage);
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }, [processAndSaveData]);
 
-  useEffect(() => {
-    const hasLoadedBefore = localStorage.getItem('longevai_sample_loaded');
-    if (isReady && !loading && !data && !hasLoadedBefore) {
-      loadSampleData();
-    }
-  }, [isReady, loading, data, loadSampleData]);
 
   const uploadCSV = useCallback(async (file: File) => {
     const reader = new FileReader();
     reader.onload = async (e) => {
       const content = e.target?.result as string;
       await processAndSaveData(content);
+      localStorage.removeItem('longevai_sample_loaded');
     };
     reader.readAsText(file);
   }, [processAndSaveData]);

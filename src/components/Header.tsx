@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Upload, Download, Moon, Sun, Sparkles, Activity } from 'lucide-react';
+import { Upload, Download, Moon, Sun, Activity } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
 
 interface HeaderProps {
   onUpload: (file: File) => void;
-  onLoadSample: () => void;
   onExport: () => void;
   darkMode: boolean;
   onToggleDarkMode: () => void;
@@ -13,7 +12,6 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({
   onUpload,
-  onLoadSample,
   onExport,
   darkMode,
   onToggleDarkMode
@@ -82,13 +80,6 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
             {/* Action Buttons */}
             <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-              <Button 
-                onClick={onLoadSample}
-                className="bg-purple-100 hover:bg-purple-200 border border-purple-200 text-purple-700 text-xs px-2 sm:px-3 py-1 h-7 sm:h-8 font-semibold shadow-sm flex-shrink-0"
-              >
-                <Sparkles className="w-3 h-3 sm:mr-1" />
-                <span className="hidden sm:inline">Sample</span>
-              </Button>
               <label className="cursor-pointer flex-shrink-0">
                 <input
                   type="file"

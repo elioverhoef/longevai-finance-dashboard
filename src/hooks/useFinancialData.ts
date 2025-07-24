@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useMemo } from 'react';
-import { Transaction, FinancialData, CategoryData, ProjectData, MonthlyData } from '../types/financial';
+import { Transaction, FinancialData } from '../types/financial';
 import { useSQLiteDB } from './useSQLiteDB';
 import { parseCSVData } from '../lib/data-processor';
 import { categoryKeywords } from '../config/categorization';

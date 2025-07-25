@@ -11,14 +11,59 @@ export const useFinancialData = () => {
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const { isReady, saveFinancialData, loadFinancialData, updateTransactionCategory: updateTransactionCategoryInDB, clearDatabase } = useSQLiteDB();
 
-  const loadDataFromDB = useCallback(() => {
+  const loadSampleData = useCallback(async () => {
+    try {
+      // First try to load pre-processed data
+      const response = await fetch('/sample-db.json');
+      if (response.ok) {
+        const sampleData = await response.json();
+        // Check if the sample data has actual transactions
+        if (sampleData.allTransactions && sampleData.allTransactions.length > 1) {
+          await saveFinancialData(sampleData);
+          setData(sampleData);
+          localStorage.setItem('longevai_sample_loaded', 'true');
+          console.log('✅ Sample data loaded successfully');
+          return true;
+        }
+      }
+
+      // If pre-processed data is not available or empty, load CSV directly
+      const csvResponse = await fetch('/export_202501..202512.csv');
+      if (csvResponse.ok) {
+        const csvContent = await csvResponse.text();
+        const financialData = parseCSVData(csvContent);
+        if (financialData.allTransactions.length > 0) {
+          await saveFinancialData(financialData);
+          setData(financialData);
+          localStorage.setItem('longevai_sample_loaded', 'true');
+          console.log('✅ Sample CSV data loaded successfully');
+          return true;
+        }
+      }
+    } catch (error) {
+      console.warn('Sample data not available:', error);
+      return false;
+    }
+    return false;
+  }, [saveFinancialData]);
+
+  const loadDataFromDB = useCallback(async () => {
     if (isReady) {
       setLoading(true);
       const dbData = loadFinancialData();
-      setData(dbData);
+      
+      if (!dbData && !localStorage.getItem('longevai_sample_loaded')) {
+        // Try to load sample data if no data exists
+        const sampleLoaded = await loadSampleData();
+        if (!sampleLoaded) {
+          setData(null);
+        }
+      } else {
+        setData(dbData);
+      }
       setLoading(false);
     }
-  }, [isReady, loadFinancialData]);
+  }, [isReady, loadFinancialData, loadSampleData]);
 
   useEffect(() => {
     loadDataFromDB();

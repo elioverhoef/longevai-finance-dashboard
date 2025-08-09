@@ -31,7 +31,7 @@ export const useSQLiteDB = () => {
         } else {
           // Create new database
           database = new sqlPromise.Database();
-          
+
           // Create tables
           database.run(`
             CREATE TABLE IF NOT EXISTS transactions (
@@ -60,6 +60,18 @@ export const useSQLiteDB = () => {
             );
           `);
 
+          database.run(`
+            CREATE TABLE IF NOT EXISTS receivables (
+              invoice_id TEXT PRIMARY KEY,
+              client TEXT,
+              issue_date TEXT,
+              invoiced_amount REAL,
+              paid_amount REAL,
+              outstanding_amount REAL,
+              days_outstanding INTEGER
+            );
+          `);
+
           // Create indexes for better performance
           database.run(`
             CREATE INDEX IF NOT EXISTS idx_transactions_date ON transactions(date);
@@ -67,6 +79,19 @@ export const useSQLiteDB = () => {
             CREATE INDEX IF NOT EXISTS idx_transactions_category ON transactions(category);
           `);
         }
+
+        // Ensure receivables table exists for upgraded DBs
+        database.run(`
+          CREATE TABLE IF NOT EXISTS receivables (
+            invoice_id TEXT PRIMARY KEY,
+            client TEXT,
+            issue_date TEXT,
+            invoiced_amount REAL,
+            paid_amount REAL,
+            outstanding_amount REAL,
+            days_outstanding INTEGER
+          );
+        `);
 
         setDb(database);
         setIsReady(true);
@@ -81,7 +106,7 @@ export const useSQLiteDB = () => {
   // Save database to localStorage
   const saveDatabase = useCallback(() => {
     if (!db) return;
-    
+
     try {
       const data = db.export();
       const base64String = btoa(String.fromCharCode(...data));
@@ -97,10 +122,11 @@ export const useSQLiteDB = () => {
 
     try {
       db.run('BEGIN TRANSACTION;');
-      
+
       // Clear existing data
       db.run('DELETE FROM transactions');
       db.run('DELETE FROM financial_summary');
+      db.run('DELETE FROM receivables');
 
       // Insert transactions
       const stmt = db.prepare(`
@@ -128,6 +154,26 @@ export const useSQLiteDB = () => {
         VALUES (?, ?, ?, ?, ?, ?)
       `, [1, financialData.totalRevenue, financialData.totalExpenses, financialData.netProfit, financialData.currentBalance, financialData.outstandingReceivables]);
 
+      // Insert receivables
+      if (financialData.receivables?.invoices?.length) {
+        const rstmt = db.prepare(`
+          INSERT INTO receivables (invoice_id, client, issue_date, invoiced_amount, paid_amount, outstanding_amount, days_outstanding)
+          VALUES (?, ?, ?, ?, ?, ?, ?)
+        `);
+        financialData.receivables.invoices.forEach(inv => {
+          rstmt.run([
+            inv.invoiceId,
+            inv.client,
+            inv.issueDate,
+            inv.invoicedAmount,
+            inv.paidAmount,
+            inv.outstandingAmount,
+            inv.daysOutstanding,
+          ]);
+        });
+        rstmt.free();
+      }
+
       db.run('COMMIT;');
       saveDatabase();
     } catch (error) {
@@ -142,9 +188,9 @@ export const useSQLiteDB = () => {
     if (!db || !isReady) return null;
 
     try {
-      // Load transactions
       const transactionResults = db.exec('SELECT * FROM transactions ORDER BY date DESC');
       const summaryResults = db.exec('SELECT * FROM financial_summary ORDER BY last_updated DESC LIMIT 1');
+      const receivableResults = db.exec('SELECT * FROM receivables');
 
       if (transactionResults.length === 0) {
         return null; // No data found
@@ -173,13 +219,27 @@ export const useSQLiteDB = () => {
         };
       }
 
+      const receivables = receivableResults.length > 0 ? {
+        totalOutstanding: receivableResults[0].values.reduce((s, r) => s + ((r[5] as number) || 0), 0),
+        invoices: receivableResults[0].values.map(r => ({
+          invoiceId: r[0] as string,
+          client: r[1] as string,
+          issueDate: r[2] as string,
+          invoicedAmount: r[3] as number,
+          paidAmount: r[4] as number,
+          outstandingAmount: r[5] as number,
+          daysOutstanding: r[6] as number,
+        }))
+      } : undefined;
+
       return {
         allTransactions: transactions,
         totalRevenue: summary?.totalRevenue || 0,
         totalExpenses: summary?.totalExpenses || 0,
         netProfit: summary?.netProfit || 0,
         currentBalance: summary?.currentBalance || 0,
-        outstandingReceivables: summary?.outstandingReceivables || 0
+        outstandingReceivables: summary?.outstandingReceivables || 0,
+        receivables,
       };
     } catch (error) {
       console.error('Failed to load financial data:', error);
@@ -210,6 +270,7 @@ export const useSQLiteDB = () => {
     try {
       db.run('DELETE FROM transactions');
       db.run('DELETE FROM financial_summary');
+      db.run('DELETE FROM receivables');
       saveDatabase();
     } catch (error) {
       console.error('Failed to clear database:', error);

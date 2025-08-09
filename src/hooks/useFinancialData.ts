@@ -13,21 +13,21 @@ export const useFinancialData = () => {
 
   const loadSampleData = useCallback(async () => {
     try {
-      // First try to load pre-processed data
       const response = await fetch('/sample-db.json');
       if (response.ok) {
         const sampleData = await response.json();
-        // Check if the sample data has actual transactions
         if (sampleData.allTransactions && sampleData.allTransactions.length > 1) {
           await saveFinancialData(sampleData);
           setData(sampleData);
           localStorage.setItem('longevai_sample_loaded', 'true');
+          // bump DB version to bust caches
+          localStorage.setItem('longevai_db_version', `${Date.now()}`);
+          localStorage.removeItem('longevai_insights_cache');
           console.log('✅ Sample data loaded successfully');
           return true;
         }
       }
 
-      // If pre-processed data is not available or empty, load CSV directly
       const csvResponse = await fetch('/export_202501..202512.csv');
       if (csvResponse.ok) {
         const csvContent = await csvResponse.text();
@@ -36,6 +36,9 @@ export const useFinancialData = () => {
           await saveFinancialData(financialData);
           setData(financialData);
           localStorage.setItem('longevai_sample_loaded', 'true');
+          // bump DB version to bust caches
+          localStorage.setItem('longevai_db_version', `${Date.now()}`);
+          localStorage.removeItem('longevai_insights_cache');
           console.log('✅ Sample CSV data loaded successfully');
           return true;
         }
@@ -52,8 +55,16 @@ export const useFinancialData = () => {
       setLoading(true);
       const dbData = loadFinancialData();
 
+      // Read DB version marker file and set localStorage key
+      try {
+        const resp = await fetch('/db-version.txt', { cache: 'no-store' });
+        if (resp.ok) {
+          const v = await resp.text();
+          if (v) localStorage.setItem('longevai_db_version', v.trim());
+        }
+      } catch { }
+
       if (!dbData && !localStorage.getItem('longevai_sample_loaded')) {
-        // Try to load sample data if no data exists
         const sampleLoaded = await loadSampleData();
         if (!sampleLoaded) {
           setData(null);
@@ -81,6 +92,9 @@ export const useFinancialData = () => {
       const financialData = parseCSVData(csvContent);
       await saveFinancialData(financialData);
       setData(financialData);
+      // bump DB version and clear insight cache
+      localStorage.setItem('longevai_db_version', `${Date.now()}`);
+      localStorage.removeItem('longevai_insights_cache');
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to parse and save data';
       setError(errorMessage);
@@ -126,13 +140,14 @@ export const useFinancialData = () => {
       totalRevenue,
       totalExpenses,
       netProfit: totalRevenue - totalExpenses,
-      currentBalance: totalRevenue - totalExpenses, // Note: This is balance for the period, not running balance
-    };
+      currentBalance: totalRevenue - totalExpenses,
+      receivables: data.receivables, // receivables reflect full dataset (not filtered by month)
+    } as FinancialData;
   }, [data, selectedMonth]);
 
   const getDerivedData = useCallback((sourceData: FinancialData | null) => {
     if (!sourceData) {
-      return { categoryData: [], projectData: [], monthlyData: [] };
+      return { categoryData: [], projectData: [], monthlyData: [], arAging: { current: 0, d1_30: 0, d31_60: 0, d61_90: 0, d90p: 0 } };
     }
 
     const categoryMap = new Map<string, { revenue: number; expenses: number; transactions: Transaction[] }>();
@@ -182,10 +197,24 @@ export const useFinancialData = () => {
       .map(([month, { revenue, expenses }]) => ({ month, revenue, expenses, netProfit: revenue - expenses }))
       .sort((a, b) => a.month.localeCompare(b.month));
 
-    return { categoryData, projectData, monthlyData };
+    const arAging = { current: 0, d1_30: 0, d31_60: 0, d61_90: 0, d90p: 0 };
+    const today = new Date();
+    if (sourceData.receivables?.invoices) {
+      for (const inv of sourceData.receivables.invoices) {
+        const days = inv.daysOutstanding ?? Math.floor((today.getTime() - new Date(inv.issueDate).getTime()) / (1000 * 3600 * 24));
+        const amt = inv.outstandingAmount;
+        if (days <= 0) arAging.current += amt;
+        else if (days <= 30) arAging.d1_30 += amt;
+        else if (days <= 60) arAging.d31_60 += amt;
+        else if (days <= 90) arAging.d61_90 += amt;
+        else arAging.d90p += amt;
+      }
+    }
+
+    return { categoryData, projectData, monthlyData, arAging };
   }, []);
 
-  const { categoryData, projectData, monthlyData } = useMemo(() => getDerivedData(filteredData), [filteredData, getDerivedData]);
+  const { categoryData, projectData, monthlyData, arAging } = useMemo(() => getDerivedData(filteredData), [filteredData, getDerivedData]);
 
   const availableMonths = useMemo(() => {
     if (!data?.allTransactions) return [];
@@ -221,5 +250,6 @@ export const useFinancialData = () => {
     setSelectedMonth,
     categoryKeywords,
     loadSample,
+    arAging,
   };
 };

@@ -45,6 +45,16 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
       description: "Liquid assets and reserves"
     }
   ];
+
+  // Decision KPIs: Burn rate and runway
+  const last3 = monthlyData.slice(-3);
+  const avgBurn = last3.length > 0 ? Math.round(last3.reduce((s, m) => s + m.expenses, 0) / last3.length) : 0;
+  const runwayMonths = avgBurn > 0 ? Math.floor(data.currentBalance / avgBurn) : Infinity;
+
+  const decisionCards = [
+    { title: 'Avg Burn (3 mo)', value: `€${avgBurn.toLocaleString()}`, desc: 'Average monthly expenses' },
+    { title: 'Runway', value: isFinite(runwayMonths) ? `${runwayMonths} mo` : '∞', desc: 'Months until cash-out' },
+  ];
   
   const expenseCategories = categoryData.filter(c => c.expenses > 0).sort((a,b) => b.expenses - a.expenses).slice(0, 6);
 
@@ -75,6 +85,18 @@ export const Overview: React.FC<OverviewProps> = ({ data, monthlyData, categoryD
             </Card>
           );
         })}
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {decisionCards.map(card => (
+          <Card key={card.title} className="border border-gray-200 dark:border-gray-700">
+            <CardContent className="p-4">
+              <p className="text-sm text-muted-foreground">{card.title}</p>
+              <p className="text-xl font-bold">{card.value}</p>
+              <p className="text-xs text-muted-foreground">{card.desc}</p>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">

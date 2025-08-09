@@ -7,6 +7,7 @@ import { Expenses } from '@/components/Expenses';
 import { Revenue } from '@/components/Revenue';
 import { Projects } from '@/components/Projects';
 import { Insights } from '@/components/Insights';
+import { Receivables } from '@/components/Receivables';
 import { DateFilter } from '@/components/DateFilter';
 import { useToast } from '@/hooks/use-toast';
 import { TransactionDetailModal } from '@/components/TransactionDetailModal';
@@ -142,11 +143,12 @@ const Index = () => {
 
         <Tabs defaultValue="overview" className="space-y-6">
           <div className="flex flex-col sm:flex-row gap-4 items-center">
-            <TabsList className="grid w-full grid-cols-3 sm:w-auto sm:grid-cols-5">
+            <TabsList className="grid w-full grid-cols-3 sm:w-auto sm:grid-cols-6">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="revenue">Revenue</TabsTrigger>
               <TabsTrigger value="expenses">Expenses</TabsTrigger>
               <TabsTrigger value="projects">Projects</TabsTrigger>
+              <TabsTrigger value="receivables">Receivables</TabsTrigger>
               <TabsTrigger value="insights">Insights</TabsTrigger>
             </TabsList>
             <div className="w-full sm:w-auto flex-grow sm:flex-grow-0">
@@ -165,6 +167,9 @@ const Index = () => {
           </TabsContent>
           <TabsContent value="projects">
             <Projects projectData={projectData} onShowDetails={handleShowDetails} />
+          </TabsContent>
+          <TabsContent value="receivables">
+            {data && <Receivables data={data} />}
           </TabsContent>
           <TabsContent value="insights">
             <Insights data={data} categoryData={categoryData} projectData={projectData} monthlyData={monthlyData} />

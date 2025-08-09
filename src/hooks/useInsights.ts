@@ -4,6 +4,7 @@ import { FinancialData } from '../types/financial';
 import { generateDataHash } from '../lib/crypto';
 
 const INSIGHTS_CACHE_KEY = 'longevai_insights_cache';
+const DB_VERSION_KEY = 'longevai_db_version';
 
 interface CachedInsights {
   hash: string;
@@ -29,8 +30,10 @@ export const useInsights = (data: FinancialData | null) => {
     setIsCached(false);
 
     try {
-      const dataHash = await generateDataHash(data.allTransactions);
-      
+      // Use a DB version salt to invalidate cache when DB is re-imported
+      const dbVersion = localStorage.getItem(DB_VERSION_KEY) || '0';
+      const dataHash = await generateDataHash({ tx: data.allTransactions, v: dbVersion });
+
       if (!forceRecalculate) {
         const cachedItem = localStorage.getItem(INSIGHTS_CACHE_KEY);
         if (cachedItem) {
@@ -54,7 +57,7 @@ export const useInsights = (data: FinancialData | null) => {
         timestamp: Date.now(),
       };
       localStorage.setItem(INSIGHTS_CACHE_KEY, JSON.stringify(cacheToStore));
-      
+
     } catch (err) {
       setError('Failed to generate AI insights. Please check your API key.');
       console.error(err);

@@ -240,6 +240,13 @@ async function importSampleData() {
     console.log(`💾 Sample data saved to: ${DB_STORAGE_PATH}`);
     console.log('✅ Import complete! The application will load this data automatically.');
     
+    // Write a version marker for the frontend to bust caches (dev helper)
+    try {
+      const versionFile = path.resolve(process.cwd(), './public/db-version.txt');
+      await fs.writeFile(versionFile, `${Date.now()}`);
+      console.log('🔖 DB version bumped.');
+    } catch {}
+    
   } catch (error) {
     console.error('❌ Error during import:', error.message);
     console.error('Please ensure the export_202501..202512.csv file is in the public/ directory.');

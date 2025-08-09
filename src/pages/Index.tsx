@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useFinancialData } from '@/hooks/useFinancialData';
 import { Header } from '@/components/Header';
@@ -12,9 +12,11 @@ import { useToast } from '@/hooks/use-toast';
 import { TransactionDetailModal } from '@/components/TransactionDetailModal';
 import { Transaction } from '@/types/financial';
 import { Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const Index = () => {
   const [darkMode, setDarkMode] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { toast } = useToast();
   const [isDetailModalOpen, setDetailModalOpen] = useState(false);
   const [modalData, setModalData] = useState<{ title: string; transactions: Transaction[] }>({ title: '', transactions: [] });
@@ -33,7 +35,17 @@ const Index = () => {
     selectedMonth,
     setSelectedMonth,
     categoryKeywords,
+    loadSample,
   } = useFinancialData();
+
+  useEffect(() => {
+    // Initialize theme from localStorage or system preference
+    const stored = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = stored ? stored === 'dark' : prefersDark;
+    setDarkMode(isDark);
+    document.documentElement.classList.toggle('dark', isDark);
+  }, []);
 
   useEffect(() => {
     if (error) {
@@ -68,8 +80,12 @@ const Index = () => {
   };
 
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    document.documentElement.classList.toggle('dark');
+    setDarkMode(prev => {
+      const next = !prev;
+      document.documentElement.classList.toggle('dark', next);
+      localStorage.setItem('theme', next ? 'dark' : 'light');
+      return next;
+    });
   };
 
   const handleShowDetails = (title: string, transactions: Transaction[]) => {
@@ -88,38 +104,54 @@ const Index = () => {
 
   if (!data) {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-background p-4">
-            <div className="text-center space-y-4">
-                <h2 className="text-2xl font-bold">No Data Loaded</h2>
-                <p className="text-muted-foreground">Upload a CSV file or load the sample data to begin.</p>
-                 <label className="group cursor-pointer">
-                    <input type="file" accept=".csv" className="hidden" onChange={(e) => e.target.files && handleUpload(e.target.files[0])} />
-                    <div className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary/90">
-                        Upload CSV
-                    </div>
-                </label>
-            </div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-background p-4">
+        <div className="text-center space-y-5 max-w-lg">
+          <h2 className="text-3xl font-bold">No Data Loaded</h2>
+          <p className="text-muted-foreground">Upload a CSV file or load the sample data to begin exploring your financial health.</p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <label className="group cursor-pointer">
+              <input ref={fileInputRef} type="file" accept=".csv" className="hidden" onChange={(e) => e.target.files && handleUpload(e.target.files[0])} />
+              <Button className="w-56">Upload CSV</Button>
+            </label>
+            
+            <Button
+              variant="secondary"
+              className="w-56"
+              onClick={async () => {
+                const ok = await loadSample();
+                if (ok) {
+                  toast({ title: 'Sample Data Loaded' });
+                } else {
+                  toast({ title: 'Failed to Load Sample', variant: 'destructive' });
+                }
+              }}
+            >
+              Load Sample Data
+            </Button>
+          </div>
         </div>
+      </div>
     );
   }
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'dark' : ''} bg-background`}>
+    <div className={`min-h-screen bg-background`}>
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <Header onUpload={handleUpload} onExport={handleExport} darkMode={darkMode} onToggleDarkMode={toggleDarkMode} />
 
         <Tabs defaultValue="overview" className="space-y-6">
           <div className="flex flex-col sm:flex-row gap-4 items-center">
-              <TabsList className="grid w-full grid-cols-3 sm:w-auto sm:grid-cols-5">
-                  <TabsTrigger value="overview">Overview</TabsTrigger>
-                  <TabsTrigger value="revenue">Revenue</TabsTrigger>
-                  <TabsTrigger value="expenses">Expenses</TabsTrigger>
-                  <TabsTrigger value="projects">Projects</TabsTrigger>
-                  <TabsTrigger value="insights">Insights</TabsTrigger>
-              </TabsList>
-              <div className="w-full sm:w-auto flex-grow sm:flex-grow-0">
-                  <DateFilter selectedMonth={selectedMonth} availableMonths={availableMonths} onMonthChange={setSelectedMonth} />
-              </div>
+            <TabsList className="grid w-full grid-cols-3 sm:w-auto sm:grid-cols-5">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="revenue">Revenue</TabsTrigger>
+              <TabsTrigger value="expenses">Expenses</TabsTrigger>
+              <TabsTrigger value="projects">Projects</TabsTrigger>
+              <TabsTrigger value="insights">Insights</TabsTrigger>
+            </TabsList>
+            <div className="w-full sm:w-auto flex-grow sm:flex-grow-0">
+              <DateFilter selectedMonth={selectedMonth} availableMonths={availableMonths} onMonthChange={setSelectedMonth} />
+            </div>
           </div>
 
           <TabsContent value="overview">
@@ -138,7 +170,7 @@ const Index = () => {
             <Insights data={data} categoryData={categoryData} projectData={projectData} monthlyData={monthlyData} />
           </TabsContent>
         </Tabs>
-        
+
         <TransactionDetailModal
           isOpen={isDetailModalOpen}
           onOpenChange={setDetailModalOpen}
@@ -147,7 +179,7 @@ const Index = () => {
           categoryKeywords={categoryKeywords}
           onUpdateCategory={(id, category) => {
             updateTransactionCategory(id, category);
-            toast({ title: "Category Updated" });
+            toast({ title: 'Category Updated' });
           }}
         />
       </div>

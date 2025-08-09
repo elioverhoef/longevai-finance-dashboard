@@ -10,6 +10,21 @@ export interface Transaction {
   project?: string;
 }
 
+export interface ReceivableInvoice {
+  invoiceId: string;
+  client: string;
+  issueDate: string;
+  invoicedAmount: number;
+  paidAmount: number;
+  outstandingAmount: number;
+  daysOutstanding: number;
+}
+
+export interface ReceivablesData {
+  totalOutstanding: number;
+  invoices: ReceivableInvoice[];
+}
+
 export interface FinancialData {
   allTransactions: Transaction[];
   totalRevenue: number;
@@ -17,6 +32,7 @@ export interface FinancialData {
   netProfit: number;
   currentBalance: number;
   outstandingReceivables: number;
+  receivables?: ReceivablesData;
 }
 
 export interface CategoryData {

@@ -22,8 +22,8 @@ const formatCurrency = (amount: number) =>
 function extractPayee(description: string): string {
   // Use the first line, up to the first number or special char, as payee/counterparty
   const firstLine = (description || '').split('\n')[0].trim();
-  // Remove unnecessary escapes for ( ) [ ]
-  const match = firstLine.match(/^[^\d,.;:!?@#\-()\]}]+/);
+  // Match consecutive characters until a digit or punctuation/grouping symbol is found
+  const match = firstLine.match(/^[^\d,.;:!?@#()\[\]{}-]+/);
   return match ? match[0].trim() : firstLine;
 }
 

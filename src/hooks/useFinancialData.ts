@@ -51,7 +51,7 @@ export const useFinancialData = () => {
     if (isReady) {
       setLoading(true);
       const dbData = loadFinancialData();
-      
+
       if (!dbData && !localStorage.getItem('longevai_sample_loaded')) {
         // Try to load sample data if no data exists
         const sampleLoaded = await loadSampleData();
@@ -89,8 +89,6 @@ export const useFinancialData = () => {
       setLoading(false);
     }
   }, [isReady, saveFinancialData, clearDatabase]);
-
-
 
   const uploadCSV = useCallback(async (file: File) => {
     const reader = new FileReader();
@@ -196,6 +194,18 @@ export const useFinancialData = () => {
     return Array.from(months).sort().reverse();
   }, [data]);
 
+  const loadSample = useCallback(async (): Promise<boolean> => {
+    setLoading(true);
+    setError(null);
+    try {
+      const ok = await loadSampleData();
+      if (!ok) setError('Failed to load sample data.');
+      return ok;
+    } finally {
+      setLoading(false);
+    }
+  }, [loadSampleData]);
+
   return {
     data,
     filteredData,
@@ -210,5 +220,6 @@ export const useFinancialData = () => {
     selectedMonth,
     setSelectedMonth,
     categoryKeywords,
+    loadSample,
   };
 };

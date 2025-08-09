@@ -30,19 +30,13 @@ interface CustomTooltipProps {
 const CustomTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white/95 backdrop-blur-md border border-white/20 rounded-2xl p-4 shadow-2xl">
-        <div className="flex items-center gap-2 mb-2">
-          <Sparkles className="w-4 h-4 text-purple-500" />
-          <p className="font-semibold text-gray-800">{label}</p>
-        </div>
+      <div className="bg-white/95 backdrop-blur-md border border-white/20 rounded-xl p-3 shadow">
+        <div className="mb-1 font-semibold text-gray-800">{label}</div>
         {payload.map((entry, index) => (
-          <div key={index} className="flex items-center gap-2">
-            <div 
-              className="w-3 h-3 rounded-full" 
-              style={{ backgroundColor: entry.color }}
-            />
-            <span className="text-sm text-gray-600">
-              {entry.name}: <span className="font-bold">{typeof entry.value === 'number' ? entry.value.toLocaleString() : entry.value}</span>
+          <div key={index} className="flex items-center gap-2 text-sm text-gray-700">
+            <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: entry.color }} />
+            <span>
+              {entry.name}: <span className="font-semibold">{typeof entry.value === 'number' ? entry.value.toLocaleString() : entry.value}</span>
             </span>
           </div>
         ))}
@@ -67,21 +61,10 @@ export const SimpleBarChart = <T extends object = { [key: string]: string | numb
   color?: string;
   showAllLabels?: boolean;
 }) => {
-  const [animationClass, setAnimationClass] = useState('');
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimationClass('chart-3d');
-    }, 100);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div className={`w-full h-80 relative ${animationClass}`}>
+    <div className={`w-full h-80 relative`}>
       {title && (
-        <h3 className="text-lg font-semibold mb-4 text-center bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-          {title}
-        </h3>
+        <h3 className="text-lg font-semibold mb-4 text-center">{title}</h3>
       )}
       <div className="relative rounded-2xl h-64">
         <ResponsiveContainer width="100%" height="100%">
@@ -92,31 +75,20 @@ export const SimpleBarChart = <T extends object = { [key: string]: string | numb
                 <stop offset="100%" stopColor={color} stopOpacity={0.3} />
               </linearGradient>
             </defs>
-            <CartesianGrid 
-              strokeDasharray="3 3" 
-              stroke="rgba(99, 102, 241, 0.1)" 
-            />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(99, 102, 241, 0.1)" />
             <XAxis 
               dataKey={xAxisKey as string} 
               interval={showAllLabels ? 0 : 'preserveStartEnd'}
-              angle={showAllLabels ? -45 : 0}
+              angle={showAllLabels ? -30 : 0}
               textAnchor={showAllLabels ? 'end' : 'middle'}
-              height={showAllLabels ? 80 : 60}
+              height={showAllLabels ? 60 : 40}
               fontSize={12}
               stroke="rgba(99, 102, 241, 0.7)"
               tick={{ fill: 'rgba(99, 102, 241, 0.8)' }}
             />
-            <YAxis 
-              stroke="rgba(99, 102, 241, 0.7)"
-              tick={{ fill: 'rgba(99, 102, 241, 0.8)' }}
-            />
+            <YAxis stroke="rgba(99, 102, 241, 0.7)" tick={{ fill: 'rgba(99, 102, 241, 0.8)' }} />
             <Tooltip content={<CustomTooltip />} />
-            <Bar 
-              dataKey={dataKey as string} 
-              fill={`url(#barGradient-${dataKey as string})`}
-              radius={[8, 8, 0, 0]}
-              className="drop-shadow-lg"
-            />
+            <Bar dataKey={dataKey as string} fill={`url(#barGradient-${dataKey as string})`} radius={[6, 6, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -137,21 +109,10 @@ export const SimplePieChart = <T extends object = { [key: string]: string | numb
   title?: string;
   colors?: string[];
 }) => {
-  const [animationClass, setAnimationClass] = useState('');
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimationClass('chart-3d');
-    }, 200);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div className={`w-full h-80 relative ${animationClass}`}>
+    <div className={`w-full h-80 relative`}>
       {title && (
-        <h3 className="text-lg font-semibold mb-4 text-center bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-          {title}
-        </h3>
+        <h3 className="text-lg font-semibold mb-4 text-center">{title}</h3>
       )}
       <div className="relative rounded-2xl h-64">
         <ResponsiveContainer width="100%" height="100%">
@@ -174,15 +135,9 @@ export const SimplePieChart = <T extends object = { [key: string]: string | numb
               nameKey={nameKey as string}
               label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(1)}%`}
               labelLine={false}
-              animationBegin={0}
-              animationDuration={1500}
             >
               {data.map((_, index) => (
-                <Cell 
-                  key={`cell-${index}`} 
-                  fill={`url(#pieGradient-${index % colors.length})`}
-                  className="hover:opacity-80 transition-all duration-300 drop-shadow-lg"
-                />
+                <Cell key={`cell-${index}`} fill={`url(#pieGradient-${index % colors.length})`} />
               ))}
             </Pie>
             <Tooltip content={<CustomTooltip />} />
@@ -206,21 +161,10 @@ export const SimpleLineChart = <T extends object = { [key: string]: string | num
   title?: string;
   colors?: string[];
 }) => {
-  const [animationClass, setAnimationClass] = useState('');
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimationClass('chart-3d');
-    }, 300);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div className={`w-full h-80 relative ${animationClass}`}>
+    <div className={`w-full h-80 relative`}>
       {title && (
-        <h3 className="text-lg font-semibold mb-4 text-center bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-          {title}
-        </h3>
+        <h3 className="text-lg font-semibold mb-4 text-center">{title}</h3>
       )}
       <div className="relative rounded-2xl h-64">
         <ResponsiveContainer width="100%" height="100%">
@@ -233,50 +177,20 @@ export const SimpleLineChart = <T extends object = { [key: string]: string | num
                 </linearGradient>
               ))}
             </defs>
-            <CartesianGrid 
-              strokeDasharray="3 3" 
-              stroke="rgba(99, 102, 241, 0.1)" 
-            />
-            <XAxis 
-              dataKey={xAxisKey as string} 
-              stroke="rgba(99, 102, 241, 0.7)"
-              tick={{ fill: 'rgba(99, 102, 241, 0.8)' }}
-            />
-            <YAxis 
-              stroke="rgba(99, 102, 241, 0.7)"
-              tick={{ fill: 'rgba(99, 102, 241, 0.8)' }}
-            />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(99, 102, 241, 0.1)" />
+            <XAxis dataKey={xAxisKey as string} stroke="rgba(99, 102, 241, 0.7)" tick={{ fill: 'rgba(99, 102, 241, 0.8)' }} />
+            <YAxis stroke="rgba(99, 102, 241, 0.7)" tick={{ fill: 'rgba(99, 102, 241, 0.8)' }} />
             <Tooltip content={<CustomTooltip />} />
-            <Legend 
-              wrapperStyle={{ 
-                paddingTop: '20px',
-                fontSize: '14px',
-                fontWeight: '500'
-              }}
-            />
+            <Legend wrapperStyle={{ paddingTop: '12px', fontSize: '13px', fontWeight: '500' }} />
             {dataKeys.map((key, index) => (
               <Line 
                 key={key as string}
                 type="monotone" 
                 dataKey={key as string} 
                 stroke={colors[index % colors.length]} 
-                strokeWidth={3}
-                dot={{ 
-                  r: 4, 
-                  fill: colors[index % colors.length],
-                  strokeWidth: 2,
-                  stroke: '#fff'
-                }}
-                activeDot={{ 
-                  r: 6, 
-                  fill: colors[index % colors.length],
-                  stroke: '#fff',
-                  strokeWidth: 2,
-                  className: 'drop-shadow-lg'
-                }}
-                className="drop-shadow-sm"
-                animationDuration={1500}
-                animationBegin={index * 200}
+                strokeWidth={2.5}
+                dot={{ r: 3.5, fill: colors[index % colors.length], strokeWidth: 2, stroke: '#fff' }}
+                activeDot={{ r: 5, fill: colors[index % colors.length], stroke: '#fff', strokeWidth: 2 }}
               />
             ))}
           </LineChart>
@@ -301,21 +215,10 @@ export const SimpleStackedBarChart = <T extends object = { [key: string]: string
   colors?: string[];
   showAllLabels?: boolean;
 }) => {
-  const [animationClass, setAnimationClass] = useState('');
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimationClass('chart-3d');
-    }, 150);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div className={`w-full h-80 relative ${animationClass}`}>
+    <div className={`w-full h-80 relative`}>
       {title && (
-        <h3 className="text-lg font-semibold mb-4 text-center bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-          {title}
-        </h3>
+        <h3 className="text-lg font-semibold mb-4 text-center">{title}</h3>
       )}
       <div className="relative rounded-2xl h-64">
         <ResponsiveContainer width="100%" height="100%">
@@ -328,43 +231,22 @@ export const SimpleStackedBarChart = <T extends object = { [key: string]: string
                 </linearGradient>
               ))}
             </defs>
-            <CartesianGrid 
-              strokeDasharray="3 3" 
-              stroke="rgba(99, 102, 241, 0.1)" 
-            />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(99, 102, 241, 0.1)" />
             <XAxis 
               dataKey={xAxisKey as string} 
               interval={showAllLabels ? 0 : 'preserveStartEnd'}
-              angle={showAllLabels ? -45 : 0}
+              angle={showAllLabels ? -30 : 0}
               textAnchor={showAllLabels ? 'end' : 'middle'}
-              height={showAllLabels ? 80 : 60}
+              height={showAllLabels ? 60 : 40}
               fontSize={12}
               stroke="rgba(99, 102, 241, 0.7)"
               tick={{ fill: 'rgba(99, 102, 241, 0.8)' }}
             />
-            <YAxis 
-              stroke="rgba(99, 102, 241, 0.7)"
-              tick={{ fill: 'rgba(99, 102, 241, 0.8)' }}
-            />
+            <YAxis stroke="rgba(99, 102, 241, 0.7)" tick={{ fill: 'rgba(99, 102, 241, 0.8)' }} />
             <Tooltip content={<CustomTooltip />} />
-            <Legend 
-              wrapperStyle={{ 
-                paddingTop: '20px',
-                fontSize: '14px',
-                fontWeight: '500'
-              }}
-            />
+            <Legend wrapperStyle={{ paddingTop: '12px', fontSize: '13px', fontWeight: '500' }} />
             {dataKeys.map((key, index) => (
-              <Bar
-                key={key as string}
-                dataKey={key as string}
-                stackId="a"
-                fill={`url(#stackedBarGradient-${key as string})`}
-                radius={index === dataKeys.length - 1 ? [8, 8, 0, 0] : 0}
-                className="drop-shadow-lg"
-                animationDuration={1500}
-                animationBegin={index * 200}
-              />
+              <Bar key={key as string} dataKey={key as string} stackId="a" fill={`url(#stackedBarGradient-${key as string})`} radius={index === dataKeys.length - 1 ? [6, 6, 0, 0] : 0} />
             ))}
           </BarChart>
         </ResponsiveContainer>
@@ -392,21 +274,10 @@ export const SimpleGroupedBarLineChart = <T extends object = { [key: string]: st
   lineColor?: string;
   showAllLabels?: boolean;
 }) => {
-  const [animationClass, setAnimationClass] = useState('');
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimationClass('chart-3d');
-    }, 150);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div className={`w-full h-80 relative ${animationClass}`}>
+    <div className={`w-full h-80 relative`}>
       {title && (
-        <h3 className="text-lg font-semibold mb-4 text-center bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-          {title}
-        </h3>
+        <h3 className="text-lg font-semibold mb-4 text-center">{title}</h3>
       )}
       <div className="relative rounded-2xl h-64">
         <ResponsiveContainer width="100%" height="100%">
@@ -423,55 +294,24 @@ export const SimpleGroupedBarLineChart = <T extends object = { [key: string]: st
                 <stop offset="100%" stopColor={lineColor} stopOpacity={0.1} />
               </linearGradient>
             </defs>
-            <CartesianGrid 
-              strokeDasharray="3 3" 
-              stroke="rgba(99, 102, 241, 0.1)" 
-            />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(99, 102, 241, 0.1)" />
             <XAxis 
               dataKey={xAxisKey as string} 
               interval={showAllLabels ? 0 : 'preserveStartEnd'}
-              angle={showAllLabels ? -45 : 0}
+              angle={showAllLabels ? -30 : 0}
               textAnchor={showAllLabels ? 'end' : 'middle'}
-              height={showAllLabels ? 80 : 60}
+              height={showAllLabels ? 60 : 40}
               fontSize={12}
               stroke="rgba(99, 102, 241, 0.7)"
               tick={{ fill: 'rgba(99, 102, 241, 0.8)' }}
             />
-            <YAxis 
-              stroke="rgba(99, 102, 241, 0.7)"
-              tick={{ fill: 'rgba(99, 102, 241, 0.8)' }}
-            />
+            <YAxis stroke="rgba(99, 102, 241, 0.7)" tick={{ fill: 'rgba(99, 102, 241, 0.8)' }} />
             <Tooltip content={<CustomTooltip />} />
-            <Legend 
-              wrapperStyle={{ 
-                paddingTop: '20px',
-                fontSize: '14px',
-                fontWeight: '500'
-              }}
-            />
+            <Legend wrapperStyle={{ paddingTop: '12px', fontSize: '13px', fontWeight: '500' }} />
             {barKeys.map((key, index) => (
-              <Bar
-                key={key as string}
-                dataKey={key as string}
-                fill={`url(#groupedBarGradient-${key as string})`}
-                radius={[8, 8, 0, 0]}
-                className="drop-shadow-lg"
-                barSize={32}
-                animationDuration={1500}
-                animationBegin={index * 200}
-              />
+              <Bar key={key as string} dataKey={key as string} fill={`url(#groupedBarGradient-${key as string})`} radius={[6, 6, 0, 0]} barSize={28} />
             ))}
-            <Line
-              type="monotone"
-              dataKey={lineKey as string}
-              stroke={lineColor}
-              strokeWidth={3}
-              dot={{ r: 4, fill: lineColor, strokeWidth: 2, stroke: '#fff' }}
-              activeDot={{ r: 6, fill: lineColor, stroke: '#fff', strokeWidth: 2, className: 'drop-shadow-lg' }}
-              className="drop-shadow-sm"
-              animationDuration={1500}
-              animationBegin={barKeys.length * 200}
-            />
+            <Line type="monotone" dataKey={lineKey as string} stroke={lineColor} strokeWidth={2.5} dot={{ r: 3.5, fill: lineColor, strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 5, fill: lineColor, stroke: '#fff', strokeWidth: 2 }} />
           </BarChart>
         </ResponsiveContainer>
       </div>

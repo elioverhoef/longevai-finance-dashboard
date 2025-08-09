@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Upload, Download, Moon, Sun, Activity } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
@@ -16,20 +16,6 @@ export const Header: React.FC<HeaderProps> = ({
   darkMode,
   onToggleDarkMode
 }) => {
-  // Minimal, elegant particles
-  const [particles, setParticles] = useState<Array<{id: number, x: number, y: number, size: number, delay: number}>>([]);
-
-  useEffect(() => {
-    const newParticles = Array.from({ length: 4 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 2 + 1.5,
-      delay: Math.random() * 3
-    }));
-    setParticles(newParticles);
-  }, []);
-
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -39,34 +25,12 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <div className="relative mb-8 overflow-visible">
-      {/* Glassmorphism Card */}
-      <Card className="relative bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 shadow-lg p-0">
-        {/* Subtle Particle System */}
-        <div className="pointer-events-none absolute inset-0 z-0">
-          {particles.map((particle) => (
-            <div
-              key={particle.id}
-              className="absolute rounded-full opacity-20"
-              style={{
-                left: `${particle.x}%`,
-                top: `${particle.y}%`,
-                width: `${particle.size * 8}px`,
-                height: `${particle.size * 8}px`,
-                background: 'radial-gradient(circle, rgba(99,102,241,0.25), transparent 70%)',
-                filter: 'blur(2px)',
-                animation: `floatY 6s ease-in-out infinite`,
-                animationDelay: `${particle.delay}s`
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Header Content */}
+      <Card className="relative bg-white/70 dark:bg-zinc-900/70 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 shadow p-0">
         <div className="relative z-10 p-3 sm:p-5">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             {/* Brand Section */}
             <div className="flex items-center gap-3 min-w-0 flex-1">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
                 <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
               <div className="flex flex-col justify-center min-w-0">
@@ -88,7 +52,7 @@ export const Header: React.FC<HeaderProps> = ({
                   className="hidden"
                 />
                 <Button 
-                  className="bg-blue-100 hover:bg-blue-200 border border-blue-200 text-blue-700 text-xs px-2 sm:px-3 py-1 h-7 sm:h-8 font-semibold shadow-sm"
+                  className="bg-blue-100 hover:bg-blue-200 border border-blue-200 text-blue-700 text-xs px-2 sm:px-3 py-1 h-7 sm:h-8 font-medium shadow-sm"
                   asChild
                 >
                   <span>
@@ -99,7 +63,7 @@ export const Header: React.FC<HeaderProps> = ({
               </label>
               <Button 
                 onClick={onExport}
-                className="bg-emerald-100 hover:bg-emerald-200 border border-emerald-200 text-emerald-700 text-xs px-2 sm:px-3 py-1 h-7 sm:h-8 font-semibold shadow-sm flex-shrink-0"
+                className="bg-emerald-100 hover:bg-emerald-200 border border-emerald-200 text-emerald-700 text-xs px-2 sm:px-3 py-1 h-7 sm:h-8 font-medium shadow-sm flex-shrink-0"
               >
                 <Download className="w-3 h-3 sm:mr-1" />
                 <span className="hidden sm:inline">Export</span>

@@ -12,22 +12,21 @@ const Papa = require('papaparse');
 const CSV_FILE_PATH = path.resolve(process.cwd(), './public/export_202501..202512.csv');
 const DB_STORAGE_PATH = path.resolve(process.cwd(), './public/sample-db.json');
 
-// Import categorization config
+// Align project and category keywords with frontend
 const categoryKeywords = {
-  'Software Development': ['cursor', 'ai powered ide', 'github', 'digital ocean', 'vercel', 'netlify', 'aws', 'azure', 'google cloud'],
-  'Transportation': ['ovpay.nl', 'ov chipkaart', 'uber', 'taxi', 'transport', 'train', 'bus'],
-  'Professional Services': ['accountant', 'lawyer', 'consultant', 'advisory'],
-  'Mobile/Telecom': ['50plus mobiel', 'mobiel', 'telecom', 'phone', 'internet'],
-  'Tax/Administration': ['taxpas', 'belasting', 'tax', 'administration'],
-  'Equipment/Hardware': ['equipment', 'hardware', 'computer', 'laptop'],
-  'Office Expenses': ['office', 'supplies', 'stationary'],
-  'Marketing/Branding': ['pitch deck', 'branding', 'logo', 'marketing'],
-  'Interest': ['bunq payday', 'interest', 'rente'],
-  'Healthcare': ['medio zorg', 'healthcare', 'medical'],
-  'Consulting Revenue': ['medicapital solutions', 'rebelsai', 'consulting', 'invoice'],
+  'Software & AI Tools': ['hubspot', 'slack', 'google', 'cursor', 'apollo', 'render', 'koyeb', 'claude', 'canva', 'moneybird', 'openai', 'anthropic', 'openrouter', 'twilio', 'coollabs', 'hetzner', 'godaddy', '50plus', 'facebk', 'monday.com'],
+  'Salaries & Freelancers': ['catalin-stefan', 'diogo guedes', 'robijs dubas', 'salary', 'freelance', 'contractor', 'dubas', 'anyhouse', 'niculescu', 'harshit kedia'],
+  'Taxes & Accounting': ['belastingdienst', 'taxpas', 'tax', 'accounting', 'kvk', 'digidentity', 'peter', 'kamer v koophandel'],
+  'Travel & Transport': ['nlov', 'ns groep', 'q park', 'ovpay', 'transavia', 'booking.com', 'bck*ns', 'ns'],
+  'Office & Meetings': ['zettle', 'seats2meet', 'office', 'meeting', 'coworking', 'plnt', 'workplaces'],
+  'Bank & Payment Fees': ['bunq', 'pay.nl', 'sumup', 'stripe', 'bank fee', 'transaction fee', 'mollie'],
+  'Hardware & Assets': ['back market', 'laptop', 'hardware', 'equipment', 'computer'],
+  'Client Revenue': ['medio zorg', 'rebelsai', 'burgermeister', 'qualevita', 'medicapital'],
+  'Food & Groceries': ['albert heijn', 'ozan market', 'soupenzo', 'restaurant', 'griekse taverne', 'lisa', 'vialis', 'weena b.v.', 'dadawan'],
+  'Miscellaneous': ['helios b.v.', 'geniusinvest', 'eq verhoef', '50plus mobiel', 'genius invest']
 };
 
-const projectKeywords = ['Medio Zorg', 'MediCapital Solutions', 'RebelsAI', 'Patrick Burgermeister'];
+const projectKeywords = ['Medio Zorg', 'Qualevita', 'RebelsAI', 'Patrick Burgermeister', 'V&P Vastgoed', 'RegenEra Ventures', 'Curista', 'MatrixMeesters', 'Astralift', 'MediCapital Solutions'];
 
 function normalizeDescription(desc) {
   return desc.replace(/\s+/g, ' ').replace(/\n/g, ' ').trim().toLowerCase();
@@ -47,6 +46,12 @@ function categorizeTransaction(description, ledgerCategory) {
   }
 
   if (normalizedLedgerCategory) {
+    // Map known ledger section names to canonical categories
+    const lc = normalizedLedgerCategory.toLowerCase();
+    if (lc.startsWith('bank charges')) return 'Bank & Payment Fees';
+    if (lc.startsWith('payable vat') || lc.startsWith('sales tax')) return 'Taxes & Accounting';
+    if (lc.startsWith('uncategorized income') || lc.startsWith('revenue')) return 'Client Revenue';
+    if (lc.startsWith('office') || lc.includes('meeting')) return 'Office & Meetings';
     return normalizedLedgerCategory;
   }
 
@@ -70,10 +75,13 @@ function extractProject(description) {
 }
 
 function parseCSVData(csvContent) {
-  const sections = csvContent.split(/\n(?=[A-Za-z\s()0-9].*,,,,)/);
+  // Split only at section headers (not at Total lines)
+  const sections = csvContent.split(/\n(?=(?!Total,)[A-Za-z][^\n]*,,,,)/);
   let rawBankTransactions = [];
   let outstandingReceivables = 0;
+  let actualBankBalance = 0;
   const ledgerCategoryMap = new Map();
+  const receivableInvoices = [];
 
   for (let i = 0; i < sections.length; i++) {
     const section = sections[i].trim();
@@ -82,13 +90,12 @@ function parseCSVData(csvContent) {
 
     const headerLine = lines[0];
     const sectionName = headerLine.split(',')[0].trim();
-    
-    // For Accounts receivable section, we need to include the Total line that might be in the next section
+
+    // For Accounts receivable section, include the Total line that might appear early in next section
     let allSectionLines = lines;
     if (sectionName === 'Accounts receivable' && i + 1 < sections.length) {
       const nextSection = sections[i + 1].trim();
       const nextSectionLines = nextSection.split('\n');
-      // Check if the first few lines of next section contain the Total line
       for (let j = 0; j < Math.min(3, nextSectionLines.length); j++) {
         if (nextSectionLines[j].trim().startsWith('Total,')) {
           allSectionLines.push(nextSectionLines[j]);
@@ -96,7 +103,7 @@ function parseCSVData(csvContent) {
         }
       }
     }
-    
+
     const csvData = allSectionLines.slice(1).join('\n');
 
     const parsed = Papa.parse(csvData, {
@@ -120,10 +127,49 @@ function parseCSVData(csvContent) {
           }
         }
       }
+      // Build invoice entries for receivables
+      for (const row of transactions) {
+        // Positive entries look like invoices (INV ...), negative like payments
+        const isInvoice = row.Reference?.startsWith('INV ');
+        const isPayment = row.Reference?.startsWith('TRA ');
+        const desc = (row.Description || '').replace(/\n/g, ' ');
+        // Extract invoice id pattern like 2025-0009 from Reference or Description
+        const idMatch = (row.Reference || desc).match(/\b(\d{4}-\d{4})\b/);
+        const invoiceId = idMatch ? idMatch[1] : '';
+        if (isInvoice && invoiceId) {
+          const amount = parseFloat(row.Amount) || 0;
+          receivableInvoices.push({
+            invoiceId,
+            client: (row.Reference || '').split(' - ').pop() || 'Unknown',
+            issueDate: row.Date,
+            invoicedAmount: amount,
+            paidAmount: 0,
+            outstandingAmount: amount,
+            daysOutstanding: Math.floor((Date.now() - new Date(row.Date).getTime()) / (1000 * 3600 * 24)),
+          });
+        } else if (isPayment && invoiceId) {
+          const payAmount = Math.abs(parseFloat(row.Amount) || 0);
+          const idx = receivableInvoices.findIndex(inv => inv.invoiceId === invoiceId);
+          if (idx >= 0) {
+            receivableInvoices[idx].paidAmount += payAmount;
+            receivableInvoices[idx].outstandingAmount = Math.max(0, receivableInvoices[idx].invoicedAmount - receivableInvoices[idx].paidAmount);
+          }
+        }
+      }
     }
 
     if (sectionName.startsWith('Bunq NL75BUNQ')) {
       rawBankTransactions = rawBankTransactions.concat(transactions);
+      const totalLine = allSectionLines.find(line => line.trim().startsWith('Total,'));
+      if (totalLine) {
+        const totalParts = totalLine.split(',');
+        if (totalParts.length >= 5) {
+          const totalValue = totalParts[4].trim();
+          if (totalValue && totalValue !== '') {
+            actualBankBalance = parseFloat(totalValue) || 0;
+          }
+        }
+      }
     } else if (sectionName && !['Transactions to be classified', 'Settlements', 'Cash control', 'Unbilled revenue', 'Payable VAT', 'Sales tax paid or received', 'Accounts receivable'].includes(sectionName)) {
       transactions.forEach(t => {
         const cleanDescription = normalizeDescription((t.Description || '').split('\n')[0]);
@@ -155,14 +201,19 @@ function parseCSVData(csvContent) {
 
   const totalRevenue = allTransactions.filter(t => t.amount > 0).reduce((sum, t) => sum + t.amount, 0);
   const totalExpenses = Math.abs(allTransactions.filter(t => t.amount < 0).reduce((sum, t) => sum + t.amount, 0));
+  const netProfit = totalRevenue - totalExpenses;
 
   return {
     allTransactions,
     totalRevenue,
     totalExpenses,
-    netProfit: totalRevenue - totalExpenses,
-    currentBalance: totalRevenue - totalExpenses,
+    netProfit,
+    currentBalance: actualBankBalance,
     outstandingReceivables,
+    receivables: {
+      totalOutstanding: receivableInvoices.reduce((s, inv) => s + Math.max(0, inv.outstandingAmount), 0),
+      invoices: receivableInvoices.filter(inv => inv.outstandingAmount > 0)
+    }
   };
 }
 
@@ -174,19 +225,17 @@ async function importSampleData() {
     const stat = await fs.stat(CSV_FILE_PATH);
     console.log(`✅ CSV file found! Size: ${(stat.size / 1024).toFixed(2)} KB`);
     
-    // Read and parse the CSV file
     const csvContent = await fs.readFile(CSV_FILE_PATH, 'utf-8');
     console.log('📖 Reading CSV content...');
     
-    // Parse the financial data
     const financialData = parseCSVData(csvContent);
     console.log(`📊 Parsed ${financialData.allTransactions.length} transactions`);
     console.log(`💰 Total Revenue: €${financialData.totalRevenue.toFixed(2)}`);
     console.log(`💸 Total Expenses: €${financialData.totalExpenses.toFixed(2)}`);
     console.log(`📈 Net Profit: €${financialData.netProfit.toFixed(2)}`);
-    console.log(`🏦 Outstanding Receivables: €${financialData.outstandingReceivables.toFixed(2)}`);
+    console.log(`🏦 Current Balance (Bunq Total): €${financialData.currentBalance.toFixed(2)}`);
+    console.log(`📬 Outstanding Receivables: €${financialData.outstandingReceivables.toFixed(2)}`);
     
-    // Save processed data to a JSON file for the frontend to load
     await fs.writeFile(DB_STORAGE_PATH, JSON.stringify(financialData, null, 2));
     console.log(`💾 Sample data saved to: ${DB_STORAGE_PATH}`);
     console.log('✅ Import complete! The application will load this data automatically.');

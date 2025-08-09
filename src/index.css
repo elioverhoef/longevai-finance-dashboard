@@ -57,7 +57,7 @@
     /* Animations & Effects */
     --shadow-glow: 0 0 40px hsl(239 68% 68% / 0.3);
     --shadow-card: 0 10px 30px -10px hsl(239 68% 68% / 0.1);
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.2s ease;
 
     /* Sidebar */
     --sidebar-background: 255 255 255;
@@ -87,7 +87,7 @@
     --secondary-foreground: 210 40% 98%;
 
     --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted-foreground: 210 40% 98%;
 
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
@@ -164,6 +164,12 @@
   @keyframes floating {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-20px); }
+  }
+
+  /* Additional floatY animation used in Header particles */
+  @keyframes floatY {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
   }
 
   /* Pulse glow effect */
@@ -499,48 +505,21 @@
     }
   }
 
-  /* Typography Glow Effects */
-  .text-glow {
-    text-shadow: 
-      0 0 10px rgba(99, 102, 241, 0.8),
-      0 0 20px rgba(99, 102, 241, 0.6),
-      0 0 30px rgba(99, 102, 241, 0.4);
+  /* Grid pattern utility (used in login) */
+  .bg-grid-pattern {
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 50px 50px;
   }
 
-  /* Interactive Hover Zones */
-  .hover-zone {
-    position: relative;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Shake animation utility (used in login error) */
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
   }
-
-  .hover-zone::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, transparent, rgba(99, 102, 241, 0.1), transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-  }
-
-  .hover-zone:hover::before {
-    opacity: 1;
-  }
-
-  /* Fade in animation for dynamic content */
-  .animate-fade-in {
-    animation: fade-in-quick 0.3s ease-out forwards;
-    opacity: 0;
-  }
-
-  @keyframes fade-in-quick {
-    to {
-      opacity: 1;
-    }
-  }
+  .animate-shake { animation: shake 0.5s ease-in-out; }
 }
 
 @layer base {
@@ -693,4 +672,8 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
 }

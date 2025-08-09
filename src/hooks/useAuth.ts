@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const CORRECT_PASSWORD = 'LongevInfiniteLife';
+const CORRECT_PASSWORD = import.meta.env.VITE_LOGIN_PASSWORD || 'LongevInfiniteLife';
 const AUTH_STORAGE_KEY = 'longevai_authenticated';
 
 export function useAuth() {

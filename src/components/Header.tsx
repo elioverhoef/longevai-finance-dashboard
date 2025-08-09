@@ -22,6 +22,10 @@ export const Header: React.FC<HeaderProps> = ({
     if (file) {
       onUpload(file);
     }
+    // allow re-uploading the same file by resetting the input value
+    if (event.target) {
+      event.target.value = '';
+    }
   };
 
   return (

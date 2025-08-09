@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, type DragEvent } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useFinancialData } from '@/hooks/useFinancialData';
 import { Header } from '@/components/Header';
@@ -21,6 +21,7 @@ const Index = () => {
   const { toast } = useToast();
   const [isDetailModalOpen, setDetailModalOpen] = useState(false);
   const [modalData, setModalData] = useState<{ title: string; transactions: Transaction[] }>({ title: '', transactions: [] });
+  const [isDragOver, setIsDragOver] = useState(false);
   
   const {
     data,
@@ -75,9 +76,12 @@ const Index = () => {
     toast({ title: "Export Complete" });
   };
 
-  const handleUpload = (file: File) => {
-    uploadCSV(file);
-    toast({ title: "Upload Started", description: "Processing your CSV file..." });
+  const handleUpload = async (file: File) => {
+    toast({ title: "Upload Started", description: "Processing your file..." });
+    const ok = await uploadCSV(file);
+    if (ok) {
+      toast({ title: "Upload Complete", description: "Your data has been imported." });
+    }
   };
 
   const toggleDarkMode = () => {
@@ -95,6 +99,18 @@ const Index = () => {
     setDetailModalOpen(true);
   };
 
+  const handleDragOver = (e: DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+  const handleDragLeave = () => setIsDragOver(false);
+  const handleDrop = (e: DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    const file = e.dataTransfer?.files?.[0];
+    if (file) handleUpload(file);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-background">
@@ -108,17 +124,38 @@ const Index = () => {
       <div className="min-h-screen flex items-center justify-center bg-gradient-background p-4">
         <div className="text-center space-y-5 max-w-lg">
           <h2 className="text-3xl font-bold">No Data Loaded</h2>
-          <p className="text-muted-foreground">Upload a CSV file or load the sample data to begin exploring your financial health.</p>
+          <p className="text-muted-foreground">Upload a CSV/XLSX file or load the sample data to begin exploring your financial health.</p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div
+            className={`flex flex-col sm:flex-row items-center justify-center gap-3`}
+            onDragOver={handleDragOver}
+            onDragEnter={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
             <input
               ref={fileInputRef}
               type="file"
               accept=".csv,.xlsx"
               className="hidden"
-              onChange={(e) => e.target.files && handleUpload(e.target.files[0])}
+              onChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  handleUpload(e.target.files[0]);
+                }
+                // reset to allow re-upload of same file
+                e.currentTarget.value = '';
+              }}
             />
-            <Button className="w-56" onClick={() => fileInputRef.current?.click()}>Upload File</Button>
+            <div
+              className={`w-full sm:w-auto`}
+            >
+              <Button
+                className={`w-56 ${isDragOver ? 'ring-2 ring-primary ring-offset-2' : ''}`}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                Upload File
+              </Button>
+            </div>
             
             <Button
               variant="secondary"

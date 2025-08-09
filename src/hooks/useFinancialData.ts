@@ -136,7 +136,7 @@ export const useFinancialData = () => {
     }
   }, [isReady, saveFinancialData, clearDatabase]);
 
-  const uploadCSV = useCallback(async (file: File) => {
+  const uploadCSV = useCallback(async (file: File): Promise<boolean> => {
     const lower = (file.name || '').toLowerCase();
     const isXlsx = lower.endsWith('.xlsx');
     try {
@@ -159,16 +159,18 @@ export const useFinancialData = () => {
         if (!combined) throw new Error('The selected Excel file contains no data.');
         await processAndSaveData(combined);
         localStorage.removeItem('longevai_sample_loaded');
-        return;
+        return true;
       }
       // Fallback to CSV text
       const text = await file.text();
       await processAndSaveData(text);
       localStorage.removeItem('longevai_sample_loaded');
+      return true;
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to import file';
       setError(message);
       console.error(err);
+      return false;
     }
   }, [processAndSaveData]);
 

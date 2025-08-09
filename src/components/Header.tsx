@@ -16,6 +16,7 @@ export const Header: React.FC<HeaderProps> = ({
   darkMode,
   onToggleDarkMode
 }) => {
+    const fileInputRef = React.useRef<HTMLInputElement | null>(null);
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -44,18 +45,22 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
             {/* Action Buttons */}
             <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-              <label className="cursor-pointer flex-shrink-0">
-                <input
-                  type="file"
-                  accept=".csv,.xlsx"
-                  onChange={handleFileUpload}
-                  className="hidden"
-                />
-                <Button variant="secondary" size="sm" className="px-3 h-8">
-                  <Upload className="w-3 h-3 sm:mr-1" />
-                  <span className="hidden sm:inline">Upload</span>
-                </Button>
-              </label>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".csv,.xlsx"
+                onChange={handleFileUpload}
+                className="hidden"
+              />
+              <Button
+                variant="secondary"
+                size="sm"
+                className="px-3 h-8"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <Upload className="w-3 h-3 sm:mr-1" />
+                <span className="hidden sm:inline">Upload</span>
+              </Button>
               <Button variant="outline" size="sm" onClick={onExport} className="px-3 h-8">
                 <Download className="w-3 h-3 sm:mr-1" />
                 <span className="hidden sm:inline">Export</span>

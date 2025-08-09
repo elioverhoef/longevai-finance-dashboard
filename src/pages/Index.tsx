@@ -111,10 +111,14 @@ const Index = () => {
           <p className="text-muted-foreground">Upload a CSV file or load the sample data to begin exploring your financial health.</p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <label className="group cursor-pointer">
-              <input ref={fileInputRef} type="file" accept=".csv,.xlsx" className="hidden" onChange={(e) => e.target.files && handleUpload(e.target.files[0])} />
-              <Button className="w-56">Upload File</Button>
-            </label>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".csv,.xlsx"
+              className="hidden"
+              onChange={(e) => e.target.files && handleUpload(e.target.files[0])}
+            />
+            <Button className="w-56" onClick={() => fileInputRef.current?.click()}>Upload File</Button>
             
             <Button
               variant="secondary"

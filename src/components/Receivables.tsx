@@ -10,7 +10,7 @@ interface ReceivablesProps {
 }
 
 export const Receivables: React.FC<ReceivablesProps> = ({ data }) => {
-  const invoices = data.receivables?.invoices || [];
+  const invoices = useMemo(() => data.receivables?.invoices || [], [data.receivables?.invoices]);
   const totalOutstanding = data.receivables?.totalOutstanding || 0;
 
   const byClient = useMemo(() => {
@@ -134,7 +134,16 @@ export const Receivables: React.FC<ReceivablesProps> = ({ data }) => {
                         €{inv.outstandingAmount.toFixed(2)}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-right">{inv.daysOutstanding}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <span>{inv.daysOutstanding}</span>
+                        {inv.outstandingAmount > 0 && (
+                          <Badge variant={inv.daysOutstanding > 30 ? 'destructive' : 'secondary'} className={inv.daysOutstanding > 30 ? '' : 'bg-emerald-500/15 text-emerald-600'}>
+                            {inv.daysOutstanding > 30 ? 'Expired' : 'Open'}
+                          </Badge>
+                        )}
+                      </div>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

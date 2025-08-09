@@ -112,8 +112,8 @@ const Index = () => {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <label className="group cursor-pointer">
-              <input ref={fileInputRef} type="file" accept=".csv" className="hidden" onChange={(e) => e.target.files && handleUpload(e.target.files[0])} />
-              <Button className="w-56">Upload CSV</Button>
+              <input ref={fileInputRef} type="file" accept=".csv,.xlsx" className="hidden" onChange={(e) => e.target.files && handleUpload(e.target.files[0])} />
+              <Button className="w-56">Upload File</Button>
             </label>
             
             <Button

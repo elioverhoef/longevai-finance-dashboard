@@ -20,10 +20,8 @@ const formatCurrency = (amount: number) =>
   new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount);
 
 function extractPayee(description: string): string {
-  // Use the first line, up to the first number or special char, as payee/counterparty
   const firstLine = (description || '').split('\n')[0].trim();
-  // Match consecutive characters until a digit or punctuation/grouping symbol is found
-  const match = firstLine.match(/^[^\d,.;:!?@#()\[\]{}-]+/);
+  const match = firstLine.match(/^[A-Za-zÀ-ÖØ-öø-ÿ&'\s.-]+/);
   return match ? match[0].trim() : firstLine;
 }
 

@@ -13,7 +13,7 @@ export const useFinancialData = () => {
 
   const loadSampleData = useCallback(async () => {
     try {
-      const response = await fetch('/sample-db.json');
+      const response = await fetch('/sample-db.json', { cache: 'no-store' });
       if (response.ok) {
         const sampleData = await response.json();
         if (sampleData.allTransactions && sampleData.allTransactions.length > 1) {
@@ -28,7 +28,7 @@ export const useFinancialData = () => {
         }
       }
 
-      const csvResponse = await fetch('/export_202501..202512.csv');
+      const csvResponse = await fetch('/export_202501..202512.csv', { cache: 'no-store' });
       if (csvResponse.ok) {
         const csvContent = await csvResponse.text();
         const financialData = parseCSVData(csvContent);
@@ -62,7 +62,9 @@ export const useFinancialData = () => {
           const v = await resp.text();
           if (v) localStorage.setItem('longevai_db_version', v.trim());
         }
-      } catch { }
+      } catch (e) {
+        // ignore missing version marker
+      }
 
       if (!dbData && !localStorage.getItem('longevai_sample_loaded')) {
         const sampleLoaded = await loadSampleData();
@@ -79,6 +81,36 @@ export const useFinancialData = () => {
   useEffect(() => {
     loadDataFromDB();
   }, [isReady, loadDataFromDB]);
+
+  // Poll for DB version changes and refresh data
+  useEffect(() => {
+    if (!isReady) return;
+    const controller = new AbortController();
+    const check = async () => {
+      try {
+        const r = await fetch('/db-version.txt', { cache: 'no-store', signal: controller.signal });
+        if (r.ok) {
+          const nv = (await r.text()).trim();
+          const lv = localStorage.getItem('longevai_db_version');
+          if (nv && nv !== lv) {
+            localStorage.setItem('longevai_db_version', nv);
+            localStorage.removeItem('longevai_insights_cache');
+            try {
+              await loadSampleData();
+            } catch (e) {
+              console.warn('Failed to reload data after DB version change:', e);
+            }
+            const refreshed = loadFinancialData();
+            if (refreshed) setData(refreshed);
+          }
+        }
+      } catch (e) {
+        console.warn('DB version polling failed:', e);
+      }
+    };
+    const timer = setInterval(check, 5000);
+    return () => { clearInterval(timer); controller.abort(); };
+  }, [isReady, loadFinancialData, loadSampleData]);
 
   const processAndSaveData = useCallback(async (csvContent: string) => {
     if (!isReady) {
@@ -105,13 +137,39 @@ export const useFinancialData = () => {
   }, [isReady, saveFinancialData, clearDatabase]);
 
   const uploadCSV = useCallback(async (file: File) => {
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const content = e.target?.result as string;
-      await processAndSaveData(content);
+    const lower = (file.name || '').toLowerCase();
+    const isXlsx = lower.endsWith('.xlsx');
+    try {
+      if (isXlsx) {
+        const [{ utils, read }] = await Promise.all([
+          import('xlsx')
+        ]);
+        const buffer = await file.arrayBuffer();
+        const wb = read(buffer, { type: 'array' });
+        let combined = '';
+        wb.SheetNames.forEach((sheetName, idx) => {
+          const ws = wb.Sheets[sheetName];
+          if (!ws) return;
+          const csv = utils.sheet_to_csv(ws).trim();
+          if (!csv) return;
+          if (combined.length > 0) combined += '\n';
+          // Add a section header line with trailing commas so the existing CSV parser splits sections correctly
+          combined += `${sheetName},,,,\n${csv}`;
+        });
+        if (!combined) throw new Error('The selected Excel file contains no data.');
+        await processAndSaveData(combined);
+        localStorage.removeItem('longevai_sample_loaded');
+        return;
+      }
+      // Fallback to CSV text
+      const text = await file.text();
+      await processAndSaveData(text);
       localStorage.removeItem('longevai_sample_loaded');
-    };
-    reader.readAsText(file);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to import file';
+      setError(message);
+      console.error(err);
+    }
   }, [processAndSaveData]);
 
   const updateTransactionCategory = useCallback((transactionId: number, newCategory: string) => {

@@ -74,7 +74,7 @@ export const parseCSVData = (csvContent: string): FinancialData => {
     const sectionName = headerLine.split(',')[0].trim();
 
     // Include possible Total line that might appear in next section for Accounts receivable
-    let allSectionLines = lines;
+    const allSectionLines = lines.slice();
     if (sectionName === 'Accounts receivable' && i + 1 < sections.length) {
       const nextSection = sections[i + 1].trim();
       const nextSectionLines = nextSection.split('\n');
@@ -107,29 +107,77 @@ export const parseCSVData = (csvContent: string): FinancialData => {
         }
       }
       // Build invoice entries for receivables
-      (parsed.data as ParsedTransaction[]).filter(r => r.Date && r.Date.match(/^\d{4}-\d{2}-\d{2}/)).forEach(row => {
+      const rows = (parsed.data as ParsedTransaction[]).filter(r => r.Date && r.Date.match(/^\d{4}-\d{2}-\d{2}/));
+
+      // First pass: create invoices
+      rows.forEach(row => {
         const isInvoice = row.Reference?.startsWith('INV ');
-        const isPayment = row.Reference?.startsWith('TRA ');
+        if (!isInvoice) return;
         const desc = (row.Description || '').replace(/\n/g, ' ');
-        const idMatch = (row.Reference || desc).match(/\b(\d{4}-\d{4})\b/);
+        const idMatch = `${row.Reference || ''} ${desc}`.match(/\b(\d{4}-\d{4})\b/);
         const invoiceId = idMatch ? idMatch[1] : '';
-        if (isInvoice && invoiceId) {
-          const amount = parseFloat(row.Amount) || 0;
-          receivableInvoices.push({
-            invoiceId,
-            client: (row.Reference || '').split(' - ').pop() || 'Unknown',
-            issueDate: row.Date,
-            invoicedAmount: amount,
-            paidAmount: 0,
-            outstandingAmount: amount,
-            daysOutstanding: Math.floor((Date.now() - new Date(row.Date).getTime()) / (1000 * 3600 * 24)),
-          });
-        } else if (isPayment && invoiceId) {
-          const payAmount = Math.abs(parseFloat(row.Amount) || 0);
+        if (!invoiceId) return;
+        const amount = parseFloat(row.Amount) || 0;
+        const clientFromRef = (row.Reference || '').split(' - ').pop() || 'Unknown';
+        receivableInvoices.push({
+          invoiceId,
+          client: clientFromRef,
+          issueDate: row.Date,
+          invoicedAmount: amount,
+          paidAmount: 0,
+          outstandingAmount: amount,
+          daysOutstanding: Math.floor((Date.now() - new Date(row.Date).getTime()) / (1000 * 3600 * 24)),
+        });
+      });
+
+      // Helper to detect client names in free text
+      const detectClient = (text: string): string | undefined => {
+        const t = (text || '').toLowerCase();
+        for (const name of projectKeywords) {
+          if (t.includes(name.toLowerCase())) return name;
+        }
+        if (t.includes('burgermeister patrick')) return 'Patrick Burgermeister';
+        return undefined;
+      };
+
+      // Second pass: apply payments
+      rows.forEach(row => {
+        const ref = row.Reference || '';
+        const isPayment = ref.startsWith('TRA ') || ref.startsWith('PAY ');
+        if (!isPayment) return;
+        const desc = (row.Description || '').replace(/\n/g, ' ');
+        const idMatch = `${ref} ${desc}`.match(/\b(\d{4}-\d{4})\b/);
+        const paymentAmount = Math.abs(parseFloat(row.Amount) || 0);
+        if (idMatch) {
+          const invoiceId = idMatch[1];
           const inv = receivableInvoices.find(inv => inv.invoiceId === invoiceId);
           if (inv) {
-            inv.paidAmount += payAmount;
+            inv.paidAmount += paymentAmount;
             inv.outstandingAmount = Math.max(0, inv.invoicedAmount - inv.paidAmount);
+          }
+        } else {
+          // Fallback: try match by client name and amount, then FIFO
+          const client = detectClient(`${ref} ${desc}`);
+          if (client) {
+            let remaining = paymentAmount;
+            // Exact amount first
+            const exact = receivableInvoices.find(inv => inv.client === client && Math.abs(inv.outstandingAmount - remaining) < 0.01);
+            if (exact) {
+              exact.paidAmount += remaining;
+              exact.outstandingAmount = Math.max(0, exact.invoicedAmount - exact.paidAmount);
+              remaining = 0;
+            }
+            // FIFO for remainder
+            const candidates = receivableInvoices
+              .filter(inv => inv.client === client && inv.outstandingAmount > 0)
+              .sort((a, b) => new Date(a.issueDate).getTime() - new Date(b.issueDate).getTime());
+            for (const inv of candidates) {
+              if (remaining <= 0) break;
+              const apply = Math.min(inv.outstandingAmount, remaining);
+              inv.paidAmount += apply;
+              inv.outstandingAmount = Math.max(0, inv.invoicedAmount - inv.paidAmount);
+              remaining -= apply;
+            }
           }
         }
       });

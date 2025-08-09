@@ -1815,11 +1815,11 @@
   "currentBalance": 20376.33,
   "outstandingReceivables": 8712,
   "receivables": {
-    "totalOutstanding": 64754.36,
+    "totalOutstanding": 8712,
     "invoices": [
       {
         "invoiceId": "2025-0012",
-        "client": "RebelsAI B.V.",
+        "client": "RebelsAI",
         "issueDate": "2025-08-01",
         "invoicedAmount": 6292,
         "paidAmount": 0,
@@ -1828,93 +1828,12 @@
       },
       {
         "invoiceId": "2025-0011",
-        "client": "MediCapital Solutions B.V.",
+        "client": "MediCapital Solutions",
         "issueDate": "2025-07-16",
         "invoicedAmount": 2420,
         "paidAmount": 0,
         "outstandingAmount": 2420,
         "daysOutstanding": 24
-      },
-      {
-        "invoiceId": "2025-0010",
-        "client": "Medio Zorg B.V.",
-        "issueDate": "2025-07-14",
-        "invoicedAmount": 8065.86,
-        "paidAmount": 0,
-        "outstandingAmount": 8065.86,
-        "daysOutstanding": 26
-      },
-      {
-        "invoiceId": "2025-0009",
-        "client": "RebelsAI B.V.",
-        "issueDate": "2025-07-02",
-        "invoicedAmount": 5324,
-        "paidAmount": 0,
-        "outstandingAmount": 5324,
-        "daysOutstanding": 38
-      },
-      {
-        "invoiceId": "2025-0007",
-        "client": "Medio Zorg B.V.",
-        "issueDate": "2025-06-03",
-        "invoicedAmount": 4235,
-        "paidAmount": 0,
-        "outstandingAmount": 4235,
-        "daysOutstanding": 67
-      },
-      {
-        "invoiceId": "2025-0008",
-        "client": "Medio Zorg B.V.",
-        "issueDate": "2025-06-03",
-        "invoicedAmount": 2117.5,
-        "paidAmount": 0,
-        "outstandingAmount": 2117.5,
-        "daysOutstanding": 67
-      },
-      {
-        "invoiceId": "2025-0004",
-        "client": "Medio Zorg B.V.",
-        "issueDate": "2025-05-01",
-        "invoicedAmount": 14822.5,
-        "paidAmount": 0,
-        "outstandingAmount": 14822.5,
-        "daysOutstanding": 100
-      },
-      {
-        "invoiceId": "2025-0006",
-        "client": "Medio Zorg B.V.",
-        "issueDate": "2025-05-01",
-        "invoicedAmount": 8470,
-        "paidAmount": 0,
-        "outstandingAmount": 8470,
-        "daysOutstanding": 100
-      },
-      {
-        "invoiceId": "2025-0003",
-        "client": "Patrick Burgermeister",
-        "issueDate": "2025-04-26",
-        "invoicedAmount": 1815,
-        "paidAmount": 0,
-        "outstandingAmount": 1815,
-        "daysOutstanding": 105
-      },
-      {
-        "invoiceId": "2025-0002",
-        "client": "Medio Zorg B.V.",
-        "issueDate": "2025-03-11",
-        "invoicedAmount": 4840,
-        "paidAmount": 0,
-        "outstandingAmount": 4840,
-        "daysOutstanding": 151
-      },
-      {
-        "invoiceId": "2025-0001",
-        "client": "Medio Zorg B.V.",
-        "issueDate": "2025-02-11",
-        "invoicedAmount": 6352.5,
-        "paidAmount": 0,
-        "outstandingAmount": 6352.5,
-        "daysOutstanding": 179
       }
     ]
   }

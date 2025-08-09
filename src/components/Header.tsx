@@ -47,7 +47,7 @@ export const Header: React.FC<HeaderProps> = ({
               <label className="cursor-pointer flex-shrink-0">
                 <input
                   type="file"
-                  accept=".csv"
+                  accept=".csv,.xlsx"
                   onChange={handleFileUpload}
                   className="hidden"
                 />

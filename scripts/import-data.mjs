@@ -32,6 +32,16 @@ function normalizeDescription(desc) {
   return desc.replace(/\s+/g, ' ').replace(/\n/g, ' ').trim().toLowerCase();
 }
 
+function findClientName(text) {
+  const t = (text || '').toLowerCase();
+  for (const name of projectKeywords) {
+    if (t.includes(name.toLowerCase())) return name;
+  }
+  // Handle common alternate/name order variants
+  if (t.includes('burgermeister patrick')) return 'Patrick Burgermeister';
+  return undefined;
+}
+
 function categorizeTransaction(description, ledgerCategory) {
   const normalizedDesc = normalizeDescription(description);
   let normalizedLedgerCategory = ledgerCategory;
@@ -92,7 +102,7 @@ function parseCSVData(csvContent) {
     const sectionName = headerLine.split(',')[0].trim();
 
     // For Accounts receivable section, include the Total line that might appear early in next section
-    let allSectionLines = lines;
+    const allSectionLines = lines.slice();
     if (sectionName === 'Accounts receivable' && i + 1 < sections.length) {
       const nextSection = sections[i + 1].trim();
       const nextSectionLines = nextSection.split('\n');
@@ -127,35 +137,71 @@ function parseCSVData(csvContent) {
           }
         }
       }
-      // Build invoice entries for receivables
+      // Build invoice entries and match payments
+      // First pass: create invoice records
+      const invoiceMap = new Map();
       for (const row of transactions) {
-        // Positive entries look like invoices (INV ...), negative like payments
-        const isInvoice = row.Reference?.startsWith('INV ');
-        const isPayment = row.Reference?.startsWith('TRA ');
-        const desc = (row.Description || '').replace(/\n/g, ' ');
-        // Extract invoice id pattern like 2025-0009 from Reference or Description
-        const idMatch = (row.Reference || desc).match(/\b(\d{4}-\d{4})\b/);
-        const invoiceId = idMatch ? idMatch[1] : '';
-        if (isInvoice && invoiceId) {
+        const ref = row.Reference || '';
+        if (ref.startsWith('INV ')) {
+          const desc = (row.Description || '').replace(/\n/g, ' ');
+          const idMatch = `${ref} ${desc}`.match(/\b(\d{4}-\d{4})\b/);
+          const invoiceId = idMatch ? idMatch[1] : '';
+          if (!invoiceId) continue;
           const amount = parseFloat(row.Amount) || 0;
-          receivableInvoices.push({
+          const clientDetected = findClientName(`${ref} ${desc}`);
+          const clientFromRef = ref.split(' - ').pop() || 'Unknown';
+          const client = clientDetected || clientFromRef || 'Unknown';
+          invoiceMap.set(invoiceId, {
             invoiceId,
-            client: (row.Reference || '').split(' - ').pop() || 'Unknown',
+            client,
             issueDate: row.Date,
             invoicedAmount: amount,
             paidAmount: 0,
             outstandingAmount: amount,
             daysOutstanding: Math.floor((Date.now() - new Date(row.Date).getTime()) / (1000 * 3600 * 24)),
           });
-        } else if (isPayment && invoiceId) {
-          const payAmount = Math.abs(parseFloat(row.Amount) || 0);
-          const idx = receivableInvoices.findIndex(inv => inv.invoiceId === invoiceId);
-          if (idx >= 0) {
-            receivableInvoices[idx].paidAmount += payAmount;
-            receivableInvoices[idx].outstandingAmount = Math.max(0, receivableInvoices[idx].invoicedAmount - receivableInvoices[idx].paidAmount);
+        }
+      }
+      // Second pass: apply payments (TRA, PAY)
+      for (const row of transactions) {
+        const ref = row.Reference || '';
+        const isPayment = ref.startsWith('TRA ') || ref.startsWith('PAY ');
+        if (!isPayment) continue;
+        const desc = (row.Description || '').replace(/\n/g, ' ');
+        const idMatch = `${ref} ${desc}`.match(/\b(\d{4}-\d{4})\b/);
+        const paymentAmount = Math.abs(parseFloat(row.Amount) || 0);
+        if (idMatch) {
+          const invoiceId = idMatch[1];
+          const inv = invoiceMap.get(invoiceId);
+          if (inv) {
+            inv.paidAmount += paymentAmount;
+            inv.outstandingAmount = Math.max(0, inv.invoicedAmount - inv.paidAmount);
+          }
+        } else {
+          // Fallback: match by client then by exact amount, otherwise FIFO
+          const client = findClientName(`${ref} ${desc}`);
+          if (client) {
+            let remaining = paymentAmount;
+            // First: exact amount match against any single outstanding invoice
+            const exact = Array.from(invoiceMap.values()).find(inv => inv.client === client && Math.abs(inv.outstandingAmount - remaining) < 0.01);
+            if (exact) {
+              exact.paidAmount += remaining;
+              exact.outstandingAmount = Math.max(0, exact.invoicedAmount - exact.paidAmount);
+              remaining = 0;
+            }
+            // Then FIFO for any remainder
+            const candidates = Array.from(invoiceMap.values()).filter(inv => inv.client === client && inv.outstandingAmount > 0).sort((a, b) => new Date(a.issueDate) - new Date(b.issueDate));
+            for (const inv of candidates) {
+              if (remaining <= 0) break;
+              const apply = Math.min(inv.outstandingAmount, remaining);
+              inv.paidAmount += apply;
+              inv.outstandingAmount = Math.max(0, inv.invoicedAmount - inv.paidAmount);
+              remaining -= apply;
+            }
           }
         }
       }
+      receivableInvoices.push(...Array.from(invoiceMap.values()));
     }
 
     if (sectionName.startsWith('Bunq NL75BUNQ')) {
@@ -164,7 +210,7 @@ function parseCSVData(csvContent) {
       if (totalLine) {
         const totalParts = totalLine.split(',');
         if (totalParts.length >= 5) {
-          const totalValue = totalParts[4].trim();
+          const totalValue = totalLine.split(',')[4].trim();
           if (totalValue && totalValue !== '') {
             actualBankBalance = parseFloat(totalValue) || 0;
           }

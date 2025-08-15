@@ -2,6 +2,96 @@
   "allTransactions": [
     {
       "id": 0,
+      "date": "2025-08-15",
+      "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
+      "description": "BLS*monday.com\nBLS*monday.com London, GB\n",
+      "vat": "",
+      "amount": -36,
+      "category": "Software & AI Tools"
+    },
+    {
+      "id": 1,
+      "date": "2025-08-15",
+      "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
+      "description": "NLOVLD5D67AR6QZ5Z7\nNLOVLD5D67AR6QZ5Z7 www.ovpay.nl, NL\n",
+      "vat": "",
+      "amount": -9.6,
+      "category": "Travel & Transport"
+    },
+    {
+      "id": 2,
+      "date": "2025-08-14",
+      "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
+      "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-08-14 EUR",
+      "vat": "",
+      "amount": 0.19,
+      "category": "Bank & Payment Fees"
+    },
+    {
+      "id": 3,
+      "date": "2025-08-14",
+      "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
+      "description": "PLNT Leiden NL10 RABO 0308 6231 26\nWorkplaces",
+      "vat": "",
+      "amount": -356.95,
+      "category": "Office & Meetings"
+    },
+    {
+      "id": 4,
+      "date": "2025-08-13",
+      "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
+      "description": "NLOVMQJA96EMEWYJ67\nNLOVMQJA96EMEWYJ67 www.ovpay.nl, NL\n",
+      "vat": "",
+      "amount": -8.3,
+      "category": "Travel & Transport"
+    },
+    {
+      "id": 5,
+      "date": "2025-08-13",
+      "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
+      "description": "NLOVAZJRZP9768WJMG\nNLOVAZJRZP9768WJMG www.ovpay.nl, NL\n",
+      "vat": "",
+      "amount": -8.3,
+      "category": "Travel & Transport"
+    },
+    {
+      "id": 6,
+      "date": "2025-08-13",
+      "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
+      "description": "Belastingdienst NL86 INGB 0002 4455 88\n4867554616501070",
+      "vat": "",
+      "amount": -302,
+      "category": "Taxes & Accounting"
+    },
+    {
+      "id": 7,
+      "date": "2025-08-13",
+      "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
+      "description": "Catalin-Stefan Niculescu NL76 REVO 7264 5241 91\nSalary July",
+      "vat": "",
+      "amount": -1186.78,
+      "category": "Salaries & Freelancers"
+    },
+    {
+      "id": 8,
+      "date": "2025-08-12",
+      "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
+      "description": "Hoog16 Juristen NL71 ABNA 0434 4930 31\nFactuurnummer: 202500094",
+      "vat": "",
+      "amount": -718.44,
+      "category": "Uncategorized"
+    },
+    {
+      "id": 9,
+      "date": "2025-08-10",
+      "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
+      "description": "HubSpot Netherlands B.\nHubSpot Netherlands B. Schiphol, NL\n",
+      "vat": "",
+      "amount": -18.15,
+      "category": "Software & AI Tools"
+    },
+    {
+      "id": 10,
       "date": "2025-08-08",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "2025-560226 MoneyBird\n2025-560226 MoneyBird Enschede, NL\n",
@@ -10,7 +100,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 1,
+      "id": 11,
       "date": "2025-08-08",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "CURSOR USAGE  JUL\nCURSOR USAGE  JUL NEW YORK, US\n1.20 USD, 1 USD = 0.86667 EUR",
@@ -19,7 +109,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 2,
+      "id": 12,
       "date": "2025-08-07",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-08-07 EUR",
@@ -28,7 +118,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 3,
+      "id": 13,
       "date": "2025-08-06",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Catalin-Stefan Niculescu NL76 REVO 7264 5241 91\nRedis Aug 2",
@@ -37,7 +127,7 @@
       "category": "Salaries & Freelancers"
     },
     {
-      "id": 4,
+      "id": 14,
       "date": "2025-08-06",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Catalin-Stefan Niculescu NL76 REVO 7264 5241 91\nRedis Jul 16",
@@ -46,7 +136,7 @@
       "category": "Salaries & Freelancers"
     },
     {
-      "id": 5,
+      "id": 15,
       "date": "2025-08-04",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Harshit Kedia\nPer agreement ",
@@ -55,7 +145,7 @@
       "category": "Salaries & Freelancers"
     },
     {
-      "id": 6,
+      "id": 16,
       "date": "2025-08-02",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq BV NL89 BUNQ 2025 1055 84\ninvoice 29244163",
@@ -64,7 +154,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 7,
+      "id": 17,
       "date": "2025-08-02",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "RENDER.COM\nRENDER.COM SAN FRANCISCO, US\n25.25 USD, 1 USD = 0.88238 EUR",
@@ -73,7 +163,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 8,
+      "id": 18,
       "date": "2025-08-01",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "KOYEB SERVERLESS CLOUD\nKOYEB SERVERLESS CLOUD BOULOGNE-BILL, FR\n21.44 USD, 1 USD = 0.88153 EUR",
@@ -82,7 +172,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 9,
+      "id": 19,
       "date": "2025-08-01",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "SLACK T08BRSCGMR7\nSLACK T08BRSCGMR7 DUBLIN, IE\n",
@@ -91,7 +181,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 10,
+      "id": 20,
       "date": "2025-08-01",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Google GSUITE_longevai\nGoogle GSUITE_longevai Dublin, IE\n",
@@ -100,7 +190,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 11,
+      "id": 21,
       "date": "2025-08-01",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Google CLOUD RVVWv6\nGoogle CLOUD RVVWv6 Dublin, IE\n",
@@ -109,7 +199,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 12,
+      "id": 22,
       "date": "2025-07-31",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-07-31 EUR",
@@ -118,7 +208,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 13,
+      "id": 23,
       "date": "2025-07-31",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVQX5846GMEDM54M\nNLOVQX5846GMEDM54M www.ovpay.nl, NL\n",
@@ -127,7 +217,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 14,
+      "id": 24,
       "date": "2025-07-30",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVB85Y4QVXXYMJVE\nNLOVB85Y4QVXXYMJVE www.ovpay.nl, NL\n",
@@ -136,7 +226,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 15,
+      "id": 25,
       "date": "2025-07-30",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVP457LA7KGX4JE6\nNLOVP457LA7KGX4JE6 www.ovpay.nl, NL\n",
@@ -145,7 +235,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 16,
+      "id": 26,
       "date": "2025-07-29",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Medio Zorg B.V. NL15 INGB 0106 2158 17\nRf34xgsjww3c",
@@ -155,7 +245,7 @@
       "project": "Medio Zorg"
     },
     {
-      "id": 17,
+      "id": 27,
       "date": "2025-07-28",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Belastingdienst NL86 INGB 0002 4455 88\n2867554611501240",
@@ -164,7 +254,7 @@
       "category": "Taxes & Accounting"
     },
     {
-      "id": 18,
+      "id": 28,
       "date": "2025-07-27",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "CLAUDE.AI SUBSCRIPTION\nCLAUDE.AI SUBSCRIPTION SAN FRANCISCO, US\n",
@@ -173,7 +263,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 19,
+      "id": 29,
       "date": "2025-07-24",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-07-24 EUR",
@@ -182,7 +272,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 20,
+      "id": 30,
       "date": "2025-07-24",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOV6D5EEPQXR8E54L\nNLOV6D5EEPQXR8E54L www.ovpay.nl, NL\n",
@@ -191,7 +281,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 21,
+      "id": 31,
       "date": "2025-07-24",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOV6D5EEPQLAYM54L\nNLOV6D5EEPQLAYM54L www.ovpay.nl, NL\n",
@@ -200,7 +290,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 22,
+      "id": 32,
       "date": "2025-07-23",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVKLJ4Z6N8RWNJZY\nNLOVKLJ4Z6N8RWNJZY www.ovpay.nl, NL\n",
@@ -209,7 +299,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 23,
+      "id": 33,
       "date": "2025-07-23",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Stichting Pay.nl NL35 RABO 0117 7136 78\nPay.nl inzake 50plus Mobiel B.V. / 251588551 / 50plus Mobiel - Abonnement / IO-9896-5857-6233",
@@ -218,7 +308,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 24,
+      "id": 34,
       "date": "2025-07-23",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVLX5M8WRQ4RKJWG\nNLOVLX5M8WRQ4RKJWG www.ovpay.nl, NL\n",
@@ -227,7 +317,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 25,
+      "id": 35,
       "date": "2025-07-21",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Taxpas NL43 RABO 0171 7985 03\nFactuur 25700436",
@@ -236,7 +326,7 @@
       "category": "Taxes & Accounting"
     },
     {
-      "id": 26,
+      "id": 36,
       "date": "2025-07-19",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "CURSOR, AI POWERED IDE\nCURSOR, AI POWERED IDE NEW YORK, US\n20.00 USD, 1 USD = 0.86800 EUR",
@@ -245,7 +335,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 27,
+      "id": 37,
       "date": "2025-07-18",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "PLNT Leiden NL10 RABO 0308 6231 26\nWorkplaces",
@@ -254,7 +344,7 @@
       "category": "Office & Meetings"
     },
     {
-      "id": 28,
+      "id": 38,
       "date": "2025-07-18",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Belastingdienst NL86 INGB 0002 4455 88\n886755461651060",
@@ -263,7 +353,7 @@
       "category": "Taxes & Accounting"
     },
     {
-      "id": 29,
+      "id": 39,
       "date": "2025-07-18",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Catalin-Stefan Niculescu NL12 INGB 0524 6254 68\nSalary June",
@@ -272,7 +362,7 @@
       "category": "Salaries & Freelancers"
     },
     {
-      "id": 30,
+      "id": 40,
       "date": "2025-07-18",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "DADAWAN Leidschendam\nDADAWAN Leidschendam LEIDSCHENDAM, NL\n",
@@ -281,7 +371,7 @@
       "category": "Food & Groceries"
     },
     {
-      "id": 31,
+      "id": 41,
       "date": "2025-07-17",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-07-17 EUR",
@@ -290,7 +380,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 32,
+      "id": 42,
       "date": "2025-07-16",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "REBELSAI BV NL78 ABNA 0122 3018 97\nRF89FFQ42UDW. Inhuur maand Juni Invoice 2025-0009",
@@ -300,7 +390,7 @@
       "project": "RebelsAI"
     },
     {
-      "id": 33,
+      "id": 43,
       "date": "2025-07-15",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "BLS*monday.com\nBLS*monday.com London, GB\n",
@@ -309,7 +399,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 34,
+      "id": 44,
       "date": "2025-07-10",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-07-10 EUR",
@@ -318,7 +408,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 35,
+      "id": 45,
       "date": "2025-07-10",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "HubSpot Netherlands B.\nHubSpot Netherlands B. Schiphol, NL\n",
@@ -327,7 +417,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 36,
+      "id": 46,
       "date": "2025-07-09",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "SumUp  *Midi\nSumUp  *Midi Leiden, NL\n",
@@ -336,7 +426,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 37,
+      "id": 47,
       "date": "2025-07-09",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVLD5D6L8Y4X95Z7\nNLOVLD5D6L8Y4X95Z7 www.ovpay.nl, NL\n",
@@ -345,7 +435,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 38,
+      "id": 48,
       "date": "2025-07-09",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVGY5BE94GQ9QJLP\nNLOVGY5BE94GQ9QJLP www.ovpay.nl, NL\n",
@@ -354,7 +444,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 39,
+      "id": 49,
       "date": "2025-07-08",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Moneybird B.V. NL65 ADYB 2006 0111 62\nMoneybird B.V. 2025-472188 MoneyBird B.V.",
@@ -363,7 +453,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 40,
+      "id": 50,
       "date": "2025-07-06",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "CURSOR USAGE  JUN\nCURSOR USAGE  JUN NEW YORK, US\n0.60 USD, 1 USD = 0.85000 EUR",
@@ -372,7 +462,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 41,
+      "id": 51,
       "date": "2025-07-05",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Order qKrg4EOvJMMY - M\nOrder qKrg4EOvJMMY - M Enschede, NL\n",
@@ -381,7 +471,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 42,
+      "id": 52,
       "date": "2025-07-03",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "RENDER.COM\nRENDER.COM SAN FRANCISCO, US\n25.25 USD, 1 USD = 0.85584 EUR",
@@ -390,7 +480,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 43,
+      "id": 53,
       "date": "2025-07-03",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-07-03 EUR",
@@ -399,7 +489,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 44,
+      "id": 54,
       "date": "2025-07-02",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq BV NL89 BUNQ 2025 1055 84\ninvoice 28266127",
@@ -408,7 +498,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 45,
+      "id": 55,
       "date": "2025-07-02",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOV6PJ6DN8X7MRJ9V\nNLOV6PJ6DN8X7MRJ9V www.ovpay.nl, NL\n",
@@ -417,7 +507,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 46,
+      "id": 56,
       "date": "2025-07-02",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVLD5D6LQ7M9Y5Z7\nNLOVLD5D6LQ7M9Y5Z7 www.ovpay.nl, NL\n",
@@ -426,7 +516,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 47,
+      "id": 57,
       "date": "2025-07-01",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "KOYEB SERVERLESS CLOUD\nKOYEB SERVERLESS CLOUD BOULOGNE-BILL, FR\n5.59 USD, 1 USD = 0.85868 EUR",
@@ -435,7 +525,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 48,
+      "id": 58,
       "date": "2025-07-01",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "SLACK T08BRSCGMR7\nSLACK T08BRSCGMR7 DUBLIN, IE\n",
@@ -444,7 +534,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 49,
+      "id": 59,
       "date": "2025-07-01",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Google GSUITE_longevai\nGoogle GSUITE_longevai Dublin, IE\n",
@@ -453,7 +543,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 50,
+      "id": 60,
       "date": "2025-07-01",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Google CLOUD xV85v5\nGoogle CLOUD xV85v5 Dublin, IE\n",
@@ -462,7 +552,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 51,
+      "id": 61,
       "date": "2025-06-27",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Taxpas NL43 RABO 0171 7985 03\nFactuur 25700371",
@@ -471,7 +561,7 @@
       "category": "Taxes & Accounting"
     },
     {
-      "id": 52,
+      "id": 62,
       "date": "2025-06-27",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Belastingdienst NL86 INGB 0002 4455 88\n1867554616501050",
@@ -480,7 +570,7 @@
       "category": "Taxes & Accounting"
     },
     {
-      "id": 53,
+      "id": 63,
       "date": "2025-06-27",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Belastingdienst NL86 INGB 0002 4455 88\n5867554616501040",
@@ -489,7 +579,7 @@
       "category": "Taxes & Accounting"
     },
     {
-      "id": 54,
+      "id": 64,
       "date": "2025-06-26",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-06-26 EUR",
@@ -498,7 +588,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 55,
+      "id": 65,
       "date": "2025-06-25",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Catalin-Stefan Niculescu NL12 INGB 0524 6254 68\nSalary May",
@@ -507,7 +597,7 @@
       "category": "Salaries & Freelancers"
     },
     {
-      "id": 56,
+      "id": 66,
       "date": "2025-06-25",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Stichting Pay.nl NL35 RABO 0117 7136 78\nPay.nl inzake 50plus Mobiel B.V. / 251327262 / 50plus Mobiel - Abonnement / IO-2156-5663-4193",
@@ -516,7 +606,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 57,
+      "id": 67,
       "date": "2025-06-24",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVKLJ4Z8EYGPLJZY\nNLOVKLJ4Z8EYGPLJZY www.ovpay.nl, NL\n",
@@ -525,7 +615,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 58,
+      "id": 68,
       "date": "2025-06-24",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Zettle_*Seats2Meet.com\nZettle_*Seats2Meet.com UTRECHT, NL\n",
@@ -534,7 +624,7 @@
       "category": "Office & Meetings"
     },
     {
-      "id": 59,
+      "id": 69,
       "date": "2025-06-24",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVKLJ4Z8X9AW9JZY\nNLOVKLJ4Z8X9AW9JZY www.ovpay.nl, NL\n",
@@ -543,7 +633,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 60,
+      "id": 70,
       "date": "2025-06-23",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Catalin-Stefan Niculescu NL12 INGB 0524 6254 68\nSalary April (adjustment)",
@@ -552,7 +642,7 @@
       "category": "Salaries & Freelancers"
     },
     {
-      "id": 61,
+      "id": 71,
       "date": "2025-06-22",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVQX584GPYRAB54M\nNLOVQX584GPYRAB54M www.ovpay.nl, NL\n",
@@ -561,7 +651,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 62,
+      "id": 72,
       "date": "2025-06-21",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "APOLLO.IO\nAPOLLO.IO COVINA, US\n59.00 USD, 1 USD = 0.87746 EUR",
@@ -570,7 +660,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 63,
+      "id": 73,
       "date": "2025-06-19",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "CURSOR, AI POWERED IDE\nCURSOR, AI POWERED IDE +18314259504, US\n20.00 USD, 1 USD = 0.87600 EUR",
@@ -579,7 +669,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 64,
+      "id": 74,
       "date": "2025-06-18",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVKLJ4ZPYLMY8JZY\nNLOVKLJ4ZPYLMY8JZY www.ovpay.nl, NL\n",
@@ -588,7 +678,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 65,
+      "id": 75,
       "date": "2025-06-18",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NS GROEP IZ NS REIZIGERS NL59 ABNA 0590 8498 75\nFactuur: 410017755209",
@@ -597,7 +687,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 66,
+      "id": 76,
       "date": "2025-06-18",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Zettle_*Seats2Meet com\nZettle_*Seats2Meet com UTRECHT, NL\n",
@@ -606,7 +696,7 @@
       "category": "Office & Meetings"
     },
     {
-      "id": 67,
+      "id": 77,
       "date": "2025-06-18",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Zettle_*Seats2Meet.com\nZettle_*Seats2Meet.com UTRECHT, NL\n",
@@ -615,7 +705,7 @@
       "category": "Office & Meetings"
     },
     {
-      "id": 68,
+      "id": 78,
       "date": "2025-06-18",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVZE5XLV789EM5LD\nNLOVZE5XLV789EM5LD www.ovpay.nl, NL\n",
@@ -624,7 +714,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 69,
+      "id": 79,
       "date": "2025-06-16",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Medio Zorg B.V. NL15 INGB 0106 2158 17\n2025-0007 RF33NHVC7H3A",
@@ -634,7 +724,7 @@
       "project": "Medio Zorg"
     },
     {
-      "id": 70,
+      "id": 80,
       "date": "2025-06-16",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Medio Zorg B.V. NL15 INGB 0106 2158 17\n2025-0008 RF57WPG6UF7S",
@@ -644,7 +734,7 @@
       "project": "Medio Zorg"
     },
     {
-      "id": 71,
+      "id": 81,
       "date": "2025-06-12",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-06-12 EUR",
@@ -653,7 +743,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 72,
+      "id": 82,
       "date": "2025-06-06",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Hetzner Online GmbH\nHetzner Online GmbH Gunzenhausen, DE\n",
@@ -662,7 +752,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 73,
+      "id": 83,
       "date": "2025-06-06",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Moneybird B.V. NL65 ADYB 2006 0111 62\nMoneybird B.V. 2025-394132 MoneyBird B.V.",
@@ -671,7 +761,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 74,
+      "id": 84,
       "date": "2025-06-05",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-06-05 EUR",
@@ -680,7 +770,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 75,
+      "id": 85,
       "date": "2025-06-05",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOV8R5LY47QMAXJM6\nNLOV8R5LY47QMAXJM6 www.ovpay.nl, NL\n",
@@ -689,7 +779,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 76,
+      "id": 86,
       "date": "2025-06-05",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOV9B5G47KNE4QJ8Y\nNLOV9B5G47KNE4QJ8Y www.ovpay.nl, NL\n",
@@ -698,7 +788,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 77,
+      "id": 87,
       "date": "2025-06-03",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Catalin-Stefan Niculescu NL12 INGB 0524 6254 68\nSalary April",
@@ -707,7 +797,7 @@
       "category": "Salaries & Freelancers"
     },
     {
-      "id": 78,
+      "id": 88,
       "date": "2025-06-02",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "RENDER.COM\nRENDER.COM +14158304762, US\n25.25 USD, 1 USD = 0.88832 EUR",
@@ -716,7 +806,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 79,
+      "id": 89,
       "date": "2025-06-02",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq BV NL89 BUNQ 2025 1055 84\ninvoice 27327427",
@@ -725,7 +815,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 80,
+      "id": 90,
       "date": "2025-06-01",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "KOYEB SERVERLESS CLOUD\nKOYEB SERVERLESS CLOUD +33972455503, FR\n5.17 USD, 1 USD = 0.88781 EUR",
@@ -734,7 +824,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 81,
+      "id": 91,
       "date": "2025-06-01",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Google GSUITE_longevai\nGoogle GSUITE_longevai Dublin, IE\n",
@@ -743,7 +833,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 82,
+      "id": 92,
       "date": "2025-06-01",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "SLACK T08BRSCGMR7\nSLACK T08BRSCGMR7 +35315137661, IE\n",
@@ -752,7 +842,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 83,
+      "id": 93,
       "date": "2025-06-01",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Google CLOUD FRQCS9\nGoogle CLOUD FRQCS9 Dublin, IE\n",
@@ -761,7 +851,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 84,
+      "id": 94,
       "date": "2025-05-29",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVW7JWB4MXWYP5VP\nNLOVW7JWB4MXWYP5VP www.ovpay.nl, NL\n",
@@ -770,7 +860,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 85,
+      "id": 95,
       "date": "2025-05-29",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-05-29 EUR",
@@ -779,7 +869,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 86,
+      "id": 96,
       "date": "2025-05-28",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Zettle_*Seats2Meet com\nZettle_*Seats2Meet com UTRECHT, NL\n",
@@ -788,7 +878,7 @@
       "category": "Office & Meetings"
     },
     {
-      "id": 87,
+      "id": 97,
       "date": "2025-05-28",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVAZJRZ7ZZQ88JMG\nNLOVAZJRZ7ZZQ88JMG www.ovpay.nl, NL\n",
@@ -797,7 +887,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 88,
+      "id": 98,
       "date": "2025-05-28",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "AnyHouse NL NL53 ABNA 0120 6060 11\n5",
@@ -806,7 +896,7 @@
       "category": "Salaries & Freelancers"
     },
     {
-      "id": 89,
+      "id": 99,
       "date": "2025-05-27",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "COOLLABS TECHNOLOGIES\nCOOLLABS TECHNOLOGIES +36208508920, HU\n5.00 USD, 1 USD = 0.88400 EUR",
@@ -815,7 +905,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 90,
+      "id": 100,
       "date": "2025-05-22",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVQX584EG8QXL54M\nNLOVQX584EG8QXL54M www.ovpay.nl, NL\n",
@@ -824,7 +914,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 91,
+      "id": 101,
       "date": "2025-05-22",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-05-22 EUR",
@@ -833,7 +923,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 92,
+      "id": 102,
       "date": "2025-05-21",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Zettle_*Seats2Meet.com\nZettle_*Seats2Meet.com UTRECHT, NL\n",
@@ -842,7 +932,7 @@
       "category": "Office & Meetings"
     },
     {
-      "id": 93,
+      "id": 103,
       "date": "2025-05-21",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Zettle_*Seats2Meet.com\nZettle_*Seats2Meet.com UTRECHT, NL\n",
@@ -851,7 +941,7 @@
       "category": "Office & Meetings"
     },
     {
-      "id": 94,
+      "id": 104,
       "date": "2025-05-21",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "TWILIO INC\nTWILIO INC +18778894546, US\n20.00 USD, 1 USD = 0.89600 EUR",
@@ -860,7 +950,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 95,
+      "id": 105,
       "date": "2025-05-21",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOV8R5LYGPXZGXJM6\nNLOV8R5LYGPXZGXJM6 www.ovpay.nl, NL\n",
@@ -869,7 +959,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 96,
+      "id": 106,
       "date": "2025-05-21",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "APOLLO.IO\nAPOLLO.IO +14156912009, US\n59.00 USD, 1 USD = 0.89593 EUR",
@@ -878,7 +968,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 97,
+      "id": 107,
       "date": "2025-05-19",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "CURSOR, AI POWERED IDE\nCURSOR, AI POWERED IDE +18314259504, US\n20.00 USD, 1 USD = 0.90250 EUR",
@@ -887,7 +977,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 98,
+      "id": 108,
       "date": "2025-05-16",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOV6PJ6DQ7GZ4BJ9V\nNLOV6PJ6DQ7GZ4BJ9V www.ovpay.nl, NL\n",
@@ -896,7 +986,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 99,
+      "id": 109,
       "date": "2025-05-15",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVAZJRZY6RY7WJMG\nNLOVAZJRZY6RY7WJMG www.ovpay.nl, NL\n",
@@ -905,7 +995,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 100,
+      "id": 110,
       "date": "2025-05-15",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-05-15 EUR",
@@ -914,7 +1004,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 101,
+      "id": 111,
       "date": "2025-05-13",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "OPENAI\nOPENAI +14158799686, US\n5.00 USD, 1 USD = 0.90800 EUR",
@@ -923,7 +1013,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 102,
+      "id": 112,
       "date": "2025-05-13",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "BCK*NS SchiedamC 203\nBCK*NS SchiedamC 203 SCHIEDAM, NL\n",
@@ -932,7 +1022,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 103,
+      "id": 113,
       "date": "2025-05-12",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Helios B.V. NL31 BUNQ 2145 9961 76\n",
@@ -941,7 +1031,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 104,
+      "id": 114,
       "date": "2025-05-12",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Restaurant VIALIS\nRestaurant VIALIS HOUTEN, NL\n",
@@ -950,7 +1040,7 @@
       "category": "Food & Groceries"
     },
     {
-      "id": 105,
+      "id": 115,
       "date": "2025-05-12",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Burgermeister Patrick CH56 0839 8064 2115 0510 4\nPitch deck / Branding / Logo",
@@ -960,7 +1050,7 @@
       "project": "RegenEra"
     },
     {
-      "id": 106,
+      "id": 116,
       "date": "2025-05-11",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "OPENROUTER, INC\nOPENROUTER, INC +18482974487, US\n10.95 USD, 1 USD = 0.89772 EUR",
@@ -969,7 +1059,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 107,
+      "id": 117,
       "date": "2025-05-08",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVQX584XX9Z6E54M\nNLOVQX584XX9Z6E54M www.ovpay.nl, NL\n",
@@ -978,7 +1068,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 108,
+      "id": 118,
       "date": "2025-05-08",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-05-08 EUR",
@@ -987,7 +1077,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 109,
+      "id": 119,
       "date": "2025-05-07",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Diogo Guedes Leal PT50 0023 0000 4566 2730 1169 4\nFT ATSIRE01FT/2",
@@ -996,7 +1086,7 @@
       "category": "Salaries & Freelancers"
     },
     {
-      "id": 110,
+      "id": 120,
       "date": "2025-05-07",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Diogo Guedes Leal PT50 0023 0000 4566 2730 1169 4\nFT ATSIRE01FT/1",
@@ -1005,7 +1095,7 @@
       "category": "Salaries & Freelancers"
     },
     {
-      "id": 111,
+      "id": 121,
       "date": "2025-05-07",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOV6PJ6DXYKVB7J9V\nNLOV6PJ6DXYKVB7J9V www.ovpay.nl, NL\n",
@@ -1014,7 +1104,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 112,
+      "id": 122,
       "date": "2025-05-06",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Hetzner Online GmbH\nHetzner Online GmbH Gunzenhausen, DE\n",
@@ -1023,7 +1113,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 113,
+      "id": 123,
       "date": "2025-05-06",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "50plus Mobiel B.V.\n2912462001Xbf604 7370495466094909 Eerste rekening - 250977200",
@@ -1032,7 +1122,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 114,
+      "id": 124,
       "date": "2025-05-06",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Back Market\nBack Market Paris, FR\n",
@@ -1041,7 +1131,7 @@
       "category": "Hardware & Assets"
     },
     {
-      "id": 115,
+      "id": 125,
       "date": "2025-05-06",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Moneybird B.V. NL65 ADYB 2006 0111 62\nMoneybird B.V. 2025-315550 MoneyBird B.V.",
@@ -1050,7 +1140,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 116,
+      "id": 126,
       "date": "2025-05-02",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "RENDER.COM\nRENDER.COM +14158304762, US\n12.09 USD, 1 USD = 0.89165 EUR",
@@ -1059,7 +1149,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 117,
+      "id": 127,
       "date": "2025-05-02",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq BV NL89 BUNQ 2025 1055 84\ninvoice 26440727",
@@ -1068,7 +1158,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 118,
+      "id": 128,
       "date": "2025-05-02",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Medio Zorg B.V. NL15 INGB 0106 2158 17\nInvoice 2025-0006",
@@ -1078,7 +1168,7 @@
       "project": "Medio Zorg"
     },
     {
-      "id": 119,
+      "id": 129,
       "date": "2025-05-01",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Google GSUITE_longevai\nGoogle GSUITE_longevai Dublin, IE\n",
@@ -1087,7 +1177,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 120,
+      "id": 130,
       "date": "2025-05-01",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-05-01 EUR",
@@ -1096,7 +1186,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 121,
+      "id": 131,
       "date": "2025-05-01",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "SLACK T08BRSCGMR7\nSLACK T08BRSCGMR7 +35315137661, IE\n",
@@ -1105,7 +1195,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 122,
+      "id": 132,
       "date": "2025-04-30",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Peter van de Pas NL43 RABO 0171 7985 03\nCreditnota",
@@ -1114,7 +1204,7 @@
       "category": "Taxes & Accounting"
     },
     {
-      "id": 123,
+      "id": 133,
       "date": "2025-04-30",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Taxpas NL43 RABO 0171 7985 03\nFactuur 25700293",
@@ -1123,7 +1213,7 @@
       "category": "Taxes & Accounting"
     },
     {
-      "id": 124,
+      "id": 134,
       "date": "2025-04-30",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Belastingdienst Apeldoorn NL86 INGB 0002 4455 88\n3867 5546 1150 1210",
@@ -1132,7 +1222,7 @@
       "category": "Taxes & Accounting"
     },
     {
-      "id": 125,
+      "id": 135,
       "date": "2025-04-27",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "COOLLABS TECHNOLOGIES\nCOOLLABS TECHNOLOGIES +36208508920, HU\n5.00 USD, 1 USD = 0.88800 EUR",
@@ -1141,7 +1231,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 126,
+      "id": 136,
       "date": "2025-04-26",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "AnyHouse NL NL53 ABNA 0120 6060 11\n3",
@@ -1150,7 +1240,7 @@
       "category": "Salaries & Freelancers"
     },
     {
-      "id": 127,
+      "id": 137,
       "date": "2025-04-26",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Helios B.V. NL31 BUNQ 2145 9961 76\n",
@@ -1159,7 +1249,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 128,
+      "id": 138,
       "date": "2025-04-24",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVD6JKPNV6RBX5WA\nNLOVD6JKPNV6RBX5WA www.ovpay.nl, NL\n",
@@ -1168,7 +1258,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 129,
+      "id": 139,
       "date": "2025-04-24",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-04-24 EUR",
@@ -1177,7 +1267,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 130,
+      "id": 140,
       "date": "2025-04-23",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "R Dubas NL53 ABNA 0120 6060 11\n",
@@ -1186,7 +1276,7 @@
       "category": "Salaries & Freelancers"
     },
     {
-      "id": 131,
+      "id": 141,
       "date": "2025-04-23",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Helios B.V. NL31 BUNQ 2145 9961 76\n",
@@ -1195,7 +1285,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 132,
+      "id": 142,
       "date": "2025-04-23",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVX75P8BML8ME58Z\nNLOVX75P8BML8ME58Z www.ovpay.nl, NL\n",
@@ -1204,7 +1294,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 133,
+      "id": 143,
       "date": "2025-04-22",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Digidentity BV via Stichting Mollie Payments\n956969aebc2470afe52e632f38834ce8 8152275757467698 Invoice PI-2025-011612 Digidentity BV",
@@ -1213,7 +1303,7 @@
       "category": "Taxes & Accounting"
     },
     {
-      "id": 134,
+      "id": 144,
       "date": "2025-04-22",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NS Reizigers B.V.\nVC88751928 8030096942436630 NS Zakelijk 88751928",
@@ -1222,7 +1312,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 135,
+      "id": 145,
       "date": "2025-04-19",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "CURSOR, AI POWERED IDE\nCURSOR, AI POWERED IDE +18314259504, US\n20.00 USD, 1 USD = 0.88650 EUR",
@@ -1231,7 +1321,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 136,
+      "id": 146,
       "date": "2025-04-12",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Moneybird B.V. NL65 ADYB 2006 0111 62\nMoneybird B.V. 2025-235898 MoneyBird B.V.",
@@ -1240,7 +1330,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 137,
+      "id": 147,
       "date": "2025-04-03",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOV8R5LYKKGAGMJM6\nNLOV8R5LYKKGAGMJM6 www.ovpay.nl, NL\n",
@@ -1249,7 +1339,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 138,
+      "id": 148,
       "date": "2025-04-03",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-04-03 EUR",
@@ -1258,7 +1348,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 139,
+      "id": 149,
       "date": "2025-04-02",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq BV NL89 BUNQ 2025 1055 84\ninvoice 25456814",
@@ -1267,7 +1357,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 140,
+      "id": 150,
       "date": "2025-04-02",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "RENDER.COM\nRENDER.COM +14158304762, US\n7.25 USD, 1 USD = 0.93241 EUR",
@@ -1276,7 +1366,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 141,
+      "id": 151,
       "date": "2025-04-01",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Google GSUITE_longevai\nGoogle GSUITE_longevai Dublin, IE\n",
@@ -1285,7 +1375,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 142,
+      "id": 152,
       "date": "2025-03-30",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "FACEBK *PAYMENT\nRefund: FACEBK *PAYMENT fb.me/cc, US\n1.00 USD, 1 USD = 0.93000 EUR",
@@ -1294,7 +1384,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 143,
+      "id": 153,
       "date": "2025-03-30",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "FACEBK *PAYMENT\nFACEBK *PAYMENT fb.me/cc, US\n1.00 USD, 1 USD = 0.93000 EUR",
@@ -1303,7 +1393,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 144,
+      "id": 154,
       "date": "2025-03-30",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "SLACK T08BRSCGMR7\nSLACK T08BRSCGMR7 +35315137661, IE\n",
@@ -1312,7 +1402,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 145,
+      "id": 155,
       "date": "2025-03-30",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "CLAUDE.AI SUBSCRIPTION\nCLAUDE.AI SUBSCRIPTION +14152360599, US\n",
@@ -1321,7 +1411,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 146,
+      "id": 156,
       "date": "2025-03-28",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "ALBERT HEIJN 1151\nALBERT HEIJN 1151 LEIDSCHENDAM, NL\n",
@@ -1330,7 +1420,7 @@
       "category": "Food & Groceries"
     },
     {
-      "id": 147,
+      "id": 157,
       "date": "2025-03-28",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Ozan Market\nOzan Market LEIDSCHENDAM, NL\n",
@@ -1339,7 +1429,7 @@
       "category": "Food & Groceries"
     },
     {
-      "id": 148,
+      "id": 158,
       "date": "2025-03-27",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-03-27 EUR",
@@ -1348,7 +1438,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 149,
+      "id": 159,
       "date": "2025-03-27",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVMQJA9NE4ZKYJ67\nNLOVMQJA9NE4ZKYJ67 www.ovpay.nl, NL\n",
@@ -1357,7 +1447,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 150,
+      "id": 160,
       "date": "2025-03-26",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVD6JKPM7K9RK5WA\nNLOVD6JKPM7K9RK5WA www.ovpay.nl, NL\n",
@@ -1366,7 +1456,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 151,
+      "id": 161,
       "date": "2025-03-24",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "CanvaPtyLimited\nWZNNDPSP26QR6QZ32LUVB 7180304273305196 paAAAGRKLXDQDLWA",
@@ -1375,7 +1465,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 152,
+      "id": 162,
       "date": "2025-03-19",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "CURSOR, AI POWERED IDE\nCURSOR, AI POWERED IDE +18314259504, US\n20.00 USD, 1 USD = 0.92250 EUR",
@@ -1384,7 +1474,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 153,
+      "id": 163,
       "date": "2025-03-18",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVD6JKPMZE6PN5WA\nNLOVD6JKPMZE6PN5WA www.ovpay.nl, NL\n",
@@ -1393,7 +1483,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 154,
+      "id": 164,
       "date": "2025-03-17",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "CCV*Griekse Taverne Br\nCCV*Griekse Taverne Br SCHIEDAM, NL\n",
@@ -1402,7 +1492,7 @@
       "category": "Food & Groceries"
     },
     {
-      "id": 155,
+      "id": 165,
       "date": "2025-03-17",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Lisa\nLisa ROTTERDAM, NL\n",
@@ -1411,7 +1501,7 @@
       "category": "Food & Groceries"
     },
     {
-      "id": 156,
+      "id": 166,
       "date": "2025-03-17",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOV485Q7BVEZXL59L\nNLOV485Q7BVEZXL59L www.ovpay.nl, NL\n",
@@ -1420,7 +1510,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 157,
+      "id": 167,
       "date": "2025-03-13",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVLD5D69K6GAE5Z7\nNLOVLD5D69K6GAE5Z7 www.ovpay.nl, NL\n",
@@ -1429,7 +1519,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 158,
+      "id": 168,
       "date": "2025-03-12",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVGY5BEN6NPD6JLP\nNLOVGY5BEN6NPD6JLP www.ovpay.nl, NL\n",
@@ -1438,7 +1528,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 159,
+      "id": 169,
       "date": "2025-03-12",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Medio Zorg B.V. NL15 INGB 0106 2158 17\n2025-0002 RF12JDZ3CVMN",
@@ -1448,7 +1538,7 @@
       "project": "Medio Zorg"
     },
     {
-      "id": 160,
+      "id": 170,
       "date": "2025-03-06",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVDRJZK8X84BX5EY\nNLOVDRJZK8X84BX5EY www.ovpay.nl, NL\n",
@@ -1457,7 +1547,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 161,
+      "id": 171,
       "date": "2025-03-06",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Moneybird B.V. NL65 ADYB 2006 0111 62\nMoneybird B.V. 2025-157551 MoneyBird B.V.",
@@ -1466,7 +1556,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 162,
+      "id": 172,
       "date": "2025-03-06",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-03-06 EUR",
@@ -1475,7 +1565,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 163,
+      "id": 173,
       "date": "2025-03-06",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Robijs Dubass LT21 3250 0084 6242 5191\nInvoice 2",
@@ -1484,7 +1574,7 @@
       "category": "Salaries & Freelancers"
     },
     {
-      "id": 164,
+      "id": 174,
       "date": "2025-03-05",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVMQJA9YBYZBKJ67\nNLOVMQJA9YBYZBKJ67 www.ovpay.nl, NL\n",
@@ -1493,7 +1583,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 165,
+      "id": 175,
       "date": "2025-03-05",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Weena B.V.\nWeena B.V. ROTTERDAM, NL\n",
@@ -1502,7 +1592,7 @@
       "category": "Food & Groceries"
     },
     {
-      "id": 166,
+      "id": 176,
       "date": "2025-03-05",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVB85Y4XWYAL9JVE\nNLOVB85Y4XWYAL9JVE www.ovpay.nl, NL\n",
@@ -1511,7 +1601,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 167,
+      "id": 177,
       "date": "2025-03-03",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "RENDER.COM\nRENDER.COM +14158304762, US\n7.06 USD, 1 USD = 0.96742 EUR",
@@ -1520,7 +1610,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 168,
+      "id": 178,
       "date": "2025-03-02",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq BV NL89 BUNQ 2025 1055 84\ninvoice 24609161",
@@ -1529,7 +1619,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 169,
+      "id": 179,
       "date": "2025-03-01",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Google GSUITE_longevai\nGoogle GSUITE_longevai Dublin, IE\n",
@@ -1538,7 +1628,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 170,
+      "id": 180,
       "date": "2025-02-27",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "NLOVLD5D66ZENEX5Z7\nNLOVLD5D66ZENEX5Z7 www.ovpay.nl, NL\n",
@@ -1547,7 +1637,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 171,
+      "id": 181,
       "date": "2025-02-27",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-02-27 EUR",
@@ -1556,7 +1646,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 172,
+      "id": 182,
       "date": "2025-02-26",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "soupenzo vanbaerle\nsoupenzo vanbaerle AMSTERDAM, NL\n",
@@ -1565,7 +1655,7 @@
       "category": "Food & Groceries"
     },
     {
-      "id": 173,
+      "id": 183,
       "date": "2025-02-26",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "soupenzo vanbaerle\nsoupenzo vanbaerle AMSTERDAM, NL\n",
@@ -1574,7 +1664,7 @@
       "category": "Food & Groceries"
     },
     {
-      "id": 174,
+      "id": 184,
       "date": "2025-02-26",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Q PARK SYMPHONY\nQ PARK SYMPHONY AMSTERDAM, NL\n",
@@ -1583,7 +1673,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 175,
+      "id": 185,
       "date": "2025-02-21",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "RENDER.COM\nRefund: RENDER.COM +14158304762, US\n1.00 USD, 1 USD = 0.96000 EUR",
@@ -1592,7 +1682,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 176,
+      "id": 186,
       "date": "2025-02-21",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "RENDER.COM\nRENDER.COM +14158304762, US\n1.00 USD, 1 USD = 0.96000 EUR",
@@ -1601,7 +1691,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 177,
+      "id": 187,
       "date": "2025-02-21",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Transavia\nWQZPLKM8NDLQ8PF32I2L5 7180325795417176 F8MM6S 131540145",
@@ -1610,7 +1700,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 178,
+      "id": 188,
       "date": "2025-02-21",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Booking.com\nKCXDTGV77WNZ5WG62LUUJ 7180545771297521 Flights on Booking.com",
@@ -1619,7 +1709,7 @@
       "category": "Travel & Transport"
     },
     {
-      "id": 179,
+      "id": 189,
       "date": "2025-02-20",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-02-20 EUR",
@@ -1628,7 +1718,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 180,
+      "id": 190,
       "date": "2025-02-20",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "EQ Verhoef NL25 INGB 0703 8531 04\n",
@@ -1637,7 +1727,7 @@
       "category": "Miscellaneous"
     },
     {
-      "id": 181,
+      "id": 191,
       "date": "2025-02-19",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Cosmina NL05 BUNQ 2033 4746 07\nCustomer meeting - Invoice scanned",
@@ -1646,7 +1736,7 @@
       "category": "Office & Meetings"
     },
     {
-      "id": 182,
+      "id": 192,
       "date": "2025-02-19",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Cosmina NL05 BUNQ 2033 4746 07\nPay back 100 eur loan",
@@ -1655,7 +1745,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 183,
+      "id": 193,
       "date": "2025-02-19",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "EQ Verhoef NL25 INGB 0703 8531 04\nCursor AI Diogo + Logo LongevAI",
@@ -1664,7 +1754,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 184,
+      "id": 194,
       "date": "2025-02-19",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "CCV*Kamer v Koophandel\nCCV*Kamer v Koophandel Utrecht, NL\n",
@@ -1673,7 +1763,7 @@
       "category": "Taxes & Accounting"
     },
     {
-      "id": 185,
+      "id": 195,
       "date": "2025-02-19",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "CURSOR, AI POWERED IDE\nCURSOR, AI POWERED IDE +18314259504, US\n20.00 USD, 1 USD = 0.96300 EUR",
@@ -1682,7 +1772,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 186,
+      "id": 196,
       "date": "2025-02-19",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "KVK NL31 DEUT 0319 8105 77\nFactuur 250038464",
@@ -1691,7 +1781,7 @@
       "category": "Taxes & Accounting"
     },
     {
-      "id": 187,
+      "id": 197,
       "date": "2025-02-19",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Robijs Dubass LT21 3250 0084 6242 5191\nInvoice 1",
@@ -1700,7 +1790,7 @@
       "category": "Salaries & Freelancers"
     },
     {
-      "id": 188,
+      "id": 198,
       "date": "2025-02-19",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "GeniusInvest B.V. NL64 BUNQ 2039 4455 44\nPay back invoice Firm24, 2025-1789",
@@ -1709,7 +1799,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 189,
+      "id": 199,
       "date": "2025-02-19",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Cosmina NL05 BUNQ 2033 4746 07\nGoDaddy invoice 3468599476",
@@ -1718,7 +1808,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 190,
+      "id": 200,
       "date": "2025-02-19",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Cosmina NL05 BUNQ 2033 4746 07\nGoDaddy invoice 3500777110",
@@ -1727,7 +1817,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 191,
+      "id": 201,
       "date": "2025-02-19",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Taxpas NL43 RABO 0171 7985 03\nInvoice 25700096",
@@ -1736,7 +1826,7 @@
       "category": "Taxes & Accounting"
     },
     {
-      "id": 192,
+      "id": 202,
       "date": "2025-02-19",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Cosmina NL05 BUNQ 2033 4746 07\nInvoice 1321, customer gifts",
@@ -1745,7 +1835,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 193,
+      "id": 203,
       "date": "2025-02-12",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Medio Zorg B.V. NL15 INGB 0106 2158 17\n2025-0001 RF31YKQC4JYP",
@@ -1755,7 +1845,7 @@
       "project": "Medio Zorg"
     },
     {
-      "id": 194,
+      "id": 204,
       "date": "2025-02-11",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Helios B.V. NL31 BUNQ 2145 9961 76\n40% of shares",
@@ -1764,7 +1854,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 195,
+      "id": 205,
       "date": "2025-02-06",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "bunq NL13 BUNQ 2094 1225 49\nbunq Payday 2025-02-06 EUR",
@@ -1773,7 +1863,7 @@
       "category": "Bank & Payment Fees"
     },
     {
-      "id": 196,
+      "id": 206,
       "date": "2025-02-05",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "MoneyBird B.V.\nWQRVJS7L25BC7QG648CV1 7180684574796121 Direct debit authorisation for Mone",
@@ -1782,7 +1872,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 197,
+      "id": 207,
       "date": "2025-02-04",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "DNH*GODADDY#3468675864\nDNH*GODADDY#3468675864 AMSTERDAM, NL\n",
@@ -1791,7 +1881,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 198,
+      "id": 208,
       "date": "2025-02-04",
       "reference": "TRA Bunq NL75BUNQ2145840184 (Ponto)",
       "description": "Google Ireland Limited IE64 CITI 9900 5124 4170 26\nGG103UY7XB",
@@ -1800,7 +1890,7 @@
       "category": "Software & AI Tools"
     },
     {
-      "id": 199,
+      "id": 209,
       "date": "2024-12-31",
       "reference": "Opening balance of Bunq NL75BUNQ2145840184",
       "description": "",
@@ -1809,14 +1899,41 @@
       "category": "Uncategorized"
     }
   ],
-  "totalRevenue": 41493.98,
-  "totalExpenses": 21117.65000000001,
-  "netProfit": 20376.329999999994,
-  "currentBalance": 20376.33,
-  "outstandingReceivables": 8712,
+  "totalRevenue": 41494.17,
+  "totalExpenses": 23762.170000000013,
+  "netProfit": 17731.999999999985,
+  "currentBalance": 17732,
+  "outstandingReceivables": 17272.75,
   "receivables": {
-    "totalOutstanding": 8712,
+    "totalOutstanding": 17272.75,
     "invoices": [
+      {
+        "invoiceId": "2025-0014",
+        "client": "V&P Vastgoed",
+        "issueDate": "2025-08-15",
+        "invoicedAmount": 1210,
+        "paidAmount": 0,
+        "outstandingAmount": 1210,
+        "daysOutstanding": 0
+      },
+      {
+        "invoiceId": "2025-0015",
+        "client": "RebelsAI",
+        "issueDate": "2025-08-15",
+        "invoicedAmount": 1452,
+        "paidAmount": 0,
+        "outstandingAmount": 1452,
+        "daysOutstanding": 0
+      },
+      {
+        "invoiceId": "2025-0013",
+        "client": "Medio Zorg",
+        "issueDate": "2025-08-14",
+        "invoicedAmount": 5898.75,
+        "paidAmount": 0,
+        "outstandingAmount": 5898.75,
+        "daysOutstanding": 1
+      },
       {
         "invoiceId": "2025-0012",
         "client": "RebelsAI",
@@ -1824,7 +1941,7 @@
         "invoicedAmount": 6292,
         "paidAmount": 0,
         "outstandingAmount": 6292,
-        "daysOutstanding": 8
+        "daysOutstanding": 14
       },
       {
         "invoiceId": "2025-0011",
@@ -1833,7 +1950,7 @@
         "invoicedAmount": 2420,
         "paidAmount": 0,
         "outstandingAmount": 2420,
-        "daysOutstanding": 24
+        "daysOutstanding": 30
       }
     ]
   }

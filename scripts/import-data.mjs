@@ -16,13 +16,13 @@ const DB_STORAGE_PATH = path.resolve(process.cwd(), './public/sample-db.json');
 const categoryKeywords = {
   'Software & AI Tools': ['hubspot', 'slack', 'google', 'cursor', 'apollo', 'render', 'koyeb', 'claude', 'canva', 'moneybird', 'openai', 'anthropic', 'openrouter', 'twilio', 'coollabs', 'hetzner', 'godaddy', '50plus', 'facebk', 'monday.com'],
   'Salaries & Freelancers': ['catalin-stefan', 'diogo guedes', 'robijs dubas', 'salary', 'freelance', 'contractor', 'dubas', 'anyhouse', 'niculescu', 'harshit kedia'],
-  'Taxes & Accounting': ['belastingdienst', 'taxpas', 'tax', 'accounting', 'kvk', 'digidentity', 'peter', 'kamer v koophandel'],
+  'Taxes & Accounting': ['belastingdienst', 'taxpas', 'tax', 'accounting', 'kvk', 'digidentity', 'peter', 'kamer v koophandel', 'hoog16 juristen'],
   'Travel & Transport': ['nlov', 'ns groep', 'q park', 'ovpay', 'transavia', 'booking.com', 'bck*ns', 'ns'],
   'Office & Meetings': ['zettle', 'seats2meet', 'office', 'meeting', 'coworking', 'plnt', 'workplaces'],
   'Bank & Payment Fees': ['bunq', 'pay.nl', 'sumup', 'stripe', 'bank fee', 'transaction fee', 'mollie'],
   'Hardware & Assets': ['back market', 'laptop', 'hardware', 'equipment', 'computer'],
   'Client Revenue': ['medio zorg', 'rebelsai', 'burgermeister', 'qualevita', 'medicapital'],
-  'Food & Groceries': ['albert heijn', 'ozan market', 'soupenzo', 'restaurant', 'griekse taverne', 'lisa', 'vialis', 'weena b.v.', 'dadawan'],
+  'Food & Groceries': ['albert heijn', 'ozan market', 'soupenzo', 'restaurant', 'griekse taverne', 'lisa', 'vialis', 'weena b.v.', 'dadawan', 'blushing blaricum'],
   'Miscellaneous': ['helios b.v.', 'geniusinvest', 'eq verhoef', '50plus mobiel', 'genius invest']
 };
 
@@ -151,13 +151,18 @@ function parseCSVData(csvContent) {
           const clientDetected = findClientName(`${ref} ${desc}`);
           const clientFromRef = ref.split(' - ').pop() || 'Unknown';
           const client = clientDetected || clientFromRef || 'Unknown';
+          // Mark Lars payment as paid
+          const isPaidLarsInvoice = client.toLowerCase().includes('lars arendsen');
+          const paidAmount = isPaidLarsInvoice ? amount : 0;
+          const outstandingAmount = isPaidLarsInvoice ? 0 : amount;
+          
           invoiceMap.set(invoiceId, {
             invoiceId,
             client,
             issueDate: row.Date,
             invoicedAmount: amount,
-            paidAmount: 0,
-            outstandingAmount: amount,
+            paidAmount: paidAmount,
+            outstandingAmount: outstandingAmount,
             daysOutstanding: Math.floor((Date.now() - new Date(row.Date).getTime()) / (1000 * 3600 * 24)),
           });
         }
@@ -227,23 +232,28 @@ function parseCSVData(csvContent) {
     }
   }
 
-  const allTransactions = rawBankTransactions.map((t, index) => {
-    const amount = parseFloat(t.Amount) || 0;
-    const description = t.Description || '';
-    const normalizedDesc = normalizeDescription(description.split('\n')[0]);
-    const ledgerCategory = ledgerCategoryMap.get(normalizedDesc);
+  const allTransactions = rawBankTransactions
+    .filter(t => {
+      const amount = parseFloat(t.Amount) || 0;
+      return amount !== 0; // Filter out zero-amount transactions
+    })
+    .map((t, index) => {
+      const amount = parseFloat(t.Amount) || 0;
+      const description = t.Description || '';
+      const normalizedDesc = normalizeDescription(description.split('\n')[0]);
+      const ledgerCategory = ledgerCategoryMap.get(normalizedDesc);
 
-    return {
-      id: index,
-      date: t.Date,
-      reference: t.Reference || '',
-      description: description,
-      vat: t.VAT || '',
-      amount: amount,
-      category: categorizeTransaction(description, ledgerCategory),
-      project: extractProject(description)
-    };
-  });
+      return {
+        id: index,
+        date: t.Date,
+        reference: t.Reference || '',
+        description: description,
+        vat: t.VAT || '',
+        amount: amount,
+        category: categorizeTransaction(description, ledgerCategory),
+        project: extractProject(description)
+      };
+    });
 
   const totalRevenue = allTransactions.filter(t => t.amount > 0).reduce((sum, t) => sum + t.amount, 0);
   const totalExpenses = Math.abs(allTransactions.filter(t => t.amount < 0).reduce((sum, t) => sum + t.amount, 0));

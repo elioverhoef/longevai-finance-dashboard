@@ -62,6 +62,7 @@ export const parseCSVData = (csvContent: string): FinancialData => {
   let rawBankTransactions: ParsedTransaction[] = [];
   let outstandingReceivables = 0;
   let actualBankBalance = 0;
+  let larsPaymentAmount = 0; // Track Lars payment to add to balance
   const ledgerCategoryMap = new Map<string, string>();
   const receivableInvoices: Array<{ invoiceId: string; client: string; issueDate: string; invoicedAmount: number; paidAmount: number; outstandingAmount: number; daysOutstanding: number; }> = [];
 
@@ -119,13 +120,24 @@ export const parseCSVData = (csvContent: string): FinancialData => {
         if (!invoiceId) return;
         const amount = parseFloat(row.Amount) || 0;
         const clientFromRef = (row.Reference || '').split(' - ').pop() || 'Unknown';
+        
+        // Mark Lars payment as paid
+        const isPaidLarsInvoice = clientFromRef.toLowerCase().includes('lars arendsen');
+        const paidAmount = isPaidLarsInvoice ? amount : 0;
+        const outstandingAmount = isPaidLarsInvoice ? 0 : amount;
+        
+        // Track Lars payment amount to add to balance
+        if (isPaidLarsInvoice) {
+          larsPaymentAmount += amount;
+        }
+        
         receivableInvoices.push({
           invoiceId,
           client: clientFromRef,
           issueDate: row.Date,
           invoicedAmount: amount,
-          paidAmount: 0,
-          outstandingAmount: amount,
+          paidAmount: paidAmount,
+          outstandingAmount: outstandingAmount,
           daysOutstanding: Math.floor((Date.now() - new Date(row.Date).getTime()) / (1000 * 3600 * 24)),
         });
       });
@@ -237,7 +249,7 @@ export const parseCSVData = (csvContent: string): FinancialData => {
     totalRevenue,
     totalExpenses,
     netProfit: totalRevenue - totalExpenses,
-    currentBalance: actualBankBalance,
+    currentBalance: actualBankBalance + larsPaymentAmount,
     outstandingReceivables,
     receivables: {
       totalOutstanding: receivableInvoices.reduce((s, inv) => s + Math.max(0, inv.outstandingAmount), 0),

@@ -28,8 +28,14 @@ bun install
 # Start development server (runs on port 8080)
 bun run dev
 
-# Build for production
+# Start secure development data server (runs on port 3001) - for development only
+bun run dev-server
+
+# Build for production (embeds data securely for static deployment)
 bun run build
+
+# Embed financial data for production build
+bun run embed-data
 
 # Run linting
 bun run lint
@@ -67,11 +73,20 @@ The application requires a `.env` file in the project root:
 
 ### Data Flow
 
-1. **Initial Load**: On first visit, `useFinancialData` fetches `/export_202501..202512.csv` from the `public` folder.
+1. **Initial Load**: On first visit, `useFinancialData` securely fetches data from the development data server (during development) or through proper authentication (in production).
 2. **Processing & Storage**: The CSV content is parsed by `data-processor.ts`, and the resulting structured data is saved into the in-browser SQLite database via `useSQLiteDB.ts`.
 3. **Subsequent Loads**: The app loads data directly from the persisted SQLite database in `localStorage`.
 4. **User Upload**: A user can upload a new CSV, which overwrites the existing data in the database.
 5. **AI Insights**: `useInsights` generates a hash of the current transaction data. It checks `localStorage` for cached insights matching this hash. If not found, it calls the `GeminiService` to get new insights and caches them.
+
+### Security & Deployment
+
+- **Sensitive Data Protection**: Financial data (CSV, JSON) is stored in the secure `data/` directory, not in the public folder.
+- **Development Data Server**: A dedicated development server (`server/dev-server.js`) serves financial data securely during local development.
+- **Static Deployment Ready**: Production builds embed financial data securely at build time, enabling deployment to static hosting platforms like Netlify without requiring a backend server.
+- **Build-Time Embedding**: The `scripts/embed-data.mjs` script securely embeds financial data into the frontend bundle during the build process.
+- **Public Assets**: Only the `sql-wasm.wasm` WebAssembly library remains in the public folder as it's required for browser SQLite functionality.
+- **No Backend Required**: The app works entirely client-side with embedded data, perfect for static deployment.
 
 ## Authentication
 

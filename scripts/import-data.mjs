@@ -9,8 +9,8 @@ const require = createRequire(import.meta.url);
 
 const Papa = require('papaparse');
 
-const CSV_FILE_PATH = path.resolve(process.cwd(), './public/export_202501..202512.csv');
-const DB_STORAGE_PATH = path.resolve(process.cwd(), './public/sample-db.json');
+const CSV_FILE_PATH = path.resolve(process.cwd(), './data/export_202501..202512.csv');
+const DB_STORAGE_PATH = path.resolve(process.cwd(), './data/sample-db.json');
 
 // Align project and category keywords with frontend
 const categoryKeywords = {
@@ -90,6 +90,7 @@ function parseCSVData(csvContent) {
   let rawBankTransactions = [];
   let outstandingReceivables = 0;
   let actualBankBalance = 0;
+  let larsPaymentAmount = 0; // Track Lars payment to add to balance
   const ledgerCategoryMap = new Map();
   const receivableInvoices = [];
 
@@ -155,6 +156,11 @@ function parseCSVData(csvContent) {
           const isPaidLarsInvoice = client.toLowerCase().includes('lars arendsen');
           const paidAmount = isPaidLarsInvoice ? amount : 0;
           const outstandingAmount = isPaidLarsInvoice ? 0 : amount;
+          
+          // Track Lars payment amount to add to balance
+          if (isPaidLarsInvoice) {
+            larsPaymentAmount += amount;
+          }
           
           invoiceMap.set(invoiceId, {
             invoiceId,
@@ -264,7 +270,7 @@ function parseCSVData(csvContent) {
     totalRevenue,
     totalExpenses,
     netProfit,
-    currentBalance: actualBankBalance,
+    currentBalance: actualBankBalance + larsPaymentAmount,
     outstandingReceivables,
     receivables: {
       totalOutstanding: receivableInvoices.reduce((s, inv) => s + Math.max(0, inv.outstandingAmount), 0),
@@ -298,14 +304,14 @@ async function importSampleData() {
     
     // Write a version marker for the frontend to bust caches (dev helper)
     try {
-      const versionFile = path.resolve(process.cwd(), './public/db-version.txt');
+      const versionFile = path.resolve(process.cwd(), './data/db-version.txt');
       await fs.writeFile(versionFile, `${Date.now()}`);
       console.log('🔖 DB version bumped.');
     } catch {}
     
   } catch (error) {
     console.error('❌ Error during import:', error.message);
-    console.error('Please ensure the export_202501..202512.csv file is in the public/ directory.');
+    console.error('Please ensure the export_202501..202512.csv file is in the data/ directory.');
     process.exit(1);
   }
 }

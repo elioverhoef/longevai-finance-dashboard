@@ -3,6 +3,7 @@ import { Transaction, FinancialData } from '../types/financial';
 import { useSQLiteDB } from './useSQLiteDB';
 import { parseCSVData } from '../lib/data-processor';
 import { categoryKeywords } from '../config/categorization';
+import { getFinancialData, getRawCSVData, getDBVersion } from '../data/financial-data';
 
 export const useFinancialData = () => {
   const [data, setData] = useState<FinancialData | null>(null);
@@ -13,24 +14,22 @@ export const useFinancialData = () => {
 
   const loadSampleData = useCallback(async () => {
     try {
-      const response = await fetch('/sample-db.json', { cache: 'no-store' });
-      if (response.ok) {
-        const sampleData = await response.json();
-        if (sampleData.allTransactions && sampleData.allTransactions.length > 1) {
-          await saveFinancialData(sampleData);
-          setData(sampleData);
-          localStorage.setItem('longevai_sample_loaded', 'true');
-          // bump DB version to bust caches
-          localStorage.setItem('longevai_db_version', `${Date.now()}`);
-          localStorage.removeItem('longevai_insights_cache');
-          console.log('✅ Sample data loaded successfully');
-          return true;
-        }
+      // Try to load from secure API first
+      const sampleData = await getFinancialData();
+      if (sampleData && sampleData.allTransactions && sampleData.allTransactions.length > 1) {
+        await saveFinancialData(sampleData);
+        setData(sampleData);
+        localStorage.setItem('longevai_sample_loaded', 'true');
+        // bump DB version to bust caches
+        localStorage.setItem('longevai_db_version', `${Date.now()}`);
+        localStorage.removeItem('longevai_insights_cache');
+        console.log('✅ Sample data loaded successfully');
+        return true;
       }
 
-      const csvResponse = await fetch('/export_202501..202512.csv', { cache: 'no-store' });
-      if (csvResponse.ok) {
-        const csvContent = await csvResponse.text();
+      // Fallback to CSV data
+      const csvContent = await getRawCSVData();
+      if (csvContent) {
         const financialData = parseCSVData(csvContent);
         if (financialData.allTransactions.length > 0) {
           await saveFinancialData(financialData);
@@ -55,13 +54,10 @@ export const useFinancialData = () => {
       setLoading(true);
       const dbData = loadFinancialData();
 
-      // Read DB version marker file and set localStorage key
+      // Read DB version marker and set localStorage key
       try {
-        const resp = await fetch('/db-version.txt', { cache: 'no-store' });
-        if (resp.ok) {
-          const v = await resp.text();
-          if (v) localStorage.setItem('longevai_db_version', v.trim());
-        }
+        const v = await getDBVersion();
+        if (v) localStorage.setItem('longevai_db_version', v.trim());
       } catch (e) {
         // ignore missing version marker
       }
@@ -88,21 +84,18 @@ export const useFinancialData = () => {
     const controller = new AbortController();
     const check = async () => {
       try {
-        const r = await fetch('/db-version.txt', { cache: 'no-store', signal: controller.signal });
-        if (r.ok) {
-          const nv = (await r.text()).trim();
-          const lv = localStorage.getItem('longevai_db_version');
-          if (nv && nv !== lv) {
-            localStorage.setItem('longevai_db_version', nv);
-            localStorage.removeItem('longevai_insights_cache');
-            try {
-              await loadSampleData();
-            } catch (e) {
-              console.warn('Failed to reload data after DB version change:', e);
-            }
-            const refreshed = loadFinancialData();
-            if (refreshed) setData(refreshed);
+        const nv = (await getDBVersion()).trim();
+        const lv = localStorage.getItem('longevai_db_version');
+        if (nv && nv !== lv) {
+          localStorage.setItem('longevai_db_version', nv);
+          localStorage.removeItem('longevai_insights_cache');
+          try {
+            await loadSampleData();
+          } catch (e) {
+            console.warn('Failed to reload data after DB version change:', e);
           }
+          const refreshed = loadFinancialData();
+          if (refreshed) setData(refreshed);
         }
       } catch (e) {
         console.warn('DB version polling failed:', e);
@@ -147,7 +140,7 @@ export const useFinancialData = () => {
         const buffer = await file.arrayBuffer();
         const wb = read(buffer, { type: 'array' });
         let combined = '';
-        wb.SheetNames.forEach((sheetName, idx) => {
+        wb.SheetNames.forEach((sheetName) => {
           const ws = wb.Sheets[sheetName];
           if (!ws) return;
           const csv = utils.sheet_to_csv(ws).trim();

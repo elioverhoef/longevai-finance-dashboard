@@ -24,3 +24,9 @@ dist-ssr
 *.sw?
 *.csv
 *.xlsx
+
+# Sensitive financial data
+data/
+
+# Auto-generated embedded data
+src/data/embedded-data.ts
